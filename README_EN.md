@@ -7,9 +7,7 @@
 </p>
 
 <p align="center">
-  <span style="color:#19d4ff; font-weight:bold; font-size:28px;">
-    <span style="background:linear-gradient(90deg,#19d4ff,#ff19c3); -webkit-background-clip:text;">FreeYou</span>
-  </span>
+  <img src="logo/FreeYou.png" alt="FreeYou" width="300"/>
 </p>
 
 **End-to-end AI Agent | Seamless Proactive Interaction | Complete Privacy Protection | Local-Cloud Collaboration**
@@ -91,7 +89,7 @@ FreeYou is an open-source proactive AI agent system that can seamlessly observe 
 
 - **Backend**: Python
 - **AI Models**: Support for various large language models (LLMs), including:
-  - Local Models: Ollama (DeepSeek, Llama)
+  - Local Models: Including but not limited to Ollama (DeepSeek), etc.
   - Cloud Models: Configurable API access
 - **Image Processing**: BLIP model for image description and understanding
 - **OCR Technology**: For extracting text information from images

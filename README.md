@@ -7,9 +7,7 @@
 </p>
 
 <p align="center">
-  <span style="color:#19d4ff; font-weight:bold; font-size:28px;">
-    <span style="background:linear-gradient(90deg,#19d4ff,#ff19c3); -webkit-background-clip:text;">FreeYou</span>
-  </span>
+  <img src="logo/FreeYou.png" alt="FreeYou" width="300"/>
 </p>
 
 **打通全流程的AI智能体 | 无感知主动交互 | 全面隐私保护 | 本地云端协同**
@@ -22,7 +20,7 @@
 
 ## 🌟 项目愿景
 
-想象一下，在日常工作和生活中，你不需要手动唤醒或输入指令，就有一个"幕后助手"静静观察你的需求，在合适的时机主动出现，帮你完成各种琐碎或复杂的任务。这，就是 FreeY ou —— 一个打通全流程的 AI 智能体。
+想象一下，在日常工作和生活中，你不需要手动唤醒或输入指令，就有一个"幕后助手"静静观察你的需求，在合适的时机主动出现，帮你完成各种琐碎或复杂的任务。这就是 FreeYou —— 一个打通全流程的 AI 智能体。
 
 ## 📖 项目简介
 
@@ -91,7 +89,7 @@ FreeYou是一个开源的AI主动服务智能体系统，它能够无感知地�
 
 - **后端**：Python
 - **AI模型**：支持多种大型语言模型(LLM)，包括：
-  - 本地模型：Ollama (DeepSeek, Llama)
+  - 本地模型：包括但不限于Ollama（DeepSeek）等
   - 云端模型：可配置API接入
 - **图像处理**：BLIP模型用于图像描述和理解
 - **OCR技术**：用于从图像中提取文本信息
