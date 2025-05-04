@@ -425,32 +425,91 @@
             border: 1px solid var(--apple-error-border);
         }
         
-        /* Mac instructions */
-        .mac-instructions {
+        /* User instructions */
+        .user-instructions {
             margin: 30px auto;
-            padding: 30px;
+            padding: 40px;
             background-color: var(--apple-info-bg);
             border-radius: 12px;
             border: 1px solid var(--apple-info-border);
             max-width: 700px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
         
-        .mac-instructions h3 {
-            font-size: 20px;
+        .user-instructions h3 {
+            font-size: 22px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             color: var(--apple-info-color);
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
-        .mac-instructions p, .mac-instructions li {
+        .user-instructions h3::before {
+            content: "\f05a";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+        }
+        
+        .user-instructions p {
             font-size: 16px;
             color: var(--apple-secondary-text);
             line-height: 1.6;
+            margin-bottom: 15px;
         }
         
-        .mac-instructions ol {
-            margin: 16px 0 16px 30px;
+        .user-instructions ol {
+            display: inline-block;
+            text-align: left;
+            margin: 20px auto;
+            padding-left: 20px;
+            padding-right: 20px;
+            counter-reset: instruction-counter;
+            list-style-type: none;
+        }
+        
+        .user-instructions li {
+            font-size: 16px;
+            color: var(--apple-secondary-text);
+            line-height: 1.6;
+            margin-bottom: 14px;
+            padding-left: 10px;
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .user-instructions li::before {
+            content: "\f00c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: var(--apple-success-color);
+            margin-right: 10px;
+        }
+        
+        .user-instructions li span {
+            flex: 1;
+        }
+        
+        .user-instructions .browser-tip {
+            margin-top: 25px;
+            font-weight: 500;
+            padding: 12px 20px;
+            background-color: rgba(10, 132, 255, 0.08);
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        .user-instructions .browser-tip::before {
+            content: "\f15c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            margin-right: 8px;
+            color: var(--apple-info-color);
         }
         
         .hidden {
@@ -769,7 +828,7 @@
     <div class="instructions">
         <h2 class="lang-zh hidden">使用说明</h2>
         <h2 class="lang-en">Instructions</h2>
-        <p class="lang-zh hidden">本演示版本需要在全屏模式下使用，以确保AI代理可以正常运行。</p>
+        <p class="lang-zh hidden">本演示版本需要在全屏模式下使用，以确保AI智能体可以正常运行。</p>
         <p class="lang-en">This demo version requires fullscreen mode to ensure the AI agent runs properly.</p>
         <p class="lang-zh hidden">请点击下方按钮进入全屏模式。演示时长限制为5分钟。</p>
         <p class="lang-en">Please click the button below to enter fullscreen mode. The demo is limited to 5 minutes.</p>
@@ -784,21 +843,29 @@
             <span class="lang-en">Current Status: Not Fullscreen (Service Not Started)</span>
         </div>
         
-        <!-- <div id="mac-instructions" class="mac-instructions hidden">
-            <h3 class="lang-zh">macOS用户注意事项</h3>
-            <h3 class="lang-en hidden">Notes for macOS Users</h3>
-            <p class="lang-zh">在macOS上，您可能需要授予浏览器相关权限以使AI助手正常工作：</p>
-            <p class="lang-en hidden">On macOS, you may need to grant your browser relevant permissions for the AI assistant to work properly:</p>
+        <div id="user-instructions" class="user-instructions hidden">
+            <h3 class="lang-zh">用户注意事项</h3>
+            <h3 class="lang-en hidden">Notes for Users</h3>
+            <p class="lang-zh">为了使AI智能体正常工作，您可能需要授予浏览器相关权限：</p>
+            <p class="lang-en hidden">For the AI assistant to work properly, you may need to grant your browser relevant permissions:</p>
             <ol>
-                <li class="lang-zh">在"系统偏好设置"→"安全性与隐私"→"隐私"选项卡中允许屏幕录制权限</li>
-                <li class="lang-en hidden">Allow screen recording permissions in "System Preferences" → "Security & Privacy" → "Privacy" tab</li>
-                <li class="lang-zh">确保已授予浏览器"自动化"权限，允许AppleScript控制</li>
-                <li class="lang-en hidden">Ensure "Automation" permissions are granted to the browser, allowing AppleScript control</li>
+                <li class="lang-zh">
+                    <span>请允许浏览器的屏幕录制/显示捕获权限</span>
+                </li>
+                <li class="lang-en hidden">
+                    <span>Allow screen recording/display capture permissions in your browser</span>
+                </li>
+                <li class="lang-zh">
+                    <span>确保已授予浏览器必要的权限，以便AI智能体能够正常运行</span>
+                </li>
+                <li class="lang-en hidden">
+                    <span>Ensure all necessary permissions are granted to the browser for the AI assistant to function properly</span>
+                </li>
             </ol>
-            <p class="lang-zh">在Safari中，请确保已启用开发菜单（Safari偏好设置→高级→显示"开发"菜单）</p>
-            <p class="lang-en hidden">In Safari, ensure the development menu is enabled (Safari Preferences → Advanced → Show "Develop" menu)</p>
+            <p class="lang-zh browser-tip">如果遇到任何问题，请尝试使用最新版本的Chrome或Edge浏览器</p>
+            <p class="lang-en browser-tip hidden">If you encounter any issues, try using the latest version of Chrome or Edge browser</p>
         </div>
-    </div> -->
+    </div>
 
     <div class="carousel-container">
         <div class="carousel">
@@ -976,23 +1043,21 @@
         const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
         const originalTitle = document.title;
         
-        // 如果是Mac，显示Mac特定指示
-        if (isMac) {
-            document.getElementById('mac-instructions').classList.remove('hidden');
-        }
+        // 显示所有用户的注意事项
+        document.getElementById('user-instructions').classList.remove('hidden');
         
-function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-        clearInterval(window.autoplayInterval);
-        document.documentElement.requestFullscreen().catch(err => {
-            alert(`无法进入全屏模式: ${err.message}`);
-        });
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                clearInterval(window.autoplayInterval);
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert(`无法进入全屏模式: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
         }
-    }
-}
         
         // 监听全屏变化事件
         document.addEventListener('fullscreenchange', function() {
@@ -1020,20 +1085,18 @@ function toggleFullScreen() {
                     window.location.hash = "#open";
                 }
                 
-                // 添加全屏信号，帮助macOS检测
-                if (isMac) {
-                    // 创建或更新一个隐藏的meta标签，标记全屏状态
-                    let fullscreenMeta = document.querySelector('meta[name="fullscreen-status"]');
-                    if (!fullscreenMeta) {
-                        fullscreenMeta = document.createElement('meta');
-                        fullscreenMeta.setAttribute('name', 'fullscreen-status');
-                        document.head.appendChild(fullscreenMeta);
-                    }
-                    fullscreenMeta.setAttribute('content', 'active-open');
-                    
-                    // 通过发送消息到控制台帮助调试
-                    console.log('%c FULLSCREEN MODE ACTIVATED - OPEN MODE ', 'background: #34c759; color: white; font-size: 24px;');
+                // 添加全屏信号，帮助检测
+                // 创建或更新一个隐藏的meta标签，标记全屏状态
+                let fullscreenMeta = document.querySelector('meta[name="fullscreen-status"]');
+                if (!fullscreenMeta) {
+                    fullscreenMeta = document.createElement('meta');
+                    fullscreenMeta.setAttribute('name', 'fullscreen-status');
+                    document.head.appendChild(fullscreenMeta);
                 }
+                fullscreenMeta.setAttribute('content', 'active-open');
+                
+                // 通过发送消息到控制台帮助调试
+                console.log('%c FULLSCREEN MODE ACTIVATED - OPEN MODE ', 'background: #34c759; color: white; font-size: 24px;');
                 
                 // 全屏模式下停止自动播放
                 stopAutoplay();
@@ -1059,15 +1122,13 @@ function toggleFullScreen() {
                 }
                 
                 // 更新全屏信号
-                if (isMac) {
-                    let fullscreenMeta = document.querySelector('meta[name="fullscreen-status"]');
-                    if (fullscreenMeta) {
-                        fullscreenMeta.setAttribute('content', 'inactive');
-                    }
-                    
-                    // 通过发送消息到控制台帮助调试
-                    console.log('%c FULLSCREEN MODE DEACTIVATED ', 'background: #ff453a; color: white; font-size: 24px;');
+                let fullscreenMeta = document.querySelector('meta[name="fullscreen-status"]');
+                if (fullscreenMeta) {
+                    fullscreenMeta.setAttribute('content', 'inactive');
                 }
+                
+                // 通过发送消息到控制台帮助调试
+                console.log('%c FULLSCREEN MODE DEACTIVATED ', 'background: #ff453a; color: white; font-size: 24px;');
                 
                 // 退出全屏模式后恢复自动播放
                 startAutoplay();
