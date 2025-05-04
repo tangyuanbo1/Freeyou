@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全域感知AI主动服务智能体——FreeYou | Perceptive AI Active Service Agent——FreeYou</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap">
+    <style>
+        /* Apple-inspired design system with theme variables */
+        :root {
+            /* 共享变量 */
+            --apple-font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            --apple-button-bg: #0071e3;
+            --apple-button-hover: #0077ed;
+            --apple-highlight: #2997ff;
+            --apple-radius: 12px;
+            --apple-transition: all 0.4s cubic-bezier(0.28, 0.11, 0.32, 1);
+            --gradient-border: linear-gradient(90deg, #2563eb 0%, #a855f7 50%, #f97316 100%);
+            --gradient-text: linear-gradient(90deg, #2563eb 0%, #a855f7 50%, #f97316 100%);
+        }
+        
+        /* 深色模式变量 */
+        .dark-mode {
+            --apple-bg: #000000;
+            --apple-card-bg: #1d1d1f;
+            --apple-text: #f5f5f7;
+            --apple-secondary-text: #86868b;
+            --apple-border: rgba(255, 255, 255, 0.2);
+            --apple-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            --apple-gradient: linear-gradient(135deg, #2a2a2a 0%, #0a0a0a 100%);
+            --apple-overlay: rgba(30, 30, 30, 0.7);
+            --apple-hover-overlay: rgba(50, 50, 50, 0.9);
+            --apple-input-bg: rgba(255, 255, 255, 0.05);
+            --apple-success-bg: rgba(52, 199, 89, 0.2);
+            --apple-success-color: #34c759;
+            --apple-success-border: rgba(52, 199, 89, 0.3);
+            --apple-error-bg: rgba(255, 69, 58, 0.2);
+            --apple-error-color: #ff453a;
+            --apple-error-border: rgba(255, 69, 58, 0.3);
+            --apple-info-bg: rgba(10, 132, 255, 0.1);
+            --apple-info-color: #0a84ff;
+            --apple-info-border: rgba(10, 132, 255, 0.2);
+        }
+        
+        /* 浅色模式变量 */
+        .light-mode {
+            --apple-bg: #f5f5f7;
+            --apple-card-bg: #ffffff;
+            --apple-text: #1d1d1f;
+            --apple-secondary-text: #6e6e73;
+            --apple-border: rgba(0, 0, 0, 0.1);
+            --apple-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            --apple-gradient: linear-gradient(135deg, #f5f5f7 0%, #e5e5e5 100%);
+            --apple-overlay: rgba(230, 230, 230, 0.7);
+            --apple-hover-overlay: rgba(210, 210, 210, 0.9);
+            --apple-input-bg: rgba(0, 0, 0, 0.05);
+            --apple-success-bg: rgba(52, 199, 89, 0.1);
+            --apple-success-color: #28a745;
+            --apple-success-border: rgba(40, 167, 69, 0.2);
+            --apple-error-bg: rgba(255, 69, 58, 0.1);
+            --apple-error-color: #dc3545;
+            --apple-error-border: rgba(220, 53, 69, 0.2);
+            --apple-info-bg: rgba(10, 132, 255, 0.05);
+            --apple-info-color: #0a84ff;
+            --apple-info-border: rgba(10, 132, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--apple-font);
+            background-color: var(--apple-bg);
+            color: var(--apple-text);
+            line-height: 1.5;
+            transition: var(--apple-transition);
+            overflow-x: hidden;
+        }
+        
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--apple-card-bg);
+            border: 1px solid var(--apple-border);
+            color: var(--apple-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: var(--apple-shadow);
+            transition: var(--apple-transition);
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+        
+        .theme-toggle i {
+            font-size: 20px;
+        }
+        
+        /* Language toggle button */
+        .lang-toggle {
+            position: fixed;
+            top: 20px;
+            right: 80px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--apple-card-bg);
+            border: 1px solid var(--apple-border);
+            color: var(--apple-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: var(--apple-shadow);
+            transition: var(--apple-transition);
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .lang-toggle:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Full screen mode styles */
+        body.fullscreen-mode {
+            background-color: var(--apple-bg);
+        }
+        
+        body.fullscreen-mode .header,
+        body.fullscreen-mode .instructions,
+        body.fullscreen-mode .upload-section,
+        body.fullscreen-mode footer {
+            display: none;
+        }
+        
+        body.fullscreen-mode .carousel-container {
+            max-width: 100%;
+            margin: 0;
+            height: 100vh;
+            border-radius: 0;
+            box-shadow: none;
+        }
+        
+        body.fullscreen-mode .carousel {
+            height: 100vh;
+        }
+        
+        body.fullscreen-mode .image-wrapper {
+            width: 95%;
+            height: 95%;
+        }
+        
+        /* Header styles */
+        .header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header h1 {
+            font-size: 56px;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            margin-bottom: 16px;
+            color: var(--apple-text); /* 白色标题 */
+        }
+        
+        .header p {
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 21px;
+            font-weight: 500;
+            max-width: 700px;
+            margin: 0 auto;
+            letter-spacing: 0.008em;
+            padding: 8px 0;
+        }
+        
+        /* Logo */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            width: 100px;
+            height: auto;
+        }
+        
+        /* Carousel container */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            border-radius: var(--apple-radius);
+            box-shadow: var(--apple-shadow);
+            background: var(--apple-gradient);
+            transition: var(--apple-transition);
+        }
+        
+        .carousel {
+            display: flex;
+            transition: transform 0.7s cubic-bezier(0.28, 0.11, 0.32, 1);
+            height: 700px;
+        }
+        
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        body.fullscreen-mode .carousel-slide {
+            padding: 0;
+        }
+        
+        /* Image wrapper */
+        .image-wrapper {
+            position: relative;
+            width: 90%;
+            height: 90%;
+            border-radius: var(--apple-radius);
+            overflow: hidden;
+            box-shadow: var(--apple-shadow);
+            transition: transform 0.4s cubic-bezier(0.28, 0.11, 0.32, 1);
+            background-color: var(--apple-card-bg);
+        }
+        
+        body.fullscreen-mode .image-wrapper {
+            border: none;
+            box-shadow: none;
+        }
+        
+        .image-wrapper:hover {
+            transform: scale(1.02);
+        }
+        
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: var(--apple-transition);
+        }
+        
+        /* Carousel navigation */
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: var(--apple-overlay);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: var(--apple-text);
+            border: none;
+            outline: none;
+            z-index: 10;
+            transition: var(--apple-transition);
+            opacity: 0;
+        }
+        
+        .carousel-container:hover .carousel-button {
+            opacity: 1;
+        }
+        
+        .carousel-button:hover {
+            background-color: var(--apple-hover-overlay);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .carousel-button-prev {
+            left: 20px;
+        }
+        
+        .carousel-button-next {
+            right: 20px;
+        }
+        
+        /* Carousel dots */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 10;
+        }
+        
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(128, 128, 128, 0.3);
+            margin: 0 6px;
+            cursor: pointer;
+            transition: var(--apple-transition);
+        }
+        
+        .carousel-dot.active {
+            background-color: var(--apple-text);
+            width: 10px;
+            height: 10px;
+        }
+        
+        /* Instructions section */
+        .instructions {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto 80px;
+            padding: 60px 40px;
+            background-color: var(--apple-card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .instructions::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: var(--gradient-border);
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        .instructions h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+            text-align: center;
+            color: var(--apple-text);
+        }
+        
+        .instructions p {
+            margin-bottom: 20px;
+            color: var(--apple-secondary-text);
+            font-size: 18px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        /* Button styles */
+        .fullscreen-btn-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .fullscreen-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--apple-button-bg);
+            color: white;
+            border: none;
+            border-radius: 980px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--apple-transition);
+        }
+        
+        .fullscreen-btn:hover {
+            background-color: var(--apple-button-hover);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 113, 227, 0.4);
+        }
+        
+        /* Status indicator */
+        .status-indicator {
+            margin: 30px auto;
+            padding: 14px 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 16px;
+            letter-spacing: 0.01em;
+            transition: var(--apple-transition);
+            max-width: 400px;
+        }
+        
+        .status-active {
+            background-color: var(--apple-success-bg);
+            color: var(--apple-success-color);
+            border: 1px solid var(--apple-success-border);
+        }
+        
+        .status-inactive {
+            background-color: var(--apple-error-bg);
+            color: var(--apple-error-color);
+            border: 1px solid var(--apple-error-border);
+        }
+        
+        /* Mac instructions */
+        .mac-instructions {
+            margin: 30px auto;
+            padding: 30px;
+            background-color: var(--apple-info-bg);
+            border-radius: 12px;
+            border: 1px solid var(--apple-info-border);
+            max-width: 700px;
+        }
+        
+        .mac-instructions h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--apple-info-color);
+            text-align: center;
+        }
+        
+        .mac-instructions p, .mac-instructions li {
+            font-size: 16px;
+            color: var(--apple-secondary-text);
+            line-height: 1.6;
+        }
+        
+        .mac-instructions ol {
+            margin: 16px 0 16px 30px;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Upload section */
+        .upload-section {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto 80px;
+            padding: 60px 40px;
+            background-color: var(--apple-card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .upload-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: var(--gradient-border);
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        .upload-section h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+            text-align: center;
+            color: var(--apple-text);
+        }
+        
+        .upload-section p {
+            margin-bottom: 20px;
+            color: var(--apple-secondary-text);
+            font-size: 18px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 40px 0;
+        }
+        
+        .upload-area {
+            width: 100%;
+            max-width: 600px;
+            height: 200px;
+            border: 2px dashed var(--apple-border);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--apple-transition);
+            margin-bottom: 20px;
+            background-color: var(--apple-input-bg);
+        }
+        
+        .upload-area:hover {
+            border-color: var(--apple-highlight);
+            background-color: var(--apple-input-bg);
+            opacity: 0.8;
+        }
+        
+        .upload-area i {
+            font-size: 48px;
+            color: var(--apple-secondary-text);
+            margin-bottom: 16px;
+        }
+        
+        .upload-area p {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .upload-area span {
+            font-size: 14px;
+            color: var(--apple-secondary-text);
+        }
+        
+        .upload-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--apple-button-bg);
+            color: white;
+            border: none;
+            border-radius: 980px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--apple-transition);
+            margin-top: 20px;
+        }
+        
+        .upload-btn:hover {
+            background-color: var(--apple-button-hover);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 113, 227, 0.4);
+        }
+        
+        .privacy-note {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--apple-input-bg);
+            border-radius: 12px;
+            text-align: left;
+        }
+        
+        .privacy-note h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--apple-text);
+        }
+        
+        .privacy-note p {
+            font-size: 14px;
+            color: var(--apple-secondary-text);
+            text-align: left;
+            margin-bottom: 12px;
+        }
+        
+        .privacy-note ul {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .privacy-note li {
+            font-size: 14px;
+            color: var(--apple-secondary-text);
+            margin-bottom: 8px;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--apple-secondary-text);
+            font-size: 14px;
+            letter-spacing: 0.01em;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 40px;
+            }
+            
+            .header p {
+                font-size: 18px;
+            }
+            
+            .carousel {
+                height: 450px;
+            }
+            
+            .carousel-button {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .instructions, .upload-section {
+                padding: 40px 30px;
+                margin: 0 20px 60px;
+            }
+            
+            .instructions h2, .upload-section h2 {
+                font-size: 28px;
+            }
+            
+            .upload-area {
+                height: 180px;
+            }
+            
+            .theme-toggle, .lang-toggle {
+                top: 10px;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .theme-toggle {
+                right: 10px;
+            }
+            
+            .lang-toggle {
+                right: 60px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 60px 20px 40px;
+            }
+            
+            .header h1 {
+                font-size: 32px;
+            }
+            
+            .logo {
+                width: 80px;
+            }
+            
+            .carousel {
+                height: 350px;
+            }
+            
+            .instructions, .upload-section {
+                padding: 30px 20px;
+            }
+            
+            .instructions h2, .upload-section h2 {
+                font-size: 24px;
+            }
+            
+            .fullscreen-btn, .upload-btn {
+                padding: 10px 24px;
+                font-size: 16px;
+            }
+            
+            .upload-area {
+                height: 150px;
+            }
+            
+            .upload-area i {
+                font-size: 36px;
+            }
+        }
+        
+        /* Additional CSS for product name styling */
+        .product-name {
+            font-family: 'Orbitron', sans-serif;
+            color: white;
+            font-weight: 600;
+            margin-left: 10px;
+            padding: 0 5px;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            position: relative;
+            animation: nameAppear 1.5s ease-out forwards;
+            text-shadow: 
+                0 0 5px #0099ff,
+                0 0 10px #0099ff,
+                0 0 20px #0099ff,
+                0 0 30px #0099ff,
+                0 0 40px rgba(179, 0, 255, 0.6),
+                0 0 55px rgba(255, 0, 98, 0.4),
+                0 0 75px rgba(255, 0, 98, 0.2);
+            -webkit-text-fill-color: white;
+            background: linear-gradient(90deg, #19d4ff, #ff19c3);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        
+        @keyframes nameAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Remove the underline effect */
+        .product-name::after {
+            display: none;
+        }
+
+        .footer-product-name {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .footer-brand {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- 主题切换按钮 -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+        <i class="fas fa-sun"></i>
+    </button>
+
+    <!-- 语言切换按钮 -->
+    <button class="lang-toggle" id="lang-toggle" aria-label="Toggle Language">
+        CN
+    </button>
+
+    <div class="header">
+        <div class="logo-container">
+            <img src="assets/logo/logo4.svg" alt="Logo" class="logo">
+        </div>
+        <h1 class="lang-zh hidden">全域感知AI主动服务智能体 <span class="product-name">FreeYou</span></h1>
+        <h1 class="lang-en">Perceptive AI Active Service Agent <span class="product-name">FreeYou</span></h1>
+        <p class="lang-zh hidden">打通全流程的AI智能体 | 全量感知主动交互 | 全面隐私保护 | 本地云端协同</p>
+        <p class="lang-en">End-to-End AI Agent | Comprehensive Perception & Proactive Interaction | Complete Privacy Protection | Local-Cloud Collaboration</p>
+    </div>
+
+    <div class="instructions">
+        <h2 class="lang-zh hidden">使用说明</h2>
+        <h2 class="lang-en">Instructions</h2>
+        <p class="lang-zh hidden">本演示版本需要在全屏模式下使用，以确保AI代理可以正常运行。</p>
+        <p class="lang-en">This demo version requires fullscreen mode to ensure the AI agent runs properly.</p>
+        <p class="lang-zh hidden">请点击下方按钮进入全屏模式。演示时长限制为5分钟。</p>
+        <p class="lang-en">Please click the button below to enter fullscreen mode. The demo is limited to 5 minutes.</p>
+        
+        <div class="fullscreen-btn-container">
+            <button class="fullscreen-btn lang-zh hidden" onclick="toggleFullScreen()">点击进入全屏模式启动服务</button>
+            <button class="fullscreen-btn lang-en" onclick="toggleFullScreen()">Click to Enter Fullscreen Mode to Start Service</button>
+        </div>
+        
+        <div id="fullscreen-status" class="status-indicator status-inactive">
+            <span class="lang-zh hidden">当前状态：未全屏（服务未启动）</span>
+            <span class="lang-en">Current Status: Not Fullscreen (Service Not Started)</span>
+        </div>
+        
+        <!-- <div id="mac-instructions" class="mac-instructions hidden">
+            <h3 class="lang-zh">macOS用户注意事项</h3>
+            <h3 class="lang-en hidden">Notes for macOS Users</h3>
+            <p class="lang-zh">在macOS上，您可能需要授予浏览器相关权限以使AI助手正常工作：</p>
+            <p class="lang-en hidden">On macOS, you may need to grant your browser relevant permissions for the AI assistant to work properly:</p>
+            <ol>
+                <li class="lang-zh">在"系统偏好设置"→"安全性与隐私"→"隐私"选项卡中允许屏幕录制权限</li>
+                <li class="lang-en hidden">Allow screen recording permissions in "System Preferences" → "Security & Privacy" → "Privacy" tab</li>
+                <li class="lang-zh">确保已授予浏览器"自动化"权限，允许AppleScript控制</li>
+                <li class="lang-en hidden">Ensure "Automation" permissions are granted to the browser, allowing AppleScript control</li>
+            </ol>
+            <p class="lang-zh">在Safari中，请确保已启用开发菜单（Safari偏好设置→高级→显示"开发"菜单）</p>
+            <p class="lang-en hidden">In Safari, ensure the development menu is enabled (Safari Preferences → Advanced → Show "Develop" menu)</p>
+        </div>
+    </div> -->
+
+    <div class="carousel-container">
+        <div class="carousel">
+            <div class="carousel-slide">
+                <div class="image-wrapper">
+                    <img src="test_pic/1a.jpg" alt="Image 1a">
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <div class="image-wrapper">
+                    <img src="test_pic/1c.jpg" alt="Image 1c">
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <div class="image-wrapper">
+                    <img src="test_pic/4.jpg" alt="Image 4">
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <div class="image-wrapper">
+                    <img src="test_pic/5.jpg" alt="Image 5">
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <div class="image-wrapper">
+                    <img src="test_pic/6.jpg" alt="Image 6">
+                </div>
+            </div>
+        </div>
+        
+        <button class="carousel-button carousel-button-prev">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-button carousel-button-next">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <div class="carousel-dots"></div>
+    </div>
+    
+    <div class="upload-section">
+        <h2 class="lang-zh hidden">帮助我们改进</h2>
+        <h2 class="lang-en">Help Us Improve</h2>
+        <p class="lang-zh hidden">上传您在使用过程中需要AI主动服务的场景截图，帮助我们优化智能体模型</p>
+        <p class="lang-en">Upload screenshots of scenarios where you need AI active service to help us optimize our agent model</p>
+        
+        <div class="upload-container">
+            <div class="upload-area" id="drop-area">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p class="lang-zh hidden">拖放文件到此处或点击选择文件</p>
+                <p class="lang-en">Drag and drop files here or click to select</p>
+                <span class="lang-zh hidden">支持 PNG、JPG、JPEG 格式，最大 10MB</span>
+                <span class="lang-en">Supports PNG, JPG, JPEG formats, max 10MB</span>
+                <input type="file" id="fileInput" style="display: none;" accept="image/png, image/jpeg" multiple>
+            </div>
+            
+            <div id="file-list" style="width: 100%; max-width: 600px;"></div>
+            
+            <button class="upload-btn lang-zh hidden" id="upload-button" disabled>上传截图</button>
+            <button class="upload-btn lang-en" id="upload-button-en" disabled>Upload Screenshots</button>
+        </div>
+        
+        <div class="privacy-note">
+            <h3 class="lang-zh hidden">隐私说明</h3>
+            <h3 class="lang-en">Privacy Statement</h3>
+            <p class="lang-zh hidden">我们非常重视您的隐私和数据安全。上传的截图数据将仅用于以下目的：</p>
+            <p class="lang-en">We highly value your privacy and data security. Uploaded screenshots will only be used for the following purposes:</p>
+            <ul>
+                <li class="lang-zh hidden">优化AI主动服务智能体的识别能力</li>
+                <li class="lang-en">Optimizing the recognition capabilities of the AI active service agent</li>
+                <li class="lang-zh hidden">改进用户体验和服务质量</li>
+                <li class="lang-en">Improving user experience and service quality</li>
+                <li class="lang-zh hidden">研究和开发更智能的主动服务场景</li>
+                <li class="lang-en">Researching and developing smarter active service scenarios</li>
+            </ul>
+            <p class="lang-zh hidden">重要提示：</p>
+            <p class="lang-en">Important Notes:</p>
+            <ul>
+                <li class="lang-zh hidden">所有数据均在获得您的明确授权后才会被使用</li>
+                <li class="lang-en">All data will only be used after obtaining your explicit authorization</li>
+                <li class="lang-zh hidden">您可以随时撤回授权并要求删除已上传的数据</li>
+                <li class="lang-en">You can withdraw authorization and request deletion of uploaded data at any time</li>
+                <li class="lang-zh hidden">我们采用严格的加密和安全措施保护您的数据</li>
+                <li class="lang-en">We use strict encryption and security measures to protect your data</li>
+                <li class="lang-zh hidden">我们不会将您的数据用于任何商业目的或与第三方共享</li>
+                <li class="lang-en">We will not use your data for any commercial purposes or share it with third parties</li>
+            </ul>
+            <p class="lang-zh hidden">点击"上传截图"按钮，即表示您同意我们按照上述说明使用您提供的数据。</p>
+            <p class="lang-en">By clicking the "Upload Screenshots" button, you agree to our use of the data you provide according to the above instructions.</p>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-brand">
+            <span class="product-name footer-product-name">FreeYou</span>
+        </div>
+        <p class="lang-zh hidden">© AI 感知万物，智启无限可能</p>
+        <p class="lang-en">© AI for Everything, Unlocking Infinite Possibilities</p>
+    </footer>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // 检查本地存储中的主题偏好
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            htmlElement.className = savedTheme;
+            updateThemeIcon(savedTheme);
+        }
+        
+        // 更新主题图标
+        function updateThemeIcon(theme) {
+            if (theme === 'light-mode') {
+                themeIcon.className = 'fas fa-moon';
+            } else {
+                themeIcon.className = 'fas fa-sun';
+            }
+        }
+        
+        // 切换主题
+        themeToggle.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark-mode')) {
+                htmlElement.classList.remove('dark-mode');
+                htmlElement.classList.add('light-mode');
+                localStorage.setItem('theme', 'light-mode');
+                updateThemeIcon('light-mode');
+            } else {
+                htmlElement.classList.remove('light-mode');
+                htmlElement.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark-mode');
+                updateThemeIcon('dark-mode');
+            }
+        });
+        
+        // 语言切换功能
+        const langToggle = document.getElementById('lang-toggle');
+        
+        // 检查本地存储中的语言偏好
+        const savedLang = localStorage.getItem('language');
+        if (savedLang) {
+            setLanguage(savedLang);
+        } else {
+            // Default to English if no language is saved
+            setLanguage('en');
+        }
+        
+        // 设置语言
+        function setLanguage(lang) {
+            const zhElements = document.querySelectorAll('.lang-zh');
+            const enElements = document.querySelectorAll('.lang-en');
+            if (lang === 'en') {
+                zhElements.forEach(el => el.classList.add('hidden'));
+                enElements.forEach(el => el.classList.remove('hidden'));
+                langToggle.textContent = 'CN';
+                localStorage.setItem('language', 'en');
+            } else {
+                zhElements.forEach(el => el.classList.remove('hidden'));
+                enElements.forEach(el => el.classList.add('hidden'));
+                langToggle.textContent = 'CN';
+                localStorage.setItem('language', 'zh');
+            }
+        }
+        
+        // 切换语言
+        langToggle.addEventListener('click', () => {
+            const currentLang = localStorage.getItem('language') || 'zh';
+            const newLang = currentLang === 'zh' ? 'en' : 'zh';
+            setLanguage(newLang);
+        });
+        
+        // 检测操作系统
+        const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+        const originalTitle = document.title;
+        
+        // 如果是Mac，显示Mac特定指示
+        if (isMac) {
+            document.getElementById('mac-instructions').classList.remove('hidden');
+        }
+        
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        clearInterval(window.autoplayInterval);
+        document.documentElement.requestFullscreen().catch(err => {
+            alert(`无法进入全屏模式: ${err.message}`);
+        });
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
+        
+        // 监听全屏变化事件
+        document.addEventListener('fullscreenchange', function() {
+            const statusIndicator = document.getElementById('fullscreen-status');
+            const currentLang = localStorage.getItem('language') || 'zh';
+            
+            if (document.fullscreenElement) {
+                console.log('进入全屏模式');
+                statusIndicator.className = 'status-indicator status-active';
+                if (currentLang === 'zh') {
+                    statusIndicator.innerHTML = '<span class="lang-zh">当前状态：全屏模式（服务已启动）</span><span class="lang-en hidden">Current Status: Fullscreen Mode (Service Started)</span>';
+                } else {
+                    statusIndicator.innerHTML = '<span class="lang-zh hidden">当前状态：全屏模式（服务已启动）</span><span class="lang-en">Current Status: Fullscreen Mode (Service Started)</span>';
+                }
+                document.body.classList.add('fullscreen-mode'); // 添加全屏模式类
+                
+                // 修改页面标题以添加"open"后缀
+                const originalTitle = document.title;
+                if (!originalTitle.includes("open")) {
+                    document.title = originalTitle + " - open";
+                }
+                
+                // 尝试更新URL哈希，这不会触发页面刷新
+                if (!window.location.hash.includes("open")) {
+                    window.location.hash = "#open";
+                }
+                
+                // 添加全屏信号，帮助macOS检测
+                if (isMac) {
+                    // 创建或更新一个隐藏的meta标签，标记全屏状态
+                    let fullscreenMeta = document.querySelector('meta[name="fullscreen-status"]');
+                    if (!fullscreenMeta) {
+                        fullscreenMeta = document.createElement('meta');
+                        fullscreenMeta.setAttribute('name', 'fullscreen-status');
+                        document.head.appendChild(fullscreenMeta);
+                    }
+                    fullscreenMeta.setAttribute('content', 'active-open');
+                    
+                    // 通过发送消息到控制台帮助调试
+                    console.log('%c FULLSCREEN MODE ACTIVATED - OPEN MODE ', 'background: #34c759; color: white; font-size: 24px;');
+                }
+                
+                // 全屏模式下停止自动播放
+                stopAutoplay();
+            } else {
+                console.log('退出全屏模式');
+                statusIndicator.className = 'status-indicator status-inactive';
+                if (currentLang === 'zh') {
+                    statusIndicator.innerHTML = '<span class="lang-zh">当前状态：非全屏模式（服务暂停）</span><span class="lang-en hidden">Current Status: Not Fullscreen (Service Paused)</span>';
+                } else {
+                    statusIndicator.innerHTML = '<span class="lang-zh hidden">当前状态：非全屏模式（服务暂停）</span><span class="lang-en">Current Status: Not Fullscreen (Service Paused)</span>';
+                }
+                document.body.classList.remove('fullscreen-mode'); // 移除全屏模式类
+                
+                // 恢复原始标题
+                const currentTitle = document.title;
+                if (currentTitle.includes(" - open")) {
+                    document.title = currentTitle.replace(" - open", "");
+                }
+                
+                // 清除URL哈希
+                if (window.location.hash.includes("open")) {
+                    history.replaceState(null, document.title, window.location.pathname + window.location.search);
+                }
+                
+                // 更新全屏信号
+                if (isMac) {
+                    let fullscreenMeta = document.querySelector('meta[name="fullscreen-status"]');
+                    if (fullscreenMeta) {
+                        fullscreenMeta.setAttribute('content', 'inactive');
+                    }
+                    
+                    // 通过发送消息到控制台帮助调试
+                    console.log('%c FULLSCREEN MODE DEACTIVATED ', 'background: #ff453a; color: white; font-size: 24px;');
+                }
+                
+                // 退出全屏模式后恢复自动播放
+                startAutoplay();
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // 轮播图相关代码
+            const carousel = document.querySelector('.carousel');
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dotsContainer = document.querySelector('.carousel-dots');
+            const prevButton = document.querySelector('.carousel-button-prev');
+            const nextButton = document.querySelector('.carousel-button-next');
+            
+            let currentIndex = 0;
+            const totalSlides = slides.length;
+            
+            // Create dots
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('carousel-dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => {
+                    goToSlide(i);
+                });
+                dotsContainer.appendChild(dot);
+            }
+            
+            const dots = document.querySelectorAll('.carousel-dot');
+            
+            // Update carousel display
+            function updateCarousel() {
+                carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+                
+                // Update active dot
+                dots.forEach((dot, index) => {
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Go to specific slide
+            function goToSlide(index) {
+                currentIndex = index;
+                updateCarousel();
+            }
+            
+            // Previous slide
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                updateCarousel();
+            }
+            
+            // Next slide
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateCarousel();
+            }
+            
+            // Event listeners
+            prevButton.addEventListener('click', prevSlide);
+            nextButton.addEventListener('click', nextSlide);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                } else if (e.key === 'ArrowRight') {
+                    nextSlide();
+                }
+            });
+            
+            // Touch events for mobile swipe
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            carousel.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            carousel.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+            
+            function handleSwipe() {
+                const threshold = 50; // Minimum distance for a swipe
+                if (touchEndX < touchStartX - threshold) {
+                    nextSlide(); // Swipe left
+                } else if (touchEndX > touchStartX + threshold) {
+                    prevSlide(); // Swipe right
+                }
+            }
+            
+            // 页面加载时检测全屏状态
+            const statusIndicator = document.getElementById('fullscreen-status');
+            const currentLang = localStorage.getItem('language') || 'zh';
+            
+            if (document.fullscreenElement) {
+                statusIndicator.className = 'status-indicator status-active';
+                if (currentLang === 'zh') {
+                    statusIndicator.innerHTML = '<span class="lang-zh">当前状态：全屏模式（服务已启动）</span><span class="lang-en hidden">Current Status: Fullscreen Mode (Service Started)</span>';
+                } else {
+                    statusIndicator.innerHTML = '<span class="lang-zh hidden">当前状态：全屏模式（服务已启动）</span><span class="lang-en">Current Status: Fullscreen Mode (Service Started)</span>';
+                }
+            } else {
+                statusIndicator.className = 'status-indicator status-inactive';
+                if (currentLang === 'zh') {
+                    statusIndicator.innerHTML = '<span class="lang-zh">当前状态：非全屏模式（服务暂停）</span><span class="lang-en hidden">Current Status: Not Fullscreen (Service Paused)</span>';
+                } else {
+                    statusIndicator.innerHTML = '<span class="lang-zh hidden">当前状态：非全屏模式（服务暂停）</span><span class="lang-en">Current Status: Not Fullscreen (Service Paused)</span>';
+                }
+            }
+            
+            // 添加自动播放功能
+            window.autoplayInterval = null;
+            
+            function startAutoplay() {
+                // 只有在非全屏模式下才启动自动播放
+                if (!document.fullscreenElement) {
+                    window.autoplayInterval = setInterval(nextSlide, 5000);
+                }
+            }
+            
+            function stopAutoplay() {
+                clearInterval(window.autoplayInterval);
+            }
+            
+            // 启动自动播放（非全屏模式下）
+            if (!document.fullscreenElement) {
+                startAutoplay();
+            }
+            
+            // 当用户交互时暂停自动播放
+            carousel.addEventListener('mouseenter', stopAutoplay);
+            carousel.addEventListener('mouseleave', function() {
+                // 只有在非全屏模式下才恢复自动播放
+                if (!document.fullscreenElement) {
+                    startAutoplay();
+                }
+            });
+            
+            // 点击按钮时也暂停自动播放
+            prevButton.addEventListener('click', function() {
+                stopAutoplay();
+                // 只有在非全屏模式下才恢复自动播放
+                if (!document.fullscreenElement) {
+                    setTimeout(startAutoplay, 10000); // 10秒后恢复自动播放
+                }
+            });
+            
+            nextButton.addEventListener('click', function() {
+                stopAutoplay();
+                // 只有在非全屏模式下才恢复自动播放
+                if (!document.fullscreenElement) {
+                    setTimeout(startAutoplay, 10000); // 10秒后恢复自动播放
+                }
+            });
+            
+            // 文件上传相关代码
+            const dropArea = document.getElementById('drop-area');
+            const fileInput = document.getElementById('fileInput');
+            const fileList = document.getElementById('file-list');
+            const uploadButton = document.getElementById('upload-button');
+            const uploadButtonEn = document.getElementById('upload-button-en');
+            
+            let selectedFiles = [];
+            
+            // 点击上传区域触发文件选择
+            dropArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // 处理文件选择
+            fileInput.addEventListener('change', handleFiles);
+            
+            // 拖拽相关事件
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.style.borderColor = '#2997ff';
+                dropArea.style.backgroundColor = 'rgba(41, 151, 255, 0.1)';
+            }
+            
+            function unhighlight() {
+                dropArea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                dropArea.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+            }
+            
+            // 处理拖放的文件
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            }
+            
+            // 处理选择的文件
+            function handleFiles(e) {
+                const files = e.target?.files || e;
+                
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    // 检查文件类型和大小
+                    if (!file.type.match('image/(jpeg|jpg|png)')) {
+                        const currentLang = localStorage.getItem('language') || 'zh';
+                        const errorMsg = currentLang === 'zh' ? 
+                            `文件 ${file.name} 不是支持的图片格式` : 
+                            `File ${file.name} is not a supported image format`;
+                        showError(errorMsg);
+                        continue;
+                    }
+                    
+                    if (file.size > 10 * 1024 * 1024) { // 10MB
+                        const currentLang = localStorage.getItem('language') || 'zh';
+                        const errorMsg = currentLang === 'zh' ? 
+                            `文件 ${file.name} 超过10MB大小限制` : 
+                            `File ${file.name} exceeds the 10MB size limit`;
+                        showError(errorMsg);
+                        continue;
+                    }
+                    
+                    selectedFiles.push(file);
+                    displayFile(file);
+                }
+                
+                // 更新上传按钮状态
+                uploadButton.disabled = selectedFiles.length === 0;
+                uploadButtonEn.disabled = selectedFiles.length === 0;
+            }
+            
+            // 显示错误信息
+            function showError(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.style.color = 'var(--apple-error-color)';
+                errorDiv.style.fontSize = '14px';
+                errorDiv.style.marginTop = '8px';
+                errorDiv.style.textAlign = 'center';
+                errorDiv.textContent = message;
+                
+                fileList.appendChild(errorDiv);
+                
+                // 3秒后移除错误信息
+                setTimeout(() => {
+                    errorDiv.remove();
+                }, 3000);
+            }
+            
+            // 显示选择的文件
+            function displayFile(file) {
+                const fileDiv = document.createElement('div');
+                fileDiv.className = 'file-item';
+                fileDiv.style.display = 'flex';
+                fileDiv.style.alignItems = 'center';
+                fileDiv.style.justifyContent = 'space-between';
+                fileDiv.style.padding = '10px';
+                fileDiv.style.margin = '10px 0';
+                fileDiv.style.backgroundColor = 'var(--apple-input-bg)';
+                fileDiv.style.borderRadius = '8px';
+                
+                // 创建文件预览
+                const preview = document.createElement('div');
+                preview.style.display = 'flex';
+                preview.style.alignItems = 'center';
+                
+                // 创建缩略图
+                const thumbnail = document.createElement('div');
+                thumbnail.style.width = '40px';
+                thumbnail.style.height = '40px';
+                thumbnail.style.marginRight = '10px';
+                thumbnail.style.borderRadius = '4px';
+                thumbnail.style.overflow = 'hidden';
+                thumbnail.style.backgroundColor = 'var(--apple-card-bg)';
+                
+                const img = document.createElement('img');
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                
+                // 读取文件并显示缩略图
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+                
+                thumbnail.appendChild(img);
+                
+                // 文件信息
+                const fileInfo = document.createElement('div');
+                
+                const fileName = document.createElement('div');
+                fileName.textContent = file.name;
+                fileName.style.fontSize = '14px';
+                fileName.style.color = 'var(--apple-text)';
+                
+                const fileSize = document.createElement('div');
+                fileSize.textContent = formatFileSize(file.size);
+                fileSize.style.fontSize = '12px';
+                fileSize.style.color = 'var(--apple-secondary-text)';
+                
+                fileInfo.appendChild(fileName);
+                fileInfo.appendChild(fileSize);
+                
+                preview.appendChild(thumbnail);
+                preview.appendChild(fileInfo);
+                
+                // 删除按钮
+                const removeBtn = document.createElement('button');
+                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                removeBtn.style.background = 'none';
+                removeBtn.style.border = 'none';
+                removeBtn.style.color = 'var(--apple-secondary-text)';
+                removeBtn.style.cursor = 'pointer';
+                removeBtn.style.fontSize = '16px';
+                removeBtn.style.padding = '5px';
+                removeBtn.style.borderRadius = '50%';
+                removeBtn.style.transition = 'all 0.2s ease';
+                
+                removeBtn.addEventListener('mouseover', () => {
+                    removeBtn.style.color = 'var(--apple-error-color)';
+                    removeBtn.style.backgroundColor = 'var(--apple-error-bg)';
+                });
+                
+                removeBtn.addEventListener('mouseout', () => {
+                    removeBtn.style.color = 'var(--apple-secondary-text)';
+                    removeBtn.style.backgroundColor = 'transparent';
+                });
+                
+                removeBtn.addEventListener('click', () => {
+                    // 从选中文件列表中移除
+                    const index = selectedFiles.indexOf(file);
+                    if (index > -1) {
+                        selectedFiles.splice(index, 1);
+                    }
+                    
+                    // 从显示中移除
+                    fileDiv.remove();
+                    
+                    // 更新上传按钮状态
+                    uploadButton.disabled = selectedFiles.length === 0;
+                    uploadButtonEn.disabled = selectedFiles.length === 0;
+                });
+                
+                fileDiv.appendChild(preview);
+                fileDiv.appendChild(removeBtn);
+                
+                fileList.appendChild(fileDiv);
+            }
+            
+            // 格式化文件大小
+            function formatFileSize(bytes) {
+                if (bytes < 1024) {
+                    return bytes + ' B';
+                } else if (bytes < 1024 * 1024) {
+                    return (bytes / 1024).toFixed(2) + ' KB';
+                } else {
+                    return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+                }
+            }
+            
+            // 上传按钮点击事件处理函数
+            function handleUpload() {
+                // 这里模拟上传过程
+                uploadButton.disabled = true;
+                uploadButtonEn.disabled = true;
+                
+                const currentLang = localStorage.getItem('language') || 'zh';
+                if (currentLang === 'zh') {
+                    uploadButton.textContent = '上传中...';
+                } else {
+                    uploadButtonEn.textContent = 'Uploading...';
+                }
+                
+                // 模拟上传延迟
+                setTimeout(() => {
+                    // 上传成功后清空选择的文件
+                    selectedFiles = [];
+                    fileList.innerHTML = '';
+                    
+                    // 显示成功消息
+                    const successDiv = document.createElement('div');
+                    successDiv.style.color = 'var(--apple-success-color)';
+                    successDiv.style.fontSize = '16px';
+                    successDiv.style.marginTop = '20px';
+                    successDiv.style.textAlign = 'center';
+                    successDiv.style.padding = '15px';
+                    successDiv.style.backgroundColor = 'var(--apple-success-bg)';
+                    successDiv.style.borderRadius = '8px';
+                    successDiv.style.border = '1px solid var(--apple-success-border)';
+                    
+                    if (currentLang === 'zh') {
+                        successDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 8px;"></i>截图上传成功，感谢您的贡献！';
+                    } else {
+                        successDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 8px;"></i>Screenshots uploaded successfully. Thank you for your contribution!';
+                    }
+                    
+                    fileList.appendChild(successDiv);
+                    
+                    // 重置按钮
+                    if (currentLang === 'zh') {
+                        uploadButton.textContent = '上传截图';
+                    } else {
+                        uploadButtonEn.textContent = 'Upload Screenshots';
+                    }
+                    uploadButton.disabled = true;
+                    uploadButtonEn.disabled = true;
+                    
+                    // 3秒后移除成功消息
+                    setTimeout(() => {
+                        successDiv.remove();
+                    }, 3000);
+                }, 2000);
+            }
+            
+            // 上传按钮点击事件
+            uploadButton.addEventListener('click', handleUpload);
+            uploadButtonEn.addEventListener('click', handleUpload);
+        });
+    </script>
+</body>
+</html>
