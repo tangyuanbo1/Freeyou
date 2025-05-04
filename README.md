@@ -3,11 +3,13 @@
 # FreeYou - 无感知的AI主动服务智能体
 
 <p align="center">
-  <img src="pic/logo.png" alt="Free Logo" width="200"/>
+  <img src="logo/logo.svg" alt="Free Logo" width="200"/>
 </p>
 
-<p align="center" style="font-family: 'Orbitron', sans-serif; font-weight: 600; font-size: 24px; background: linear-gradient(90deg, #19d4ff, #ff19c3); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 5px #0099ff, 0 0 10px #0099ff;">
-  <strong>FreeYou</strong>
+<p align="center">
+  <span style="color:#19d4ff; font-weight:bold; font-size:28px;">
+    <span style="background:linear-gradient(90deg,#19d4ff,#ff19c3); -webkit-background-clip:text;">FreeYou</span>
+  </span>
 </p>
 
 **打通全流程的AI智能体 | 无感知主动交互 | 全面隐私保护 | 本地云端协同**
@@ -21,16 +23,6 @@
 ## 🌟 项目愿景
 
 想象一下，在日常工作和生活中，你不需要手动唤醒或输入指令，就有一个"幕后助手"静静观察你的需求，在合适的时机主动出现，帮你完成各种琐碎或复杂的任务。这，就是 FreeY ou —— 一个打通全流程的 AI 智能体。
-
-<div align="center">
-
-<p align="center">
-  <img src="pic/image.png" alt="项目封面" width="600"/>
-</p>
-
-*项目演示视频*
-
-</div>
 
 ## 📖 项目简介
 

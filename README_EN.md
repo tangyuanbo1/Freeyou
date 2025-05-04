@@ -3,11 +3,13 @@
 # FreeYou - Proactive AI Agent with Seamless Perception
 
 <p align="center">
-  <img src="/Users/wzt/Downloads/FreeYou/logo/logo.svg" alt="FreeYou Logo" width="200"/>
+  <img src="logo/logo.svg" alt="FreeYou Logo" width="200"/>
 </p>
 
-<p align="center" style="font-family: 'Orbitron', sans-serif; font-weight: 600; font-size: 24px; background: linear-gradient(90deg, #19d4ff, #ff19c3); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 5px #0099ff, 0 0 10px #0099ff;">
-  <strong>FreeYou</strong>
+<p align="center">
+  <span style="color:#19d4ff; font-weight:bold; font-size:28px;">
+    <span style="background:linear-gradient(90deg,#19d4ff,#ff19c3); -webkit-background-clip:text;">FreeYou</span>
+  </span>
 </p>
 
 **End-to-end AI Agent | Seamless Proactive Interaction | Complete Privacy Protection | Local-Cloud Collaboration**
@@ -21,16 +23,6 @@
 ## 🌟 Vision
 
 Imagine having a "behind-the-scenes assistant" that quietly observes your needs in your daily work and life, proactively appearing at the right moment to help you complete various tasks without manual activation or input commands. This is FreeYou — an end-to-end AI agent.
-
-<div align="center">
-
-<p align="center">
-  <img src="pic/image.png" alt="Project Cover" width="600"/>
-</p>
-
-*Project Demo Video*
-
-</div>
 
 ## 📖 Project Introduction
 
