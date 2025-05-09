@@ -1,0 +1,3870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edge-Cloud Collaborative Architecture</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --blue: #2563eb;
+            --purple: #9333ea;
+            --pink: #ec4899;
+            --green: #22c55e;
+            --amber: #f59e0b;
+            --red: #ef4444;
+            --bg-color: #fff;
+            --text-color: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .scene {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .scene.active {
+            opacity: 1;
+        }
+        
+        /* Scene 1 - How did we achieve this? */
+        .scene-1 {
+            flex-direction: column;
+        }
+        
+        .reveal-text {
+            font-size: 4rem;
+            font-weight: 600;
+            text-align: center;
+            background: linear-gradient(90deg, var(--blue), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .reveal-text::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: white;
+            animation: revealText 1.5s forwards;
+        }
+        
+        @keyframes revealText {
+            0% {
+                left: 0;
+                width: 0%;
+            }
+            50% {
+                left: 0;
+                width: 100%;
+            }
+            100% {
+                left: 100%;
+                width: 0%;
+            }
+        }
+        
+        /* Scene 2 - Cloud models challenges */
+        .scene-2 {
+            flex-direction: column;
+            padding: 0 10%;
+        }
+        
+        .heading {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 4rem;
+            text-align: center;
+            background: linear-gradient(90deg, var(--blue), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .heading.active {
+            animation: fadeInUp 1s forwards;
+        }
+        
+        .icons-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 900px;
+        }
+        
+        .icon-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 300px;
+            opacity: 0;
+            transform: translateY(30px);
+            height: 220px; /* 添加固定高度 */
+            justify-content: flex-start; /* 从顶部开始对齐内容 */
+        }
+        
+        .icon-block.active {
+            animation: fadeInUp 1s forwards;
+        }
+        
+        .icon-block:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        
+        .icon {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .server-icon, .privacy-icon {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .server-load {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border: 4px solid var(--blue);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .server-load::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background-color: var(--blue);
+            animation: serverLoad 2s infinite;
+        }
+        
+        .server-load::after {
+            content: "";
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 10%;
+            background-color: rgba(0,0,0,0.2);
+            box-shadow: 0 20px 0 rgba(0,0,0,0.2), 0 40px 0 rgba(0,0,0,0.2);
+        }
+        
+        @keyframes serverLoad {
+            0%, 100% { height: 30%; background-color: var(--blue); }
+            50% { height: 90%; background-color: var(--pink); }
+        }
+        
+        .privacy-icon {
+            position: relative;
+        }
+        
+        .lock {
+            width: 60px;
+            height: 40px;
+            border: 4px solid var(--purple);
+            border-radius: 8px;
+            position: relative;
+            overflow: visible;
+        }
+        
+        .lock::before {
+            content: "";
+            position: absolute;
+            top: -35px; /* 将锁环提高位置，从-25px改为-35px */
+            left: 50%;
+            transform: translateX(-50%) rotate(30deg);
+            transform-origin: bottom center;
+            width: 30px;
+            height: 25px;
+            border: 4px solid var(--purple);
+            border-bottom: none;
+            border-radius: 20px 20px 0 0;
+            animation: wiggleLock 3s infinite ease-in-out;
+        }
+        
+        @keyframes wiggleLock {
+            0%, 100% {
+                transform: translateX(-50%) rotate(30deg);
+            }
+            50% {
+                transform: translateX(-50%) rotate(40deg);
+            }
+        }
+        
+        .data-leak {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .data-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--pink);
+            border-radius: 50%;
+            opacity: 0;
+            top: 20px; /* 将粒子起始位置设为锁内部 */
+            left: 30px; /* 锁的中心位置 */
+        }
+        
+        .data-particle:nth-child(1) { animation: leakData 3s infinite 0s; }
+        .data-particle:nth-child(2) { animation: leakData 3s infinite 0.5s; }
+        .data-particle:nth-child(3) { animation: leakData 3s infinite 1s; }
+        .data-particle:nth-child(4) { animation: leakData 3s infinite 1.5s; }
+        
+        @keyframes leakData {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(40px, 90px); /* 将Y轴位移从60px增加到90px，让粒子往下穿得更远 */
+                opacity: 0;
+            }
+        }
+        
+        .icon-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            height: 40px; /* 为标题添加固定高度 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon-description {
+            font-size: 1rem;
+            opacity: 0.8;
+            line-height: 1.5;
+            height: 80px; /* 为描述文本添加固定高度 */
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Scene 3 - Edge-Cloud Architecture */
+        .scene-3 {
+            flex-direction: column;
+            padding: 0 10%;
+        }
+        
+        .architecture-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(90deg, var(--blue), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .architecture-title.active {
+            animation: fadeInUp 1s forwards;
+        }
+        
+        .architecture-diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .architecture-diagram.active {
+            animation: fadeInUp 1s forwards 0.6s;
+        }
+        
+        /* Enhanced Edge Device Icon */
+        .edge-device-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+        }
+        
+        .edge-device-icon {
+            width: 180px;
+            height: 180px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .device-body {
+            position: absolute;
+            width: 140px;
+            height: 90px;
+            background: linear-gradient(145deg, #3b82f6, #2563eb);
+            border-radius: 10px;
+            bottom: 20px;
+            left: 20px;
+            box-shadow: 0 10px 15px rgba(37, 99, 235, 0.2);
+        }
+        
+        .device-screen {
+            position: absolute;
+            width: 120px;
+            height: 70px;
+            background: #e0e7ff;
+            border-radius: 5px;
+            bottom: 30px;
+            left: 30px;
+            overflow: hidden;
+        }
+        
+        .device-screen::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, transparent 20%, 
+                rgba(59, 130, 246, 0.1) 20%, rgba(59, 130, 246, 0.1) 21%, 
+                transparent 21%, transparent 40%,
+                rgba(59, 130, 246, 0.1) 40%, rgba(59, 130, 246, 0.1) 41%,
+                transparent 41%, transparent 60%,
+                rgba(59, 130, 246, 0.1) 60%, rgba(59, 130, 246, 0.1) 61%,
+                transparent 61%, transparent 80%,
+                rgba(59, 130, 246, 0.1) 80%, rgba(59, 130, 246, 0.1) 81%,
+                transparent 81%, transparent 100%);
+            animation: scanData 2s infinite linear;
+        }
+        
+        @keyframes scanData {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        .device-keyboard {
+            position: absolute;
+            width: 140px;
+            height: 20px;
+            background: #1e40af;
+            border-radius: 0 0 10px 10px;
+            bottom: 20px;
+            left: 20px;
+        }
+        
+        .device-keyboard::before {
+            content: "";
+            position: absolute;
+            width: 40px;
+            height: 5px;
+            background: #bfdbfe;
+            border-radius: 3px;
+            bottom: 7px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .device-indicator {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            top: 5px;
+            right: 5px;
+            animation: blink 2s infinite;
+            z-index: 2; /* 确保在顶层 */
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* Enhanced Cloud Server Icon */
+        .cloud-server-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+        }
+        
+        .cloud-server-icon {
+            width: 180px;
+            height: 180px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .server-rack {
+            position: absolute;
+            width: 140px;
+            height: 160px;
+            background: linear-gradient(145deg, #6d28d9, #7c3aed);
+            border-radius: 10px;
+            bottom: 0;
+            left: 20px;
+            box-shadow: 0 10px 15px rgba(109, 40, 217, 0.2);
+            overflow: hidden;
+        }
+        
+        .server-unit {
+            position: absolute;
+            width: 130px;
+            height: 25px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            left: 5px;
+        }
+        
+        .server-unit:nth-child(1) { top: 10px; }
+        .server-unit:nth-child(2) { top: 45px; }
+        .server-unit:nth-child(3) { top: 80px; }
+        .server-unit:nth-child(4) { top: 115px; }
+        
+        .server-light {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .server-light.green {
+            background: #22c55e;
+            box-shadow: 0 0 5px #22c55e;
+            animation: blink 1.5s infinite;
+        }
+        
+        .server-light.blue {
+            background: #3b82f6;
+            box-shadow: 0 0 5px #3b82f6;
+            animation: blink 2s infinite 0.5s;
+        }
+        
+        .server-light.red {
+            background: #ef4444;
+            box-shadow: 0 0 5px #ef4444;
+            animation: blink 2.5s infinite 1s;
+        }
+        
+        .server-slots {
+            position: absolute;
+            width: 80px;
+            height: 15px;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .server-slot {
+            width: 8px;
+            height: 100%;
+            background: #d4d4d8;
+            border-radius: 2px;
+        }
+        
+        /* Connection Animation */
+        .connection-container {
+            position: relative;
+            width: 20%;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .connection-line {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--blue), var(--purple));
+            position: relative;
+        }
+        
+        .data-packet {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .data-packet-left {
+            background: var(--blue);
+            left: 0;
+            animation: moveRight 3s infinite;
+        }
+        
+        .data-packet-right {
+            background: var(--purple);
+            right: 0;
+            animation: moveLeft 3s infinite 1.5s;
+        }
+        
+        @keyframes moveRight {
+            0% {
+                left: 0;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.3);
+            }
+            100% {
+                left: 100%;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        @keyframes moveLeft {
+            0% {
+                left: 100%;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.3);
+            }
+            100% {
+                left: 0;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        /* Text descriptions */
+        .description-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .description-container.active {
+            animation: fadeInUp 1s forwards 0.9s;
+        }
+        
+        .description-box {
+            width: 40%;
+            padding: 20px;
+            background: rgba(243, 244, 246, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .description-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--blue);
+        }
+        
+        .cloud-description-title {
+            color: var(--purple);
+        }
+        
+        .description-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* Scene 4 - Privacy Protection Mechanism */
+        .scene-4 {
+            flex-direction: column;
+            padding: 0 10%;
+        }
+        
+        /* 为分镜四、五、六的标题添加共享样式 */
+        .privacy-title, .workflow-title, .layered-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+            background: linear-gradient(90deg, var(--blue), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+            letter-spacing: -0.5px;
+        }
+        
+        .privacy-title.active, .workflow-title.active, .layered-title.active {
+            animation: fadeInUp 1s forwards;
+        }
+        
+        /* 为分镜四、五、六的副标题添加共享样式 */
+        .privacy-subtitle, .workflow-subtitle, .layered-subtitle {
+            font-size: 1.1rem;
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+            color: #666; /* 灰色文本 */
+            font-weight: 400;
+            line-height: 1.6;
+        }
+        
+        .privacy-subtitle.active, .workflow-subtitle.active, .layered-subtitle.active {
+            animation: fadeInUp 1s forwards 0.3s;
+        }
+        
+        /* 修复分镜四组件的对齐问题 */
+        .privacy-mechanism {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* 确保所有子元素垂直居中对齐 */
+            width: 100%;
+            max-width: 1000px;
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative; /* Ensure it can be a positioning context */
+        }
+        
+        .privacy-mechanism.active {
+            animation: fadeInUp 1s forwards;
+        }
+        
+        .privacy-mechanism.fade-in {
+            animation: transitionFadeIn 1.5s forwards;
+        }
+        
+        .component-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 25%;
+            height: 220px; /* 固定高度确保三个组件一致 */
+            position: relative;
+        }
+        
+        /* Privacy Filter Icon */
+        .privacy-filter-container {
+            width: 25%;
+        }
+        
+        /* 确保组件内部垂直居中 */
+        .edge-device-icon, 
+        .privacy-filter-icon, 
+        .cloud-server-icon {
+            width: 160px;
+            height: 160px;
+            position: relative;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .filter-body {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(145deg, #ec4899, #db2777);
+            border-radius: 15px;
+            top: 20px;
+            left: 20px;
+            box-shadow: 0 10px 15px rgba(219, 39, 119, 0.2);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .filter-grid {
+            width: 80%;
+            height: 80%;
+            background: 
+                linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px),
+                linear-gradient(0deg, rgba(255,255,255,0.2) 1px, transparent 1px);
+            background-size: 10px 10px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .filter-scan {
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            background: rgba(255,255,255,0.7);
+            top: 0;
+            left: 0;
+            box-shadow: 0 0 10px 5px rgba(255,255,255,0.5);
+            animation: filterScan 2s infinite;
+        }
+        
+        @keyframes filterScan {
+            0%, 100% { top: 0; }
+            50% { top: calc(100% - 5px); }
+        }
+        
+        .filter-badge {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #fcfcfc, #f0f0f0);
+            border-radius: 50%;
+            top: -10px;
+            right: -10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        
+        /* 移除旧的样式 */
+        .filter-badge::before, .filter-badge::after {
+            content: "";
+            position: absolute;
+        }
+        
+        /* 创建优雅简洁的盾牌轮廓 */
+        .filter-badge::before {
+            width: 16px;
+            height: 18px;
+            background: linear-gradient(135deg, var(--pink), #d92a7f);
+            clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+            top: 6px;
+            left: 7px;
+            box-shadow: inset 0 1px 3px rgba(255,255,255,0.5), inset 0 -2px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* 创建盾牌内部的勾选标记 */
+        .filter-badge::after {
+            width: 8px;
+            height: 5px;
+            border: 2px solid white;
+            border-top: none;
+            border-right: none;
+            background: transparent;
+            transform: rotate(-45deg);
+            top: 12px;
+            left: 10px;
+        }
+        
+        /* 调整文字对齐方式 */
+        .icon-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0;
+            margin-top: auto;
+            text-align: center;
+            width: 100%;
+        }
+        
+        /* 确保连接线垂直居中 */
+        .privacy-connection {
+            position: relative;
+            width: 12.5%;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 调整组件中的图标垂直居中 */
+        .component-container .edge-device-icon,
+        .component-container .cloud-server-icon {
+            margin-top: 10px;
+            }
+        
+        /* 确保所有图标在页面上保持相同高度 */
+        .scene-4 .component-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        
+        /* Scene 5 - Intelligent Service Workflow */
+        .scene-5 {
+            flex-direction: column;
+            padding: 0 10%;
+        }
+        
+        /* 为分镜四、五、六的标题添加共享样式 */
+        .privacy-title, .workflow-title, .layered-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+            background: linear-gradient(90deg, var(--blue), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+            letter-spacing: -0.5px;
+        }
+        
+        .privacy-title.active, .workflow-title.active, .layered-title.active {
+            animation: fadeInUp 1s forwards;
+        }
+        
+        /* 为分镜四、五、六的副标题添加共享样式 */
+        .privacy-subtitle, .workflow-subtitle, .layered-subtitle {
+            font-size: 1.1rem;
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+            color: #666; /* 灰色文本 */
+            font-weight: 400;
+            line-height: 1.6;
+        }
+        
+        .privacy-subtitle.active, .workflow-subtitle.active, .layered-subtitle.active {
+            animation: fadeInUp 1s forwards 0.3s;
+        }
+        
+        .workflow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .workflow-container.active {
+            animation: fadeInUp 1s forwards 0.6s;
+        }
+        
+        /* Planetary Ring System */
+        .planetary-system {
+            width: 60%;
+            height: 500px;
+            position: relative;
+        }
+        
+        .orbit {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px dashed rgba(0, 0, 0, 0.1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .orbit-1 {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .orbit-2 {
+            width: 280px;
+            height: 280px;
+        }
+        
+        .orbit-3 {
+            width: 450px;
+            height: 450px;
+        }
+        
+        /* REDESIGNED User Center and Icon with Gold Gradient */
+        .user-center {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #5ac8fa, #007aff, #34aadc); /* 苹果风格蓝色渐变 */
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px rgba(53, 170, 220, 0.2); /* 调整阴影颜色 */
+            z-index: 10;
+            transition: all 0.5s ease;
+        }
+        
+        .user-center.active {
+            transform: translate(-50%, -50%) scale(1.15);
+            box-shadow: 0 0 25px rgba(53, 170, 220, 0.4); /* 调整阴影颜色 */
+        }
+        
+        /* 为用户中心图标添加点亮动效 */
+        .user-center.floating {
+            animation: userGlow 2s ease-in-out infinite;
+            box-shadow: 0 0 35px rgba(53, 170, 220, 0.7); /* 更明显的蓝色光晕 */
+            transform: translate(-50%, -50%);
+        }
+        
+        @keyframes userGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 122, 255, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 45px rgba(0, 122, 255, 0.8);
+            }
+        }
+        
+        /* REDESIGNED User Icon */
+        .user-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #ffffff, #fffbeb);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-center.floating .user-icon {
+            transform: scale(1); /* 移除缩放效果 */
+        }
+        
+        /* New SVG-based user icon with gold gradient */
+        .user-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: url(#goldGradient);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0.8;
+            transition: opacity 0.5s ease, stroke-width 0.5s ease, filter 0.5s ease;
+        }
+        
+        .user-center.active .user-icon svg,
+        .user-center.floating .user-icon svg {
+            opacity: 1;
+            stroke-width: 2.5;
+            filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.5));
+        }
+        
+        /* Middle orbit elements - Enhanced with rotation */
+        .middle-orbit-container {
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: middleOrbitRotation 40s linear infinite;
+        }
+        
+        @keyframes middleOrbitRotation {
+            0% {
+                transform: translate(-50%, -50%) rotate(var(--middle-rotation, 0deg));
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(calc(var(--middle-rotation, 0deg) - 360deg));
+            }
+        }
+        
+        .orbit-element {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 5;
+        }
+        
+        /* 优化图标点亮效果 */
+        .orbit-element.active {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transform: scale(1); /* 移除缩放效果 */
+        }
+        
+        .orbit-element-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 图标丝滑点亮效果 */
+        .orbit-element svg {
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0.7;
+            transform-origin: center;
+        }
+        
+        .orbit-element.floating svg {
+            opacity: 1;
+            transform: scale(1); /* 移除缩放效果 */
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7)); /* 更明显的光晕效果 */
+        }
+        
+        /* 增强中轨元素点亮时的整体效果 */
+        .orbit-element.floating {
+            z-index: 6; 
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4); /* 更明显的光晕 */
+        }
+        
+        /* REDESIGNED Perception element */
+        .perception {
+            top: 50%;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(210, 180, 140, 0.3);
+            background: linear-gradient(135deg, #f8f4e6, #ffffff);
+            overflow: hidden;
+        }
+        
+        /* 感知器图标点亮效果 */
+        .perception.floating {
+            box-shadow: 0 0 20px rgba(210, 180, 140, 0.5);
+            animation: perceptionPulse 2s infinite;
+        }
+        
+        @keyframes perceptionPulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(210, 180, 140, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 35px rgba(210, 180, 140, 0.6);
+            }
+        }
+        
+        /* 感知器SVG图标颜色 - 更加明亮优雅的金色 */
+        .perception-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: #e9be6c; /* 更明亮优雅的金色 */
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: all 0.5s ease;
+        }
+        
+        /* 感知器图标点亮效果 - 更明亮的金色系 */
+        .perception.floating {
+            box-shadow: 0 0 20px rgba(233, 190, 108, 0.5);
+            animation: perceptionPulse 2s infinite;
+        }
+        
+        @keyframes perceptionPulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(233, 190, 108, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 35px rgba(233, 190, 108, 0.7);
+            }
+        }
+        
+        .perception.floating .perception-icon svg {
+            stroke-width: 2.5;
+            stroke: #f0cd7d; /* 点亮时更加明亮的金色 */
+            filter: drop-shadow(0 0 8px rgba(233, 190, 108, 0.7));
+            animation: eyePulse 2s infinite;
+        }
+        
+        /* REDESIGNED Discriminator element */
+        .discriminator {
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(236, 72, 153, 0.3);
+            background: linear-gradient(135deg, #fdf2f8, #ffffff);
+            overflow: hidden;
+        }
+        
+        /* 判别器图标点亮效果 */
+        .discriminator.floating {
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.55);
+            animation: discriminatorGlow 2s infinite;
+        }
+        
+        @keyframes discriminatorGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(236, 72, 153, 0.45);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(236, 72, 153, 0.7);
+            }
+        }
+        
+        .discriminator.floating .discriminator-icon svg {
+            stroke-width: 2.5;
+            filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.7));
+            animation: discriminatorIconPulse 2s infinite;
+        }
+        
+        /* New SVG-based discriminator icon */
+        .discriminator-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: #ec4899;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: all 0.5s ease;
+        }
+        
+        @keyframes discriminatorIconPulse {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(5deg);
+            }
+            75% {
+                transform: rotate(-5deg);
+            }
+        }
+        
+        /* REDESIGNED Planner element */
+        .planner {
+            top: 50%;
+            left: 100%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(147, 51, 234, 0.3);
+            background: linear-gradient(135deg, #f5f3ff, #ffffff);
+            overflow: hidden;
+        }
+        
+        /* 规划器图标点亮效果 */
+        .planner.floating {
+            box-shadow: 0 0 25px rgba(147, 51, 234, 0.55);
+            animation: plannerGlow 2s infinite;
+        }
+        
+        @keyframes plannerGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(147, 51, 234, 0.45);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(147, 51, 234, 0.7);
+            }
+        }
+        
+        .planner.floating .planner-icon svg {
+            stroke-width: 2.5;
+            filter: drop-shadow(0 0 8px rgba(147, 51, 234, 0.7));
+            animation: plannerIconPulse 2s infinite;
+        }
+        
+        /* New SVG-based planner icon */
+        .planner-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: #9333ea;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: all 0.5s ease;
+        }
+        
+        @keyframes plannerIconPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1) translateY(-2px);
+            }
+        }
+        
+        /* REDESIGNED Executor element */
+        .executor {
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            background: linear-gradient(135deg, #f0fdf4, #ffffff);
+            overflow: hidden;
+        }
+        
+        /* 执行器图标点亮效果 */
+        .executor.floating {
+            box-shadow: 0 0 25px rgba(34, 197, 94, 0.55);
+            animation: executorGlow 2s infinite;
+        }
+        
+        @keyframes executorGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(34, 197, 94, 0.45);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(34, 197, 94, 0.7);
+            }
+        }
+        
+        .executor.floating .executor-icon svg {
+            stroke-width: 2.5;
+            filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.7));
+            animation: executorIconPulse 2s infinite;
+        }
+        
+        /* New SVG-based executor icon */
+        .executor-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: #22c55e;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: all 0.5s ease;
+        }
+        
+        @keyframes executorIconPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1) rotate(10deg);
+            }
+        }
+        
+        /* Outer orbit elements - User scenarios */
+        .orbit-rotation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            animation: orbitRotation 60s linear infinite;
+        }
+        
+        @keyframes orbitRotation {
+            0% {
+                transform: rotate(var(--outer-rotation, 0deg));
+            }
+            100% {
+                transform: rotate(calc(var(--outer-rotation, 0deg) + 360deg));
+            }
+        }
+        
+        .scenario {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 5;
+        }
+        
+        /* 添加圆角矩形样式给偶数编号的场景 */
+        .scenario:nth-child(even) {
+            border-radius: 12px;
+        }
+        
+        .scenario-icon {
+            width: 30px;
+            height: 30px;
+            position: relative;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Position scenarios around the orbit */
+        .scenario-1 {
+            top: 50%;
+            left: calc(50% - 225px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-2 {
+            top: calc(50% - 80px);
+            left: calc(50% - 210px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-3 {
+            top: calc(50% - 160px);
+            left: calc(50% - 160px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-4 {
+            top: calc(50% - 210px);
+            left: calc(50% - 80px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-5 {
+            top: calc(50% - 225px);
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-6 {
+            top: calc(50% - 210px);
+            left: calc(50% + 80px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-7 {
+            top: calc(50% - 160px);
+            left: calc(50% + 160px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-8 {
+            top: calc(50% - 80px);
+            left: calc(50% + 210px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-9 {
+            top: 50%;
+            left: calc(50% + 225px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-10 {
+            top: calc(50% + 80px);
+            left: calc(50% + 210px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-11 {
+            top: calc(50% + 160px);
+            left: calc(50% + 160px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-12 {
+            top: calc(50% + 210px);
+            left: calc(50% + 80px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-13 {
+            top: calc(50% + 225px);
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-14 {
+            top: calc(50% + 210px);
+            left: calc(50% - 80px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-15 {
+            top: calc(50% + 160px);
+            left: calc(50% - 160px);
+            transform: translate(-50%, -50%);
+        }
+        
+        .scenario-16 {
+            top: calc(50% + 80px);
+            left: calc(50% - 210px);
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Workflow description - Enhanced styling */
+        .workflow-description {
+            width: 35%;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .workflow-step {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            margin-bottom: 30px;
+            display: none;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid transparent;
+            background: rgba(245, 158, 11, 0.05);
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        
+        .workflow-step.active {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+            animation: fadeInDescription 0.8s forwards;
+        }
+        
+        @keyframes fadeInDescription {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .workflow-step.perception-step {
+            border-left-color: #d4b36a;
+            background: rgba(210, 180, 140, 0.05);
+        }
+        
+        .workflow-step.discriminator-step {
+            border-left-color: #ec4899;
+            background: rgba(236, 72, 153, 0.05);
+        }
+        
+        .workflow-step.planner-step {
+            border-left-color: #9333ea;
+            background: rgba(147, 51, 234, 0.05);
+        }
+        
+        .workflow-step.executor-step {
+            border-left-color: #22c55e;
+            background: rgba(34, 197, 94, 0.05);
+        }
+        
+        .workflow-step.confirmation-step {
+            border-left-color: #007aff;
+            background: rgba(0, 122, 255, 0.05);
+        }
+        
+        /* Workflow step title formatting consistent for all steps */
+        .workflow-step-title,
+        .workflow-step-title.perception,
+        .workflow-step-title.discriminator,
+        .workflow-step-title.planner,
+        .workflow-step-title.executor,
+        .workflow-step-title.confirmation {
+            font-size: 1.8rem !important;
+            font-weight: 600 !important;
+            margin-bottom: 15px !important;
+            letter-spacing: 0.5px !important;
+            background: linear-gradient(90deg, currentColor, currentColor 70%, rgba(currentColor, 0.7)) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            color: transparent !important;
+            display: block !important;
+            position: relative !important;
+            border: none !important;
+            box-shadow: none !important;
+            text-align: left !important;
+            width: auto !important;
+            height: auto !important;
+            padding: 0 !important;
+            margin-left: 0 !important;
+            margin-top: 0 !important;
+            margin-right: 0 !important;
+            box-sizing: border-box !important;
+            overflow: visible !important;
+            transform: none !important;
+            left: auto !important;
+            top: auto !important;
+            right: auto !important;
+            bottom: auto !important;
+            outline: none !important;
+            background-color: transparent !important;
+            z-index: 1 !important;
+        }
+        
+        .workflow-step-title::before,
+        .workflow-step-title::after,
+        .workflow-step-title.perception::before,
+        .workflow-step-title.perception::after,
+        .workflow-step-title.discriminator::before,
+        .workflow-step-title.discriminator::after,
+        .workflow-step-title.planner::before,
+        .workflow-step-title.planner::after,
+        .workflow-step-title.executor::before,
+        .workflow-step-title.executor::after,
+        .workflow-step-title.confirmation::before,
+        .workflow-step-title.confirmation::after {
+            display: none !important;
+            content: none !important;
+            border: none !important;
+            background: none !important;
+            box-shadow: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        
+        .workflow-step-title.perception {
+            color: #d4b36a !important;
+        }
+        
+        .workflow-step-title.discriminator {
+            color: #ec4899 !important;
+        }
+        
+        .workflow-step-title.planner {
+            color: #9333ea !important;
+        }
+        
+        .workflow-step-title.executor {
+            color: #22c55e !important;
+        }
+        
+        .workflow-step-title.confirmation {
+            color: #007aff !important; /* 使用苹果经典蓝色 */
+        }
+        
+        .workflow-step-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #4b5563;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .workflow-step-text::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: currentColor;
+            opacity: 0.7;
+            font-size: 1.2rem;
+        }
+        
+        /* Controls */
+        .controls {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .nav-dot.active {
+            background-color: var(--purple);
+            transform: scale(1.3);
+        }
+        
+        .nav-dot:hover {
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        /* 特别针对Discrimination标题的样式覆盖 */
+        .workflow-step.discriminator-step .workflow-step-title.discriminator {
+            position: static !important;
+            color: #ec4899 !important;
+            border: none !important;
+            box-shadow: none !important;
+            margin: 0 0 15px 0 !important;
+            padding: 0 !important;
+            width: auto !important;
+            height: auto !important;
+            display: block !important;
+            background-color: transparent !important;
+            font-size: 1.8rem !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.5px !important;
+            background: linear-gradient(90deg, #ec4899, #ec4899 70%, rgba(236, 72, 153, 0.7)) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            color: transparent !important;
+            text-align: left !important;
+            transform: none !important;
+            left: auto !important;
+            top: auto !important;
+            right: auto !important;
+            bottom: auto !important;
+            z-index: 1 !important;
+        }
+        
+        /* 确保所有步骤内容都被正确包含 */
+        .workflow-step > * {
+            position: relative !important;
+            z-index: 1 !important;
+        }
+        
+        /* Scene 6 - Layered Information Display */
+        .scene-6 {
+            flex-direction: column;
+            padding: 0 10%;
+        }
+        
+        .layered-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+            background: linear-gradient(90deg, var(--blue), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .layered-title.active {
+            animation: fadeInUp 1s forwards;
+        }
+        
+        .layered-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .layered-subtitle.active {
+            animation: fadeInUp 1s forwards 0.3s;
+        }
+        
+        .layered-display-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .layered-display-container.active {
+            animation: fadeInUp 1s forwards 0.6s;
+        }
+        
+        /* Three-state UI on the left */
+        .three-state-ui {
+            width: 45%;
+            position: relative;
+            height: 600px; /* Increased height */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding-top: 20px; /* Reduced top padding */
+        }
+        
+        /* Floating window - First state */
+        .floating-window {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(145deg, #3b82f6, #2563eb);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 10;
+            opacity: 0;
+            transform: scale(0.8) translateY(30px);
+            overflow: hidden;
+            left: 0;
+            top: 40px;
+        }
+        
+        .floating-window.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+        
+        .floating-window-icon {
+            width: 30px;
+            height: 30px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        /* Popup - Second state */
+        .popup-window {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 9;
+            opacity: 0;
+            overflow: hidden;
+            left: 0;
+            top: 120px; /* 减小与第一态的间距，从170px改为120px */
+        }
+        
+        .popup-window.active {
+            width: 280px;
+            height: 180px;
+            opacity: 1;
+        }
+        
+        .popup-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .popup-icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(145deg, #3b82f6, #2563eb);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .popup-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.6s ease 0.3s;
+        }
+        
+        .popup-window.active .popup-title {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .popup-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease 0.5s;
+        }
+        
+        .popup-window.active .popup-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .popup-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .popup-item:last-child {
+            border-bottom: none;
+        }
+        
+        .popup-item-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--purple);
+            margin-right: 10px;
+        }
+        
+        .popup-item-text {
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
+        
+        /* Detail panel - Third state */
+        .detail-panel {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.3);
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 8;
+            opacity: 0;
+            overflow: hidden;
+            left: 0;
+            top: 340px; /* 调整为与第二态间距相似，从380px改为340px */
+        }
+        
+        .detail-panel.active {
+            width: 360px;
+            height: 320px;
+            opacity: 1;
+        }
+        
+        .detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .detail-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(145deg, #3b82f6, #2563eb);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            color: white;
+            font-size: 22px;
+        }
+        
+        .detail-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.6s ease 0.3s;
+        }
+        
+        .detail-panel.active .detail-title {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .detail-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease 0.6s;
+        }
+        
+        .detail-panel.active .detail-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .detail-section {
+            margin-bottom: 20px;
+        }
+        
+        .detail-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--purple);
+            margin-bottom: 12px;
+        }
+        
+        .detail-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #4b5563;
+            margin-bottom: 15px;
+        }
+        
+        .detail-action {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: auto;
+        }
+        
+        .detail-button {
+            padding: 8px 15px;
+            background: linear-gradient(145deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+        
+        .detail-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(37, 99, 235, 0.25);
+        }
+        
+        /* Animation for transitioning the planetary system */
+        .planetary-system-transition {
+            position: relative;
+            width: 50%;
+            height: 500px;
+            transition: all 0.8s ease;
+            transform: translateX(0);
+        }
+        
+        .planetary-system-transition.shifted {
+            transform: translateX(100px);
+        }
+        
+        /* 添加分镜三到分镜四的过渡动画样式 */
+        .architecture-diagram.transitioning {
+            transition: all 1.2s ease-in-out;
+        }
+        
+        .edge-device-container.transitioning {
+            transition: all 1.2s ease-in-out;
+        }
+        
+        .cloud-server-container.transitioning {
+            transition: all 1.2s ease-in-out;
+        }
+        
+        .connection-container.transitioning {
+            transition: all 1.2s ease-in-out;
+            opacity: 0;
+        }
+        
+        .description-container.fade-out {
+            animation: fadeOut 0.8s forwards;
+        }
+        
+        .privacy-mechanism.fade-in {
+            animation: transitionFadeIn 1.5s forwards;
+        }
+        
+        @keyframes transitionFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+        
+        /* 隐私过滤器单独的淡入效果 */
+        .privacy-filter-container.fade-in {
+            animation: privacyFilterFadeIn 1.2s forwards;
+            opacity: 0;
+        }
+        
+        @keyframes privacyFilterFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* 为了过渡动画的对齐，添加一些辅助类 */
+        .scene-3-clone, .scene-4-clone {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 999; /* 更高的z-index确保在最上层 */
+        }
+        
+        .persistent-edge-device, .persistent-cloud-server {
+            position: fixed; /* 使用fixed定位避免滚动影响 */
+            transition: all 1.2s ease-in-out;
+            z-index: 1000; /* 确保在其他元素之上 */
+            will-change: transform; /* 优化性能 */
+        }
+        
+        /* 恢复隐私过滤器相关动画样式 */
+        .privacy-line {
+            width: 100%;
+            height: 4px;
+            position: relative;
+        }
+        
+        .privacy-line-left {
+            background: linear-gradient(90deg, var(--blue), var(--pink));
+        }
+        
+        .privacy-line-right {
+            background: linear-gradient(90deg, var(--pink), var(--green));
+        }
+        
+        .privacy-packet {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Data packets before filtering */
+        .privacy-packet-raw {
+            background: var(--blue);
+            left: 0;
+            animation: moveToFilter 3s infinite;
+        }
+        
+        .privacy-packet-raw-2 {
+            background: var(--blue);
+            left: 0;
+            animation: moveToFilter 3s infinite 1.5s;
+        }
+        
+        /* Data packets after filtering */
+        .privacy-packet-filtered {
+            background: var(--green);
+            left: 0;
+            animation: moveFromFilter 3s infinite 0.5s;
+        }
+        
+        .privacy-packet-filtered-2 {
+            background: var(--green);
+            left: 0;
+            animation: moveFromFilter 3s infinite 2s;
+        }
+        
+        @keyframes moveToFilter {
+            0% {
+                left: 0;
+                transform: translate(-50%, -50%) scale(1);
+                background: var(--blue);
+            }
+            40% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            49% {
+                background: var(--blue);
+            }
+            50% {
+                left: 100%;
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            51% {
+                opacity: 0;
+            }
+            100% {
+                left: 100%;
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes moveFromFilter {
+            0% {
+                left: 0;
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+            1% {
+                opacity: 1;
+                background: var(--green);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                left: 100%;
+                transform: translate(-50%, -50%) scale(1);
+                background: var(--green);
+            }
+        }
+        
+        /* Filter Animation */
+        .filter-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+        
+        .filter-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--red);
+            border-radius: 50%;
+            opacity: 0;
+        }
+        
+        .filter-particle:nth-child(1) { animation: filterOut 3s infinite 0.2s; }
+        .filter-particle:nth-child(2) { animation: filterOut 3s infinite 1.7s; }
+        .filter-particle:nth-child(3) { animation: filterOut 3s infinite 3.2s; }
+        
+        @keyframes filterOut {
+            0% {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                top: 120%;
+                left: 50%;
+                transform: translate(-50%, 0) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        /* 确保眼睛脉冲动画仍然存在 */
+        @keyframes eyePulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        /* 添加场景5到场景6的平滑过渡 */
+        .workflow-description.fade-out {
+            animation: fadeOut 0.8s forwards;
+        }
+        
+        .scene-5-clone, .scene-6-clone {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 999;
+            backface-visibility: hidden; /* 防止闪烁 */
+            will-change: transform, opacity; /* 提示浏览器优化 */
+        }
+        
+        .persistent-planetary-system {
+            position: fixed;
+            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1); /* 使用更平滑的缓动函数 */
+            z-index: 1000;
+            will-change: transform;
+            backface-visibility: hidden; /* 防止闪烁 */
+            transform-style: preserve-3d; /* 提高3D性能 */
+            -webkit-font-smoothing: antialiased; /* 改善文本渲染 */
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* 只防止用户图标点亮，允许其他动画 */
+        .persistent-planetary-system .user-center {
+            transition: none !important; /* 禁用所有过渡 */
+        }
+        
+        .persistent-planetary-system .user-center.active,
+        .persistent-planetary-system .user-center.floating {
+            animation: none !important; 
+            transition: none !important;
+            box-shadow: none !important; /* 禁用发光效果 */
+            filter: none !important; /* 禁用滤镜效果 */
+        }
+        
+        /* 允许轨道旋转动画继续 */
+        .persistent-planetary-system .orbit-rotation {
+            animation: orbitRotation 60s linear infinite !important; /* 强制使用动画 */
+            transition: none !important;
+        }
+        
+        .persistent-planetary-system .middle-orbit-container {
+            animation: middleOrbitRotation 40s linear infinite !important; /* 强制使用动画 */
+            transition: none !important;
+        }
+        
+        /* 避免原始元素和克隆元素同时可见 */
+        .scene-5.transitioning .planetary-system,
+        .scene-6.receiving .planetary-system-transition {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transition: opacity 0.1s ease, visibility 0.1s ease;
+        }
+        
+        /* 确保场景6中的行星系统平滑显示 */
+        .planetary-system-transition {
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* 三态UI元素过渡效果 */
+        .three-state-ui .floating-window,
+        .three-state-ui .popup-window,
+        .three-state-ui .detail-panel {
+            transform: translateX(-30px);
+            transition: opacity 0.8s ease, transform 0.8s ease, width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backface-visibility: hidden; /* 防止闪烁 */
+            will-change: transform, opacity, width, height; /* 提示浏览器优化 */
+        }
+        
+        .three-state-ui.animated .floating-window,
+        .three-state-ui.animated .popup-window,
+        .three-state-ui.animated .detail-panel {
+            transform: translateX(0);
+        }
+        
+        /* 优化行星图过渡动画 */
+        .planetary-system-transition.smooth-transition {
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* 修改CSS以确保轨道旋转的平滑过渡 */
+        .persistent-planetary-system .middle-orbit-container,
+        .persistent-planetary-system .orbit-rotation {
+            will-change: transform; /* 提示浏览器这些元素将被动画，优化性能 */
+            backface-visibility: hidden; /* 防止闪烁 */
+            transform-style: preserve-3d; /* 提高3D性能 */
+        }
+        
+        /* 确保持久化行星系统转换时不影响内部轨道旋转 */
+        .persistent-planetary-system {
+            position: fixed;
+            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 1000;
+            will-change: transform;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transform-origin: center center;
+        }
+        
+        /* 添加CSS变量支持，增强动画稳定性 */
+        @keyframes middleOrbitRotation {
+            0% {
+                transform: translate(-50%, -50%) rotate(var(--middle-rotation, 0deg));
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(calc(var(--middle-rotation, 0deg) - 360deg));
+            }
+        }
+        
+        @keyframes orbitRotation {
+            0% {
+                transform: rotate(var(--outer-rotation, 0deg));
+            }
+            100% {
+                transform: rotate(calc(var(--outer-rotation, 0deg) + 360deg));
+            }
+        }
+        
+        /* 优化持久行星系统的渲染性能 */
+        .persistent-planetary-system {
+            position: fixed;
+            transition: transform 1.5s cubic-bezier(0.2, 0.82, 0.2, 1);
+            z-index: 1002;
+            will-change: transform;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transform-origin: center center;
+            contain: layout style paint; /* 隔离渲染以提高性能 */
+        }
+        
+        /* 优化文本淡出动画，使其更加平滑 */
+        .workflow-description.fade-out {
+            animation: fadeOutSlowly 1.2s cubic-bezier(0.645, 0.045, 0.355, 1.000) forwards;
+        }
+        
+        @keyframes fadeOutSlowly {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SVG Definitions for gradients -->
+        <svg width="0" height="0" style="position: absolute;">
+            <defs>
+                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#5ac8fa" />
+                    <stop offset="50%" stop-color="#007aff" />
+                    <stop offset="100%" stop-color="#34aadc" />
+                </linearGradient>
+            </defs>
+        </svg>
+        
+        <!-- Scene 1: How did we achieve this? -->
+        <div class="scene scene-1 active">
+            <div class="reveal-text">How did we achieve this?</div>
+        </div>
+        
+        <!-- Scene 2: Cloud models challenges -->
+        <div class="scene scene-2">
+            <div class="heading">Relying solely on cloud models isn't feasible</div>
+            <div class="icons-container">
+                <div class="icon-block">
+                    <div class="icon">
+                        <div class="server-icon">
+                            <div class="server-load"></div>
+                        </div>
+                    </div>
+                    <div class="icon-title">Server Overload</div>
+                    <div class="icon-description">Cloud infrastructure becomes overwhelmed with requests, resulting in high latency and reduced performance</div>
+                </div>
+                
+                <div class="icon-block">
+                    <div class="icon">
+                        <div class="privacy-icon">
+                            <div class="lock"></div>
+                            <div class="data-leak">
+                                <div class="data-particle"></div>
+                                <div class="data-particle"></div>
+                                <div class="data-particle"></div>
+                                <div class="data-particle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="icon-title">Privacy Exposure</div>
+                    <div class="icon-description">Sensitive user data transmitted to cloud servers creates significant privacy and security risks</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scene 3: Edge-Cloud Architecture -->
+        <div class="scene scene-3">
+            <div class="architecture-title">Edge-Cloud Collaboration</div>
+            
+            <!-- Enhanced Architecture Diagram -->
+            <div class="architecture-diagram">
+                <!-- Enhanced Edge Device Icon -->
+                <div class="edge-device-container">
+                    <div class="edge-device-icon">
+                        <div class="device-body"></div>
+                        <div class="device-screen"></div>
+                        <div class="device-keyboard"></div>
+                        <div class="device-indicator"></div>
+                    </div>
+                    <div class="icon-title">Edge Devices</div>
+                </div>
+                
+                <!-- Enhanced Connection Animation -->
+                <div class="connection-container">
+                    <div class="connection-line">
+                        <div class="data-packet data-packet-left"></div>
+                        <div class="data-packet data-packet-right"></div>
+                    </div>
+                </div>
+                
+                <!-- Enhanced Cloud Server Icon -->
+                <div class="cloud-server-container">
+                    <div class="cloud-server-icon">
+                        <div class="server-rack">
+                            <div class="server-unit">
+                                <div class="server-slots">
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                </div>
+                                <div class="server-light green"></div>
+                            </div>
+                            <div class="server-unit">
+                                <div class="server-slots">
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                </div>
+                                <div class="server-light blue"></div>
+                            </div>
+                            <div class="server-unit">
+                                <div class="server-slots">
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                </div>
+                                <div class="server-light red"></div>
+                            </div>
+                            <div class="server-unit">
+                                <div class="server-slots">
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                </div>
+                                <div class="server-light green"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="icon-title">Cloud Servers</div>
+                </div>
+            </div>
+            
+            <!-- Text Descriptions -->
+            <div class="description-container">
+                <div class="description-box">
+                    <div class="description-title">Edge Devices</div>
+                    <div class="description-text">
+                        Continuously senses user context entirely on-device, ensuring that no private information is ever exposed.
+                    </div>
+                </div>
+                
+                <div class="description-box">
+                    <div class="description-title cloud-description-title">Cloud Servers</div>
+                    <div class="description-text">
+                        Provide support for extremely complex task scenarios, with cloud models offering enhanced capabilities while ensuring that no private data is ever transmitted to cloud devices.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scene 4: Privacy Protection Mechanism -->
+        <div class="scene scene-4">
+            <div class="privacy-title">Privacy Protection Mechanism</div>
+            <div class="privacy-subtitle">
+                Your privacy is paramount. We've designed a specialized privacy filtering mechanism to ensure sensitive information never reaches the cloud.
+            </div>
+            
+            <!-- Privacy Protection Mechanism Diagram -->
+            <div class="privacy-mechanism">
+                <!-- Local Device -->
+                <div class="component-container">
+                    <div class="edge-device-icon">
+                        <div class="device-body"></div>
+                        <div class="device-screen"></div>
+                        <div class="device-keyboard"></div>
+                        <div class="device-indicator"></div>
+                    </div>
+                    <div class="icon-title">Edge Devices</div>
+                </div>
+                
+                <!-- Connection Line (Left) -->
+                <div class="privacy-connection">
+                    <div class="privacy-line privacy-line-left">
+                        <div class="privacy-packet privacy-packet-raw"></div>
+                        <div class="privacy-packet privacy-packet-raw-2"></div>
+                    </div>
+                </div>
+                
+                <!-- Privacy Filter -->
+                <div class="component-container privacy-filter-container">
+                    <div class="privacy-filter-icon">
+                        <div class="filter-body">
+                            <div class="filter-grid">
+                                <div class="filter-scan"></div>
+                            </div>
+                            <div class="filter-animation">
+                                <div class="filter-particle"></div>
+                                <div class="filter-particle"></div>
+                                <div class="filter-particle"></div>
+                            </div>
+                        </div>
+                        <div class="filter-badge"></div>
+                    </div>
+                    <div class="icon-title">Privacy Filter</div>
+                </div>
+                
+                <!-- Connection Line (Right) -->
+                <div class="privacy-connection">
+                    <div class="privacy-line privacy-line-right">
+                        <div class="privacy-packet privacy-packet-filtered"></div>
+                        <div class="privacy-packet privacy-packet-filtered-2"></div>
+                    </div>
+                </div>
+                
+                <!-- Cloud Server -->
+                <div class="component-container">
+                    <div class="cloud-server-icon">
+                        <div class="server-rack">
+                            <div class="server-unit">
+                                <div class="server-slots">
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                </div>
+                                <div class="server-light green"></div>
+                            </div>
+                            <div class="server-unit">
+                                <div class="server-slots">
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                </div>
+                                <div class="server-light blue"></div>
+                            </div>
+                            <div class="server-unit">
+                                <div class="server-slots">
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                    <div class="server-slot"></div>
+                                </div>
+                                <div class="server-light green"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="icon-title">Cloud Server</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scene 5: Intelligent Service Workflow - Enhanced with rotating elements -->
+        <div class="scene scene-5">
+            <div class="workflow-title">Intelligent Service Workflow</div>
+            <div class="workflow-subtitle">
+                From perception to execution, our system orchestrates a seamless intelligent-service experience, aligning user needs with advanced AI capabilities.
+            </div>
+            
+            <div class="workflow-container">
+                <!-- Planetary Ring System -->
+                <div class="planetary-system">
+                    <!-- Orbits -->
+                    <div class="orbit orbit-1"></div>
+                    <div class="orbit orbit-2"></div>
+                    <div class="orbit orbit-3"></div>
+                    
+                    <!-- User at center - REDESIGNED -->
+                    <div class="user-center">
+                        <div class="user-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="url(#goldGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="7" r="4.5" />
+                                <path d="M20 21v-2a7 7 0 0 0-7-7h-2a7 7 0 0 0-7 7v2" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- Middle orbit elements with rotation - REDESIGNED -->
+                    <div class="middle-orbit-container">
+                        <div class="orbit-element perception">
+                            <div class="perception-icon orbit-element-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="orbit-element discriminator">
+                            <div class="discriminator-icon orbit-element-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="3" width="20" height="18" rx="2" ry="2" stroke-width="1.5" />
+                                    <line x1="2" y1="9" x2="22" y2="9" stroke-width="1.5" />
+                                    <circle cx="7" cy="6" r="1.5" class="data-particle" fill="#ec4899" />
+                                    <circle cx="12" cy="6" r="1.5" class="data-particle" fill="#ec4899" />
+                                    <circle cx="17" cy="6" r="1.5" class="data-particle" fill="#ec4899" />
+                                    <path d="M9 15 a1,1 0 1,0 6,0 a1,1 0 1,0 -6,0" fill="none" />
+                                    <path d="M10.5 15 L11.5 16 L13.5 14" stroke-width="1.5" class="checkmark" />
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="orbit-element planner">
+                            <div class="planner-icon orbit-element-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="16" rx="2" ry="2" />
+                                    <line x1="3" y1="8" x2="21" y2="8" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <path d="M10.5 15 L11.5 16 L13.5 14" />
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="orbit-element executor">
+                            <div class="executor-icon orbit-element-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="m10 8 6 4-6 4V8Z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Outer orbit elements - User scenarios -->
+                    <div class="orbit-rotation">
+                        <div class="scenario scenario-1">
+                            <div class="scenario-icon">📱</div>
+                        </div>
+                        <div class="scenario scenario-2">
+                            <div class="scenario-icon">📷</div>
+                        </div>
+                        <div class="scenario scenario-3">
+                            <div class="scenario-icon">🎵</div>
+                        </div>
+                        <div class="scenario scenario-4">
+                            <div class="scenario-icon">📅</div>
+                        </div>
+                        <div class="scenario scenario-5">
+                            <div class="scenario-icon">📝</div>
+                        </div>
+                        <div class="scenario scenario-6">
+                            <div class="scenario-icon">🔍</div>
+                        </div>
+                        <div class="scenario scenario-7">
+                            <div class="scenario-icon">📊</div>
+                        </div>
+                        <div class="scenario scenario-8">
+                            <div class="scenario-icon">🏠</div>
+                        </div>
+                        <div class="scenario scenario-9">
+                            <div class="scenario-icon">🚗</div>
+                        </div>
+                        <div class="scenario scenario-10">
+                            <div class="scenario-icon">💬</div>
+                        </div>
+                        <div class="scenario scenario-11">
+                            <div class="scenario-icon">📚</div>
+                        </div>
+                        <div class="scenario scenario-12">
+                            <div class="scenario-icon">🎮</div>
+                        </div>
+                        <div class="scenario scenario-13">
+                            <div class="scenario-icon">🛒</div>
+                        </div>
+                        <div class="scenario scenario-14">
+                            <div class="scenario-icon">✉️</div>
+                        </div>
+                        <div class="scenario scenario-15">
+                            <div class="scenario-icon">🔔</div>
+                        </div>
+                        <div class="scenario scenario-16">
+                            <div class="scenario-icon">⚙️</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Workflow description - Enhanced styling -->
+                <div class="workflow-description">
+                    <div class="workflow-step perception-step active">
+                        <div class="workflow-step-title perception">Perception</div>
+                        <div class="workflow-step-text">
+                            The system elegantly captures user behaviour, environmental context, and application states through advanced sensors and algorithms, creating a comprehensive understanding of the user's current needs and intentions.
+                        </div>
+                    </div>
+                    
+                    <div class="workflow-step discriminator-step">
+                        <div class="workflow-step-title discriminator">Discrimination</div>
+                        <div class="workflow-step-text">
+                            The discriminator precisely determines if proactive help is needed, screens for privacy data, and selects on-device or edge-cloud processing so only safe, relevant signals proceed.                        </div>
+                    </div>
+                    
+                    <div class="workflow-step planner-step">
+                        <div class="workflow-step-title planner">Planning</div>
+                        <div class="workflow-step-text">
+                            The planning module crafts an optimal sequence of actions from the filtered signals, balancing resources, user preferences, and contextual constraints to deliver a bespoke service strategy.
+                        </div>
+                    </div>
+                    
+                    <div class="workflow-step executor-step">
+                        <div class="workflow-step-title executor">Execution</div>
+                        <div class="workflow-step-text">
+                            With seamless coordination, the executor carries out the planned actions across relevant applications and services, orchestrating resources to deliver a fluid, intuitive experience.
+                        </div>
+                    </div>
+                    
+                    <div class="workflow-step confirmation-step">
+                        <div class="workflow-step-title confirmation">User Confirmation</div>
+                        <div class="workflow-step-text">
+                            The journey culminates in user feedback and confirmation, ensuring automated actions align with expectations and provide insights for continuous refinement of the workflow.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scene 6: Layered Information Display -->
+        <div class="scene scene-6">
+            <div class="layered-title">Layered Information Display</div>
+            <div class="layered-subtitle">
+                Following the "Less is More" design philosophy, we provide layered information display, making complexity simple.
+            </div>
+            
+            <div class="layered-display-container">
+                <!-- Three-state UI on the left -->
+                <div class="three-state-ui">
+                    <!-- Floating window - First state -->
+                    <div class="floating-window">
+                        <div class="floating-window-icon">f</div>
+                    </div>
+                    
+                    <!-- Popup window - Second state -->
+                    <div class="popup-window">
+                        <div class="popup-header">
+                            <div class="popup-icon">f</div>
+                            <div class="popup-title">Freeyou</div>
+                        </div>
+                        <div class="popup-content">
+                            <div class="popup-item">
+                                <div class="popup-item-dot"></div>
+                                <div class="popup-item-text">Personalized assistant</div>
+                            </div>
+                            <div class="popup-item">
+                                <div class="popup-item-dot"></div>
+                                <div class="popup-item-text">Intelligent recommendations</div>
+                            </div>
+                            <div class="popup-item">
+                                <div class="popup-item-dot"></div>
+                                <div class="popup-item-text">Privacy protected</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detail panel - Third state -->
+                    <div class="detail-panel">
+                        <div class="detail-header">
+                            <div class="detail-icon">f</div>
+                            <div class="detail-title">Freeyou</div>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-section">
+                                <div class="detail-section-title">About Freeyou</div>
+                                <div class="detail-text">
+                                    Freeyou is your personal intelligent assistant that understands your needs and provides timely services while ensuring your privacy is protected at all times.
+                                </div>
+                            </div>
+                            <div class="detail-section">
+                                <div class="detail-section-title">Key Features</div>
+                                <div class="detail-text">
+                                    • Edge-cloud collaborative architecture<br>
+                                    • Privacy-first design philosophy<br>
+                                    • Intelligent service workflow<br>
+                                    • Layered information display
+                                </div>
+                            </div>
+                            <div class="detail-action">
+                                <button class="detail-button">Get Started</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Planetary system from Scene 5, moved to the right -->
+                <div class="planetary-system planetary-system-transition">
+                    <!-- Orbits -->
+                    <div class="orbit orbit-1"></div>
+                    <div class="orbit orbit-2"></div>
+                    <div class="orbit orbit-3"></div>
+                    
+                    <!-- User at center - REDESIGNED -->
+                    <div class="user-center">
+                        <div class="user-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="url(#goldGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="7" r="4.5" />
+                                <path d="M20 21v-2a7 7 0 0 0-7-7h-2a7 7 0 0 0-7 7v2" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- Middle orbit elements with rotation - REDESIGNED -->
+                    <div class="middle-orbit-container">
+                        <div class="orbit-element perception">
+                            <div class="perception-icon orbit-element-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="orbit-element discriminator">
+                            <div class="discriminator-icon orbit-element-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="3" width="20" height="18" rx="2" ry="2" stroke-width="1.5" />
+                                    <line x1="2" y1="9" x2="22" y2="9" stroke-width="1.5" />
+                                    <circle cx="7" cy="6" r="1.5" class="data-particle" fill="#ec4899" />
+                                    <circle cx="12" cy="6" r="1.5" class="data-particle" fill="#ec4899" />
+                                    <circle cx="17" cy="6" r="1.5" class="data-particle" fill="#ec4899" />
+                                    <path d="M9 15 a1,1 0 1,0 6,0 a1,1 0 1,0 -6,0" fill="none" />
+                                    <path d="M10.5 15 L11.5 16 L13.5 14" stroke-width="1.5" class="checkmark" />
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="orbit-element planner">
+                            <div class="planner-icon orbit-element-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="16" rx="2" ry="2" />
+                                    <line x1="3" y1="8" x2="21" y2="8" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <path d="M10.5 15 L11.5 16 L13.5 14" />
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="orbit-element executor">
+                            <div class="executor-icon orbit-element-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="m10 8 6 4-6 4V8Z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Outer orbit elements - User scenarios -->
+                    <div class="orbit-rotation">
+                        <div class="scenario scenario-1">
+                            <div class="scenario-icon">📱</div>
+                        </div>
+                        <div class="scenario scenario-2">
+                            <div class="scenario-icon">📷</div>
+                        </div>
+                        <div class="scenario scenario-3">
+                            <div class="scenario-icon">🎵</div>
+                        </div>
+                        <div class="scenario scenario-4">
+                            <div class="scenario-icon">📅</div>
+                        </div>
+                        <div class="scenario scenario-5">
+                            <div class="scenario-icon">📝</div>
+                        </div>
+                        <div class="scenario scenario-6">
+                            <div class="scenario-icon">🔍</div>
+                        </div>
+                        <div class="scenario scenario-7">
+                            <div class="scenario-icon">📊</div>
+                        </div>
+                        <div class="scenario scenario-8">
+                            <div class="scenario-icon">🏠</div>
+                        </div>
+                        <div class="scenario scenario-9">
+                            <div class="scenario-icon">🚗</div>
+                        </div>
+                        <div class="scenario scenario-10">
+                            <div class="scenario-icon">💬</div>
+                        </div>
+                        <div class="scenario scenario-11">
+                            <div class="scenario-icon">📚</div>
+                        </div>
+                        <div class="scenario scenario-12">
+                            <div class="scenario-icon">🎮</div>
+                        </div>
+                        <div class="scenario scenario-13">
+                            <div class="scenario-icon">🛒</div>
+                        </div>
+                        <div class="scenario scenario-14">
+                            <div class="scenario-icon">✉️</div>
+                        </div>
+                        <div class="scenario scenario-15">
+                            <div class="scenario-icon">🔔</div>
+                        </div>
+                        <div class="scenario scenario-16">
+                            <div class="scenario-icon">⚙️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <div class="nav-dot active" data-scene="1"></div>
+        <div class="nav-dot" data-scene="2"></div>
+        <div class="nav-dot" data-scene="3"></div>
+        <div class="nav-dot" data-scene="4"></div>
+        <div class="nav-dot" data-scene="5"></div>
+        <div class="nav-dot" data-scene="6"></div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navigation dots functionality
+            const navDots = document.querySelectorAll('.nav-dot');
+            const scenes = document.querySelectorAll('.scene');
+            
+            navDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    // Get the scene number
+                    const sceneNum = dot.getAttribute('data-scene');
+                    
+                    // Update active state for dots
+                    navDots.forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+                    
+                    // Show the selected scene
+                    scenes.forEach(scene => scene.classList.remove('active'));
+                    const activeScene = document.querySelector(`.scene-${sceneNum}`);
+                    activeScene.classList.add('active');
+                    
+                    // Set current scene
+                    currentScene = parseInt(sceneNum);
+                    
+                    // Trigger animations for the active scene
+                    triggerSceneAnimations(sceneNum);
+                });
+            });
+            
+            // Auto-advance scenes with custom timing for each scene
+            let currentScene = 1;
+            const totalScenes = 6; // Total number of scenes
+            let workflowComplete = false;
+            let autoAdvanceTimer;
+            let workflowSequenceTimer;
+            let workflowSequenceTimers = [];
+            
+            // Custom scene durations in milliseconds
+            const sceneDurations = {
+                1: 15000,  // Scene 1: Shorter (15 seconds)
+                2: 20000,  // Scene 2: Medium (20 seconds)
+                3: 20000,  // Scene 3: Medium (20 seconds)
+                4: 25000,  // Scene 4: Longer (25 seconds)
+                5: 30000,  // Scene 5: Longest due to workflow (30 seconds)
+                6: 35000   // Scene 6: Longest to show all UI states (35 seconds)
+            };
+            
+            // 在脚本部分添加过渡动画逻辑
+            function transitionFromSceneThreeToFour() {
+                console.log("Starting improved transition from scene 3 to 4");
+                
+                // 首先移除可能存在的旧转场元素
+                const existingClone = document.querySelector('.scene-3-clone');
+                if (existingClone) {
+                    document.body.removeChild(existingClone);
+                }
+                
+                // 1. 首先让分镜三的描述文字消失
+                const descriptionContainer = document.querySelector('.description-container');
+                descriptionContainer.classList.add('fade-out');
+                
+                // 获取场景3和4
+                const scene3 = document.querySelector('.scene-3');
+                const scene4 = document.querySelector('.scene-4');
+                
+                // 2. 创建克隆元素用于平滑过渡
+                const edgeDevice = document.querySelector('.edge-device-container');
+                const cloudServer = document.querySelector('.cloud-server-container');
+                
+                // 获取元素位置信息用于定位
+                const edgeRect = edgeDevice.getBoundingClientRect();
+                const cloudRect = cloudServer.getBoundingClientRect();
+                
+                // 为了避免布局变化，添加一个容器来持有过渡中的元素
+                const transitionContainer = document.createElement('div');
+                transitionContainer.className = 'scene-3-clone';
+                transitionContainer.style.position = 'fixed';
+                transitionContainer.style.top = '0';
+                transitionContainer.style.left = '0';
+                transitionContainer.style.width = '100%';
+                transitionContainer.style.height = '100%';
+                transitionContainer.style.pointerEvents = 'none';
+                transitionContainer.style.zIndex = '9999';
+                document.body.appendChild(transitionContainer);
+                
+                // 创建持久的边缘设备
+                const persistentEdge = edgeDevice.cloneNode(true);
+                persistentEdge.classList.add('persistent-edge-device');
+                persistentEdge.style.position = 'fixed';
+                persistentEdge.style.left = edgeRect.left + 'px';
+                persistentEdge.style.top = edgeRect.top + 'px';
+                persistentEdge.style.width = edgeRect.width + 'px';
+                persistentEdge.style.height = edgeRect.height + 'px';
+                persistentEdge.style.willChange = 'transform, opacity';
+                persistentEdge.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                const persistentEdgeBody = persistentEdge.querySelector('.device-body');
+                if (persistentEdgeBody) {
+                    persistentEdgeBody.style.boxShadow = 'none';
+                }
+                transitionContainer.appendChild(persistentEdge);
+                
+                // 创建持久的云服务器
+                const persistentCloud = cloudServer.cloneNode(true);
+                persistentCloud.classList.add('persistent-cloud-server');
+                persistentCloud.style.position = 'fixed';
+                persistentCloud.style.left = cloudRect.left + 'px';
+                persistentCloud.style.top = cloudRect.top + 'px';
+                persistentCloud.style.width = cloudRect.width + 'px';
+                persistentCloud.style.height = cloudRect.height + 'px';
+                persistentCloud.style.willChange = 'transform, opacity';
+                persistentCloud.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                const persistentCloudRack = persistentCloud.querySelector('.server-rack');
+                if (persistentCloudRack) {
+                    persistentCloudRack.style.boxShadow = 'none';
+                }
+                transitionContainer.appendChild(persistentCloud);
+                
+                // 3. 让文字消失后，逐步过渡
+                setTimeout(() => {
+                    // 在切换前先将原始元素的可见度设为0
+                    const scene3ArchDiagram = document.querySelector('.scene-3 .architecture-diagram');
+                    if (scene3ArchDiagram) {
+                        scene3ArchDiagram.style.visibility = 'hidden';
+                    }
+                    
+                    // 隐藏分镜三，显示分镜四
+                    scene3.classList.remove('active');
+                    scene4.classList.add('active');
+                    
+                    // 激活分镜四的标题和副标题
+                    const privacyTitle = scene4.querySelector('.privacy-title');
+                    const privacySubtitle = scene4.querySelector('.privacy-subtitle');
+                    if (privacyTitle) privacyTitle.classList.add('active');
+                    if (privacySubtitle) privacySubtitle.classList.add('active');
+
+                    const privacyMechanism = scene4.querySelector('.privacy-mechanism');
+                    if (privacyMechanism) {
+                        privacyMechanism.style.opacity = '1'; 
+                        privacyMechanism.style.visibility = 'visible';
+                        privacyMechanism.classList.remove('fade-in', 'active'); 
+                    }
+
+                    // Get original Scene 4 elements for measurements, but they will stay hidden.
+                    const scene4EdgeOriginal = scene4.querySelector('.component-container:first-child');
+                    const scene4CloudOriginal = scene4.querySelector('.component-container:last-child');
+                    const scene4PrivacyFilterContainer = scene4.querySelector('.privacy-filter-container');
+
+                    [scene4EdgeOriginal, scene4CloudOriginal, scene4PrivacyFilterContainer].forEach(el => {
+                        if (el) {
+                            el.style.visibility = 'hidden'; 
+                            el.style.opacity = '0';
+                            el.style.transition = 'none';
+                        }
+                    });
+                    scene4.querySelectorAll('.privacy-connection').forEach(conn => {
+                        if (conn) {
+                             conn.style.opacity = '0';
+                             conn.style.transition = 'none';
+                        }
+                    });
+
+                    let scene4EdgeRect, scene4CloudRect;
+                    if (scene4EdgeOriginal) {
+                        const originalVisibility = scene4EdgeOriginal.style.visibility;
+                        scene4EdgeOriginal.style.visibility = 'visible'; 
+                        scene4EdgeOriginal.offsetHeight; 
+                        scene4EdgeRect = scene4EdgeOriginal.getBoundingClientRect();
+                        scene4EdgeOriginal.style.visibility = originalVisibility; 
+                    }
+                    if (scene4CloudOriginal) {
+                        const originalVisibility = scene4CloudOriginal.style.visibility;
+                        scene4CloudOriginal.style.visibility = 'visible'; 
+                        scene4CloudOriginal.offsetHeight; 
+                        scene4CloudRect = scene4CloudOriginal.getBoundingClientRect();
+                        scene4CloudOriginal.style.visibility = originalVisibility; 
+                    }
+                    
+                    requestAnimationFrame(() => {
+                        if (persistentEdge && scene4EdgeRect) {
+                            persistentEdge.style.transform = `translate(${scene4EdgeRect.left - edgeRect.left}px, ${scene4EdgeRect.top - edgeRect.top}px)`;
+                            persistentEdge.style.width = scene4EdgeRect.width + 'px';
+                            persistentEdge.style.height = scene4EdgeRect.height + 'px';
+                        }
+                        if (persistentCloud && scene4CloudRect) {
+                            persistentCloud.style.transform = `translate(${scene4CloudRect.left - cloudRect.left}px, ${scene4CloudRect.top - cloudRect.top}px)`;
+                            persistentCloud.style.width = scene4CloudRect.width + 'px';
+                            persistentCloud.style.height = scene4CloudRect.height + 'px';
+                        }
+
+                        const cloneAnimationDuration = 800;
+                        
+                        setTimeout(() => {
+                            // Clones have finished animating to their target viewport position and size.
+                            // Now, re-parent them into scene4's privacyMechanism.
+
+                            const mechanismRect = privacyMechanism ? privacyMechanism.getBoundingClientRect() : {top: 0, left: 0, width: 0, height: 0 };
+
+                            if (persistentEdge && scene4EdgeRect) {
+                                persistentEdge.style.transition = 'none'; // Prevent transitions during style changes for re-parenting
+                                persistentEdge.style.position = 'absolute';
+                                persistentEdge.style.left = (scene4EdgeRect.left - mechanismRect.left) + 'px';
+                                persistentEdge.style.top = (scene4EdgeRect.top - mechanismRect.top) + 'px';
+                                persistentEdge.style.width = scene4EdgeRect.width + 'px';
+                                persistentEdge.style.height = scene4EdgeRect.height + 'px';
+                                persistentEdge.style.transform = ''; // Reset transform as position is now absolute
+                                const edgeBody = persistentEdge.querySelector('.device-body');
+                                if (edgeBody) edgeBody.style.boxShadow = ''; // Restore default shadow by clearing inline style
+                                
+                                if (privacyMechanism) privacyMechanism.appendChild(persistentEdge);
+                            }
+
+                            if (persistentCloud && scene4CloudRect) {
+                                persistentCloud.style.transition = 'none';
+                                persistentCloud.style.position = 'absolute';
+                                persistentCloud.style.left = (scene4CloudRect.left - mechanismRect.left) + 'px';
+                                persistentCloud.style.top = (scene4CloudRect.top - mechanismRect.top) + 'px';
+                                persistentCloud.style.width = scene4CloudRect.width + 'px';
+                                persistentCloud.style.height = scene4CloudRect.height + 'px';
+                                persistentCloud.style.transform = '';
+                                const cloudRack = persistentCloud.querySelector('.server-rack');
+                                if (cloudRack) cloudRack.style.boxShadow = ''; // Restore default shadow
+                                
+                                if (privacyMechanism) privacyMechanism.appendChild(persistentCloud);
+                            }
+
+                            // Remove the temporary container for clones if it exists and is in the body
+                            if (transitionContainer && document.body.contains(transitionContainer)) {
+                                document.body.removeChild(transitionContainer);
+                            }
+
+                            // Original scene4EdgeOriginal and scene4CloudOriginal remain hidden, replaced by clones.
+
+                            // Animate the original privacy filter from Scene 4 HTML
+                            if (scene4PrivacyFilterContainer) {
+                                scene4PrivacyFilterContainer.style.visibility = 'visible';
+                                scene4PrivacyFilterContainer.style.opacity = '0'; 
+                                scene4PrivacyFilterContainer.style.transition = ''; // Let CSS class handle animation
+                                scene4PrivacyFilterContainer.classList.add('fade-in');
+                            }
+                            
+                            const filterAnimationDuration = 1200; // Duration from .privacy-filter-container.fade-in
+
+                            setTimeout(() => {
+                                // Animate the original connection lines from Scene 4 HTML
+                                const privacyConnections = scene4.querySelectorAll('.privacy-connection');
+                                privacyConnections.forEach((conn, index) => {
+                                    if (conn) {
+                                        conn.style.visibility = 'visible'; 
+                                        conn.style.opacity = '0';
+                                        conn.style.transition = 'opacity 0.5s ease-in-out'; 
+                                        setTimeout(() => conn.style.opacity = '1', index * 100); 
+                                    }
+                                });
+                                
+                                const connectionsAnimationDuration = 500 + (privacyConnections.length > 0 ? (privacyConnections.length - 1) * 100 : 0);
+
+                                setTimeout(() => {
+                                    // Transition complete, cleanup and set next scene timer
+                                    if (scene3ArchDiagram) {
+                                        scene3ArchDiagram.style.visibility = 'visible'; // Restore for potential reverse navigation
+                                    }
+                                    currentScene = 4;
+                                    navDots.forEach(d => d.classList.remove('active'));
+                                    const currentDot = document.querySelector(`.nav-dot[data-scene="${currentScene}"]`);
+                                    if (currentDot) currentDot.classList.add('active');
+                                    
+                                    console.log("Custom transition to Scene 4 complete by re-parenting clones.");
+                                    isTransitioning = false;
+                                    clearTimeout(autoAdvanceTimer); 
+                                    autoAdvanceTimer = setTimeout(autoAdvance, sceneDurations[currentScene]);
+                                }, connectionsAnimationDuration);
+                            }, filterAnimationDuration);
+                        }, cloneAnimationDuration);
+                    });
+                }, 800);
+            }
+            
+            // 修改逻辑，确保当前没有转场正在进行
+            let isTransitioning = false;
+            
+            // 修改autoAdvance函数，防止转场过程中的重复调用
+            const autoAdvance = () => {
+                // 清除现有计时器以防止多个计时器
+                clearTimeout(autoAdvanceTimer);
+                
+                // 如果正在转场中，不执行新的转场
+                if (isTransitioning) {
+                    autoAdvanceTimer = setTimeout(autoAdvance, 1000); // 短暂延迟后再次检查
+                    return;
+                }
+                
+                // 特殊处理从场景3到场景4的过渡
+                if (currentScene === 3) {
+                    isTransitioning = true;
+                    transitionFromSceneThreeToFour();
+                    
+                    // 转场完成后重置标志
+                    setTimeout(() => {
+                        isTransitioning = false;
+                    }, 3000); // 足够长的时间确保转场完成
+                    
+                    autoAdvanceTimer = setTimeout(autoAdvance, sceneDurations[4]);
+                    return;
+                }
+                
+                // 特殊处理从场景5到场景6的过渡
+                if (currentScene === 5) {
+                    // 对场景5的特殊处理，确保正确计时
+                    if (workflowComplete) {
+                        // 使用自定义转场
+                        isTransitioning = true;
+                        transitionFromSceneFiveToSix();
+                        
+                        // 不在这里设置下一个计时器，转场函数会在结束时设置
+                        return;
+                    } else {
+                        // 如果工作流未完成，短暂延迟后再次检查
+                        console.log("Waiting for workflow to complete before advancing...");
+                        autoAdvanceTimer = setTimeout(autoAdvance, 2000);
+                        return;
+                    }
+                }
+                
+                // 对其他场景正常前进
+                if (currentScene === 6) {
+                    // 如果在场景6，循环回场景1
+                    currentScene = 1;
+                } else if (currentScene !== 3 && currentScene !== 5) { // 跳过场景3和场景5的普通处理，因为有特殊过渡
+                    // 否则前进到下一个场景
+                    currentScene++;
+                }
+                
+                // 点击相应的导航点
+                const dot = document.querySelector(`.nav-dot[data-scene="${currentScene}"]`);
+                if (dot) dot.click();
+                
+                // 根据当前场景设置下一个计时器
+                autoAdvanceTimer = setTimeout(autoAdvance, sceneDurations[currentScene]);
+            };
+            
+            // Start auto-advance with the duration for scene 1
+            autoAdvanceTimer = setTimeout(autoAdvance, sceneDurations[1]);
+            
+            // Reset timer when manually navigating
+            navDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    clearTimeout(autoAdvanceTimer);
+                    clearWorkflowTimers();
+                    
+                    // Reset workflow completion status
+                    workflowComplete = false;
+                    
+                    // Get the scene number
+                    const sceneNum = parseInt(dot.getAttribute('data-scene'));
+                    
+                    // Restart auto-advance timer with appropriate duration
+                    autoAdvanceTimer = setTimeout(autoAdvance, sceneDurations[sceneNum]);
+                });
+            });
+            
+            // Clear all workflow sequence timers
+            function clearWorkflowTimers() {
+                clearTimeout(workflowSequenceTimer);
+                workflowSequenceTimers.forEach(timer => clearTimeout(timer));
+                workflowSequenceTimers = [];
+            }
+            
+            // Function to handle the workflow step sequence
+            function startWorkflowSequence() {
+                // Reset workflow completion status
+                workflowComplete = false;
+                
+                // Clear any existing timers
+                clearWorkflowTimers();
+                
+                // Reset all workflow steps
+                document.querySelectorAll('.workflow-step').forEach(step => {
+                    step.classList.remove('active');
+                });
+                
+                // Reset all orbit elements
+                document.querySelectorAll('.orbit-element, .user-center').forEach(el => {
+                    el.classList.remove('floating');
+                    el.classList.remove('active');
+                });
+                
+                // Show the first step - Perception
+                document.querySelector('.perception-step').classList.add('active');
+                document.querySelector('.perception').classList.add('floating');
+                
+                // Activate the user center at the beginning
+                document.querySelector('.user-center').classList.add('active');
+                
+                // Set up the sequence timing
+                const stepTiming = 5000; // 5 seconds per step
+                
+                // Discriminator step
+                let timer = setTimeout(() => {
+                    document.querySelectorAll('.workflow-step').forEach(step => step.classList.remove('active'));
+                    document.querySelectorAll('.orbit-element').forEach(el => el.classList.remove('floating'));
+                    
+                    document.querySelector('.discriminator-step').classList.add('active');
+                    document.querySelector('.discriminator').classList.add('floating');
+                }, stepTiming);
+                workflowSequenceTimers.push(timer);
+                
+                // Planner step
+                timer = setTimeout(() => {
+                    document.querySelectorAll('.workflow-step').forEach(step => step.classList.remove('active'));
+                    document.querySelectorAll('.orbit-element').forEach(el => el.classList.remove('floating'));
+                    
+                    document.querySelector('.planner-step').classList.add('active');
+                    document.querySelector('.planner').classList.add('floating');
+                }, stepTiming * 2);
+                workflowSequenceTimers.push(timer);
+                
+                // Executor step
+                timer = setTimeout(() => {
+                    document.querySelectorAll('.workflow-step').forEach(step => step.classList.remove('active'));
+                    document.querySelectorAll('.orbit-element').forEach(el => el.classList.remove('floating'));
+                    
+                    document.querySelector('.executor-step').classList.add('active');
+                    document.querySelector('.executor').classList.add('floating');
+                }, stepTiming * 3);
+                workflowSequenceTimers.push(timer);
+                
+                // Confirmation step - Now with user center glowing
+                timer = setTimeout(() => {
+                    document.querySelectorAll('.workflow-step').forEach(step => step.classList.remove('active'));
+                    document.querySelectorAll('.orbit-element').forEach(el => el.classList.remove('floating'));
+                    
+                    document.querySelector('.user-center').classList.add('floating');
+                    document.querySelector('.confirmation-step').classList.add('active');
+                }, stepTiming * 4);
+                workflowSequenceTimers.push(timer);
+                
+                // Mark workflow as complete after confirmation step completes
+                timer = setTimeout(() => {
+                    workflowComplete = true;
+                    console.log("Workflow complete, ready to advance to next scene.");
+                }, stepTiming * 5);
+                workflowSequenceTimers.push(timer);
+            }
+            
+            // Function to handle the three-state UI animation sequence
+            function startLayeredUISequence() {
+                // Reset all UI elements first
+                document.querySelector('.floating-window').classList.remove('active');
+                document.querySelector('.popup-window').classList.remove('active');
+                document.querySelector('.detail-panel').classList.remove('active');
+                
+                console.log("Starting layered UI sequence...");
+                
+                // First state - Floating window
+                setTimeout(() => {
+                    console.log("Activating floating window");
+                    document.querySelector('.floating-window').classList.add('active');
+                }, 1000);
+                
+                // Second state - Popup window
+                setTimeout(() => {
+                    console.log("Activating popup window");
+                    document.querySelector('.popup-window').classList.add('active');
+                }, 3500);
+                
+                // Third state - Detail panel
+                setTimeout(() => {
+                    console.log("Activating detail panel");
+                    document.querySelector('.detail-panel').classList.add('active');
+                }, 6000);
+            }
+            
+            // Function to trigger animations for a specific scene
+            function triggerSceneAnimations(sceneNum) {
+                // 重置所有动画
+                document.querySelectorAll('.heading, .icon-block, .architecture-title, .architecture-diagram, .description-container, .privacy-title, .privacy-subtitle, .privacy-mechanism, .workflow-title, .workflow-subtitle, .workflow-container, .layered-title, .layered-subtitle, .layered-display-container')
+                    .forEach(el => el.classList.remove('active'));
+                
+                // 重置轨道元素和用户中心
+                document.querySelectorAll('.orbit-element, .user-center').forEach(el => {
+                    el.classList.remove('floating');
+                    el.classList.remove('active');
+                });
+                
+                // 重置分镜四的privacy-mechanism元素，移除可能的fade-in类
+                const privacyMechanism = document.querySelector('.privacy-mechanism');
+                if (privacyMechanism) {
+                    privacyMechanism.classList.remove('fade-in');
+                }
+                
+                // 重置reveal文本动画
+                if (sceneNum === '1') {
+                    const revealTextEl = document.querySelector('.reveal-text');
+                    const parent = revealTextEl.parentNode;
+                    const newRevealText = revealTextEl.cloneNode(true);
+                    parent.removeChild(revealTextEl);
+                    setTimeout(() => {
+                        parent.appendChild(newRevealText);
+                    }, 50);
+                }
+                
+                // 基于场景触发动画
+                switch(sceneNum) {
+                    case '2':
+                        setTimeout(() => {
+                            document.querySelector('.scene-2 .heading').classList.add('active');
+                            document.querySelectorAll('.scene-2 .icon-block').forEach((el, i) => {
+                                setTimeout(() => {
+                                    el.classList.add('active');
+                                }, 300 + i * 200);
+                            });
+                        }, 100);
+                        break;
+                    case '3':
+                        setTimeout(() => {
+                            document.querySelector('.architecture-title').classList.add('active');
+                            document.querySelector('.architecture-diagram').classList.add('active');
+                            document.querySelector('.description-container').classList.add('active');
+                        }, 100);
+                        break;
+                    case '4':
+                        // 为分镜四添加新的动画序列
+                        setTimeout(() => {
+                            document.querySelector('.privacy-title').classList.add('active');
+                            document.querySelector('.privacy-subtitle').classList.add('active');
+                            
+                            // 使用自定义的淡入动画类，而不是默认的active类
+                            document.querySelector('.privacy-mechanism').classList.add('fade-in');
+                        }, 100);
+                        break;
+                    case '5':
+                        setTimeout(() => {
+                            document.querySelector('.workflow-title').classList.add('active');
+                            document.querySelector('.workflow-subtitle').classList.add('active');
+                            document.querySelector('.workflow-container').classList.add('active');
+                            
+                            // 启动工作流步骤动画序列
+                        startWorkflowSequence();
+                        }, 100);
+                        break;
+                    case '6':
+                        // 首先激活标题和副标题
+                        setTimeout(() => {
+                            document.querySelector('.layered-title').classList.add('active');
+                            document.querySelector('.layered-subtitle').classList.add('active');
+                            document.querySelector('.layered-display-container').classList.add('active');
+                            
+                            // 将行星系统移至右侧
+                            setTimeout(() => {
+                                document.querySelector('.planetary-system-transition').classList.add('shifted');
+                                
+                                // 启动分层UI动画序列
+                                startLayeredUISequence();
+                                
+                                // 重新启动右侧面板中的工作流序列
+                                startWorkflowSequence();
+                            }, 500);
+                        }, 100);
+                        break;
+                }
+            }
+            
+            // Initial animation trigger
+            triggerSceneAnimations('1');
+            
+            // 添加场景5到场景6的转场函数
+            function transitionFromSceneFiveToSix() {
+                console.log("Starting enhanced smooth transition from scene 5 to 6");
+                
+                // 移除可能存在的旧转场元素
+                const existingClone = document.querySelector('.scene-5-clone');
+                if (existingClone) {
+                    document.body.removeChild(existingClone);
+                }
+                
+                // 获取场景5和场景6
+                const scene5 = document.querySelector('.scene-5');
+                const scene6 = document.querySelector('.scene-6');
+                
+                // 标记场景状态
+                scene5.classList.add('transitioning');
+                
+                // 获取行星系统元素
+                const planetarySystem = document.querySelector('.scene-5 .planetary-system');
+                if (!planetarySystem) {
+                    console.error("Planetary system not found");
+                    return;
+                }
+                
+                // 禁用自动进度和用户交互，以确保过渡期间没有干扰
+                clearTimeout(autoAdvanceTimer);
+                isTransitioning = true;
+                
+                // 获取工作流描述文本元素
+                const workflowDescription = document.querySelector('.workflow-description');
+                
+                // 首先触发文本淡出动画，但等待它完成
+                if (workflowDescription) {
+                    // 添加淡出类
+                    workflowDescription.classList.add('fade-out');
+                    console.log("Starting text fade-out animation");
+                }
+                
+                // 获取准确的位置和尺寸
+                const planetaryRect = planetarySystem.getBoundingClientRect();
+                
+                // 冻结当前动画状态
+                const middleOrbitContainer = planetarySystem.querySelector('.middle-orbit-container');
+                const outerOrbitRotation = planetarySystem.querySelector('.orbit-rotation');
+                
+                // 准备好捕获真实样式和动画状态
+                const freezeTransform = (element) => {
+                    if (!element) return { transform: '', rotation: 0 };
+                    
+                    // 获取当前计算样式
+                    const style = window.getComputedStyle(element);
+                    const transform = style.getPropertyValue('transform');
+                    
+                    // 判断是否有有效的变换矩阵
+                    if (transform && transform !== 'none') {
+                        // 从矩阵中提取旋转角度
+                        try {
+                            const matrix = new DOMMatrix(transform);
+                            // 从a和b值计算旋转角度
+                            let rotation = Math.atan2(matrix.b, matrix.a) * (180 / Math.PI);
+                            // 确保角度在0-360范围内
+                            rotation = (rotation + 360) % 360;
+                            return { transform, rotation };
+                        } catch (e) {
+                            console.error("Error extracting rotation:", e);
+                            return { transform, rotation: 0 };
+                        }
+                    }
+                    return { transform: '', rotation: 0 };
+                };
+                
+                // 捕获当前的动画状态
+                const middleOrbitState = freezeTransform(middleOrbitContainer);
+                const outerOrbitState = freezeTransform(outerOrbitRotation);
+                
+                console.log(`Captured rotations - Middle: ${middleOrbitState.rotation}deg, Outer: ${outerOrbitState.rotation}deg`);
+                
+                // 创建转场容器，以固定定位，确保与滚动无关
+                const transitionContainer = document.createElement('div');
+                transitionContainer.className = 'scene-5-clone';
+                transitionContainer.style.position = 'fixed';
+                transitionContainer.style.zIndex = '1001';
+                transitionContainer.style.pointerEvents = 'none';
+                document.body.appendChild(transitionContainer);
+                
+                // 创建行星系统的完美克隆
+                const persistentPlanetary = planetarySystem.cloneNode(true);
+                persistentPlanetary.classList.add('persistent-planetary-system');
+                
+                // 精确定位克隆到原始位置
+                persistentPlanetary.style.position = 'fixed';
+                persistentPlanetary.style.left = planetaryRect.left + 'px';
+                persistentPlanetary.style.top = planetaryRect.top + 'px';
+                persistentPlanetary.style.width = planetaryRect.width + 'px';
+                persistentPlanetary.style.height = planetaryRect.height + 'px';
+                persistentPlanetary.style.zIndex = '1002';
+                persistentPlanetary.style.willChange = 'transform';
+                persistentPlanetary.style.transformOrigin = 'center center';
+                
+                // 获取克隆中对应的轨道元素
+                const clonedMiddleOrbit = persistentPlanetary.querySelector('.middle-orbit-container');
+                const clonedOuterOrbit = persistentPlanetary.querySelector('.orbit-rotation');
+                
+                // 冻结克隆的轨道旋转在当前状态并设置CSS变量
+                if (clonedMiddleOrbit) {
+                    // 停止原始动画
+                    clonedMiddleOrbit.style.animation = 'none';
+                    // 设置CSS变量，用于新的关键帧动画
+                    clonedMiddleOrbit.style.setProperty('--middle-rotation', `${middleOrbitState.rotation}deg`);
+                    // 使用CSS变量设置当前旋转
+                    clonedMiddleOrbit.style.transform = `translate(-50%, -50%) rotate(${middleOrbitState.rotation}deg)`;
+                }
+                
+                if (clonedOuterOrbit) {
+                    // 停止原始动画
+                    clonedOuterOrbit.style.animation = 'none';
+                    // 设置CSS变量，用于新的关键帧动画
+                    clonedOuterOrbit.style.setProperty('--outer-rotation', `${outerOrbitState.rotation}deg`);
+                    // 使用CSS变量设置当前旋转
+                    clonedOuterOrbit.style.transform = `rotate(${outerOrbitState.rotation}deg)`;
+                }
+                
+                // 防止用户图标错误高亮
+                const cloneUserCenter = persistentPlanetary.querySelector('.user-center');
+                if (cloneUserCenter) {
+                    cloneUserCenter.classList.remove('active', 'floating');
+                    cloneUserCenter.style.boxShadow = 'none';
+                }
+                
+                // 将克隆添加到过渡容器
+                transitionContainer.appendChild(persistentPlanetary);
+                
+                // 立即隐藏原始行星系统和场景6的行星系统
+                planetarySystem.style.opacity = '0';
+                planetarySystem.style.visibility = 'hidden';
+                
+                const scene6PlanetarySystem = scene6.querySelector('.planetary-system-transition');
+                if (scene6PlanetarySystem) {
+                    scene6PlanetarySystem.style.opacity = '0';
+                    scene6PlanetarySystem.style.visibility = 'hidden';
+                }
+                
+                // 确保行星系统克隆可见
+                persistentPlanetary.style.opacity = '1';
+                persistentPlanetary.style.visibility = 'visible';
+                
+                // 使用requestAnimationFrame确保视觉帧同步
+                requestAnimationFrame(() => {
+                    // 在下一帧恢复中轨道和外轨道的动画
+                    if (clonedMiddleOrbit) {
+                        // 简短延迟后恢复动画
+                        setTimeout(() => {
+                            clonedMiddleOrbit.style.animation = 'middleOrbitRotation 40s linear infinite';
+                            // 无需设置动画延迟，因为我们的关键帧已经从当前角度开始
+                        }, 50);
+                    }
+                    
+                    if (clonedOuterOrbit) {
+                        // 简短延迟后恢复动画
+                        setTimeout(() => {
+                            clonedOuterOrbit.style.animation = 'orbitRotation 60s linear infinite';
+                            // 无需设置动画延迟，因为我们的关键帧已经从当前角度开始
+                        }, 50);
+                    }
+                    
+                    // 等待更长时间让文本完全消失 (使用淡出动画的时间)
+                    // 文本淡出时间为0.8s，我们等待1.2s确保完全消失
+                    setTimeout(() => {
+                        // 切换到场景6
+                        scene5.classList.remove('active');
+                        scene6.classList.add('active');
+                        
+                        // 首先确保分镜5的标题和内容完全不可见
+                        const workflow5Title = scene5.querySelector('.workflow-title');
+                        const workflow5Subtitle = scene5.querySelector('.workflow-subtitle');
+                        
+                        if (workflow5Title) workflow5Title.style.opacity = '0';
+                        if (workflow5Subtitle) workflow5Subtitle.style.opacity = '0';
+                        
+                        // 增加延迟，确保分镜5完全不可见后再显示分镜6内容
+                        setTimeout(() => {
+                            // 激活场景6的标题和副标题，但使用延迟淡入效果
+                            const layeredTitle = scene6.querySelector('.layered-title');
+                            const layeredSubtitle = scene6.querySelector('.layered-subtitle');
+                            
+                            if (layeredTitle) {
+                                // 不使用CSS动画，仅使用JS过渡
+                                layeredTitle.style.opacity = '0';
+                                layeredTitle.style.transform = 'translateY(30px)';
+                                layeredTitle.style.transition = 'opacity 0.6s ease-in-out, transform 0.6s ease-in-out';
+                                // 不添加active类，避免CSS动画
+                                setTimeout(() => {
+                                    layeredTitle.style.opacity = '1';
+                                    layeredTitle.style.transform = 'translateY(0)';
+                                }, 50);
+                            }
+                            
+                            if (layeredSubtitle) {
+                                // 不使用CSS动画，仅使用JS过渡
+                                layeredSubtitle.style.opacity = '0';
+                                layeredSubtitle.style.transform = 'translateY(30px)';
+                                layeredSubtitle.style.transition = 'opacity 0.6s ease-in-out, transform 0.6s ease-in-out';
+                                // 不添加active类，避免CSS动画
+                                setTimeout(() => {
+                                    layeredSubtitle.style.opacity = '1';
+                                    layeredSubtitle.style.transform = 'translateY(0)';
+                                }, 150); // 稍微延迟副标题的出现
+                            }
+                        
+                            // 激活场景6的容器，但不立即显示内容
+                            const layeredContainer = scene6.querySelector('.layered-display-container');
+                            if (layeredContainer) {
+                                layeredContainer.style.opacity = '0';
+                                layeredContainer.style.transition = 'opacity 0.8s ease-in-out';
+                                layeredContainer.classList.add('active');
+                                
+                                // 确保等待标题和副标题出现后再开始移动行星图
+                                setTimeout(() => {
+                                    // 淡入显示容器
+                                    layeredContainer.style.opacity = '1';
+                                    
+                                    // 计算目标位置 - 屏幕75%处
+                                    const targetLeft = window.innerWidth * 0.75 - planetaryRect.width/2;
+                                    
+                                    // 使用更平滑的缓动函数和更长的过渡时间
+                                    persistentPlanetary.style.transition = 'transform 3.2s cubic-bezier(0.22, 1, 0.36, 1)';
+                                    persistentPlanetary.style.transform = `translate(${targetLeft - planetaryRect.left}px, 0px)`;
+                                    
+                                    // 激活三态UI容器
+                                    const threeStateUI = scene6.querySelector('.three-state-ui');
+                                    if (threeStateUI) {
+                                        setTimeout(() => {
+                                            threeStateUI.classList.add('animated');
+                                            
+                                            // 启动三态UI序列
+                                            startLayeredUISequence();
+                                            
+                                            // 移除过渡状态类
+                                            scene5.classList.remove('transitioning');
+                                            
+                                            // 标记行星系统已移动到最终位置
+                                            persistentPlanetary.classList.add('shifted');
+                                            
+                                            // 启动右侧行星系统的工作流序列
+                                            setTimeout(() => {
+                                                // 重启工作流
+                                                startWorkflowSequence();
+                                                
+                                                // 更新状态
+                                                currentScene = 6;
+                                                navDots.forEach(d => d.classList.remove('active'));
+                                                const currentDot = document.querySelector(`.nav-dot[data-scene="${currentScene}"]`);
+                                                if (currentDot) currentDot.classList.add('active');
+                                                
+                                                console.log("Ultra-smooth transition complete");
+                                                isTransitioning = false;
+                                                autoAdvanceTimer = setTimeout(autoAdvance, sceneDurations[currentScene]);
+                                            }, 800);
+                                        }, 600); // 增加额外延迟，确保移动完成后再激活UI
+                                    }
+                                }, 400); // 等待标题和副标题显示后
+                            }
+                        }, 400); // 增加延迟，确保分镜5完全消失后再显示分镜6内容
+                    }, 1200); // 增加等待时间，确保文本完全消失
+                });
+            }
+            
+            // 更新导航点点击事件，添加对场景5到场景6转场的支持
+            const originalDotEventHandlers = [];
+            
+            // 保存原始事件处理程序
+            navDots.forEach(dot => {
+                const originalHandler = dot.onclick;
+                if (originalHandler) {
+                    originalDotEventHandlers.push({ dot, handler: originalHandler });
+                    dot.onclick = null;
+                }
+            });
+            
+            // 添加新的事件处理程序
+            navDots.forEach(dot => {
+                dot.addEventListener('click', (e) => {
+                    // 首先清除所有计时器
+                    clearTimeout(autoAdvanceTimer);
+                    clearWorkflowTimers();
+                    
+                    // 重置工作流完成状态
+                    workflowComplete = false;
+                    
+                    // 获取场景编号
+                    const sceneNum = parseInt(dot.getAttribute('data-scene'));
+                    
+                    // 处理特殊转场场景
+                    if (currentScene === 5 && sceneNum === 6) {
+                        e.preventDefault(); // 阻止默认行为
+                        
+                        // 使用自定义转场从场景5到场景6
+                        isTransitioning = true;
+                        transitionFromSceneFiveToSix();
+                    } else {
+                        // 更新活动状态
+                        navDots.forEach(d => d.classList.remove('active'));
+                        dot.classList.add('active');
+                        
+                        // 显示选定的场景
+                        scenes.forEach(scene => scene.classList.remove('active'));
+                        const activeScene = document.querySelector(`.scene-${sceneNum}`);
+                        if (activeScene) activeScene.classList.add('active');
+                        
+                        // 设置当前场景
+                        currentScene = sceneNum;
+                        
+                        // 触发该场景的动画
+                        triggerSceneAnimations(sceneNum.toString());
+                        
+                        // 重新启动自动前进计时器
+                        autoAdvanceTimer = setTimeout(autoAdvance, sceneDurations[sceneNum]);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
