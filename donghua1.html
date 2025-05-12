@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Evolution Animation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --primary: #007aff;
+      --primary-light: #5ac8fa;
+      --primary-dark: #0062cc;
+      --secondary: #9333ea;
+      --accent: #ec4899;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --bg-color: #fff;
+      --text-color: #333;
+      --text-secondary: #6b7280;
+      --transition-slow: 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+      --transition-medium: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+      --transition-fast: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 300;
+    }
+
+    .animation-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: 1200px;
+      max-height: 800px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .scene {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1.2s ease-in-out, transform 1.5s ease-in-out;
+      transform: scale(0.95);
+    }
+
+    .scene.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .scene-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 900px;
+      padding: 40px;
+      position: relative;
+    }
+
+    /* Scene 1: User Thought */
+    .text-fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1), 
+                  transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .text-active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .user-icon {
+      width: 140px;
+      height: 140px;
+      border-radius: 24px;
+      position: relative;
+      margin-right: 50px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(145deg, #ffffff, #f5f5f5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-icon svg {
+      width: 70%;
+      height: 70%;
+      stroke: var(--primary);
+      stroke-width: 1.5;
+    }
+
+    .user-thought {
+      font-size: 3rem;
+      color: #1a1a1a;
+      font-weight: 600;
+      max-width: 500px;
+      text-align: left;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #2d3748, #4a5568);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 1px 1px rgba(255,255,255,0.1);
+    }
+
+    .user-thought.longer-text {
+      font-size: 2.5rem;
+      line-height: 1.3;
+      max-width: 500px;
+    }
+
+    /* Scene 2 - Apple-style Chat UI */
+    .chat-container {
+      width: 100%;
+      max-width: 900px;
+      background-color: #fff;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transform: scale(0.8);
+      opacity: 0;
+      transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), 
+                  opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .chat-container.active {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .chat-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+    }
+
+    .chat-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, var(--primary-light), var(--primary));
+      margin-right: 16px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 122, 255, 0.2);
+    }
+
+    .chat-avatar svg {
+      width: 24px;
+      height: 24px;
+      stroke: white;
+      stroke-width: 2.5;
+    }
+
+    .chat-input {
+      flex: 1;
+      height: 44px;
+      background-color: rgba(0, 0, 0, 0.03);
+      border-radius: 22px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 0 20px;
+      font-size: 16px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      font-weight: 400;
+    }
+
+    .chat-input::after {
+      content: "How can I assist you today?";
+      opacity: 0.6;
+    }
+
+    .chat-options {
+      display: flex;
+      justify-content: space-between;
+      padding: 24px;
+      gap: 20px;
+    }
+
+    .chat-option {
+      flex: 1;
+      padding: 28px 20px;
+      background-color: rgba(0, 0, 0, 0.02);
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-color);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .chat-option:hover {
+      background-color: rgba(0, 0, 0, 0.03);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .option-icon {
+      margin-bottom: 20px;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5));
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .chat-option-1 .option-icon { color: var(--primary); }
+    .chat-option-2 .option-icon { color: var(--success); }
+    .chat-option-3 .option-icon { color: var(--secondary); }
+
+    .chat-option-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    .chat-option-description {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .chat-response {
+      display: flex;
+      padding: 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    .response-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #dcfce7, #bbf7d0);
+      margin-right: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--success);
+      flex-shrink: 0;
+    }
+
+    .response-content {
+      background-color: rgba(0, 0, 0, 0.02);
+      border-radius: 16px;
+      padding: 20px;
+      flex-grow: 1;
+      color: var(--text-color);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .response-content::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent 0%, transparent 20%, 
+        rgba(0, 0, 0, 0.03) 20%, rgba(0, 0, 0, 0.03) 30%, 
+        transparent 30%, transparent 50%,
+        rgba(0, 0, 0, 0.03) 50%, rgba(0, 0, 0, 0.03) 60%, 
+        transparent 60%, transparent 80%,
+        rgba(0, 0, 0, 0.03) 80%, rgba(0, 0, 0, 0.03) 90%,
+        transparent 90%, transparent 100%);
+      animation: loadingPulse 2s infinite linear;
+    }
+
+    @keyframes loadingPulse {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+
+    .response-placeholder {
+      height: 12px;
+      background-color: rgba(0, 0, 0, 0.06);
+      border-radius: 6px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .response-placeholder:last-child {
+      width: 70%;
+      margin-bottom: 0;
+    }
+
+    /* Scene 3 - Information Ocean */
+    .info-ocean {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1000px;
+    }
+
+    .user-silhouette {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 420px;
+      height: 420px;
+      opacity: 0;
+      transition: opacity var(--transition-medium) ease-out, 
+                  transform var(--transition-medium) ease-out;
+      filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15));
+      z-index: 1;
+      border: none;
+      outline: none;
+    }
+
+    .info-item {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.75);
+      border-radius: 18px;
+      padding: 14px 20px;
+      color: var(--text-secondary);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+      font-size: 15px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(10px);
+      max-width: 200px;
+      border: none;
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+      z-index: 10;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+    }
+
+    /* Info icon variants - 保留彩色图标 */
+    .info-item:nth-child(3n+1) .info-icon {
+      color: var(--primary);
+    }
+    
+    .info-item:nth-child(3n+2) .info-icon {
+      color: var(--accent);
+    }
+    
+    .info-item:nth-child(3n+3) .info-icon {
+      color: var(--secondary);
+    }
+
+    .info-icon {
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+    }
+
+    .info-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2;
+    }
+
+    /* Scene 4 & 5 - Transition */
+    .magic-lamp-container {
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 1.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    .magic-lamp-container.center {
+      transform: translate(0, 0) scale(1.28);
+      opacity: 1;
+      transition: all 1.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .magic-lamp-container.left {
+      transform: translate(-180px, 0) scale(0.7);
+      opacity: 0.6;
+      transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s cubic-bezier(0.23, 1, 0.32, 1);
+      will-change: transform, opacity;
+    }
+
+    .magic-lamp-container.fade-out {
+      opacity: 0;
+      transform: translate(-180px, 0) scale(0.5);
+      transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1), transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    /* 优化神灯图片和烟雾的动画效果 */
+    .magic-lamp, .lamp-smoke, .lamp-smoke-2, .lamp-smoke-3 {
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+    }
+
+    .einstein-container {
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 1.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    .einstein-container.right {
+      transform: translate(150px, 0) scale(0.8);
+      opacity: 0.8;
+      transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1), transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .einstein-container.center {
+      transform: translate(0, 0) scale(1.28);
+      opacity: 1;
+      transition: all 1.8s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    /* 同步所有与神灯相关的过渡时间 */
+    .lamp-glow, .lamp-smoke, .lamp-smoke-2, .lamp-smoke-3 {
+      transition: opacity 1.2s ease-out, transform 1.5s ease-out;
+    }
+
+    .magic-lamp {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: none;
+    }
+
+    .einstein {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: none;
+    }
+
+    /* 神灯光晕 - 最终精确位置 */
+    .lamp-glow {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle at center, rgba(255, 246, 213, 0.12) 0%, transparent 85%);
+      opacity: 0;
+      transition: opacity 1.5s ease-out;
+      border-radius: 50%;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    
+    .lamp-glow.active {
+      opacity: 1;
+      animation: subtle-pulse 3s infinite alternate;
+    }
+    
+    /* 爱因斯坦灯泡光晕 - 最终精确位置 */
+    .lightbulb-glow {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle at center, rgba(255, 255, 230, 0.4) 0%, transparent 75%);
+      opacity: 0;
+      transition: opacity 1.5s ease-out;
+      border-radius: 50%;
+      top: 52%;
+      right: 39%;
+      pointer-events: none;
+      z-index: 2;
+    }
+    
+    .lightbulb-glow.active {
+      opacity: 1;
+      animation: subtle-pulse 2s infinite alternate;
+    }
+    
+    /* 神灯烟雾1 - 主烟雾 */
+    .lamp-smoke {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle at center, rgba(255, 253, 250, 0.3) 0%, transparent 85%);
+      opacity: 0;
+      transition: opacity 1.5s ease-out, transform 2s ease-out;
+      border-radius: 50%;
+      top: 30%;
+      left: 58%;
+      pointer-events: none;
+      z-index: 2;
+    }
+    
+    .lamp-smoke.active {
+      opacity: 0.7;
+      transform: translateY(-10px);
+      animation: smoky-float 4s infinite ease-in-out;
+    }
+
+    /* 神灯烟雾2 */
+    .lamp-smoke-2 {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      background: radial-gradient(circle at center, rgba(255, 253, 250, 0.25) 0%, transparent 85%);
+      opacity: 0;
+      transition: opacity 1.5s ease-out, transform 2s ease-out;
+      border-radius: 50%;
+      top: 25%;
+      left: 59%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .lamp-smoke-2.active {
+      opacity: 0.6;
+      transform: translateY(-18px) translateX(3px);
+      animation: smoky-float 5s infinite ease-in-out 0.5s;
+    }
+
+    /* 神灯烟雾3 */
+    .lamp-smoke-3 {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle at center, rgba(255, 253, 250, 0.2) 0%, transparent 85%);
+      opacity: 0;
+      transition: opacity 1.5s ease-out, transform 2s ease-out;
+      border-radius: 50%;
+      top: 20%;
+      left: 57%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .lamp-smoke-3.active {
+      opacity: 0.5;
+      transform: translateY(-25px) translateX(-3px);
+      animation: smoky-float 6s infinite ease-in-out 1s;
+    }
+
+    /* 神灯烟雾上升和散开效果 - 更加柔和 */
+    @keyframes smoky-float {
+      0% {
+        opacity: 0.4;
+        transform: scale(1) translateY(0);
+      }
+      50% {
+        opacity: 0.3;
+        transform: scale(1.2) translateY(-10px);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.4) translateY(-20px);
+      }
+    }
+
+    /* 更细微的脉冲动画 */
+    @keyframes subtle-pulse {
+      0% {
+        opacity: 0.7;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0.8;
+        transform: scale(1.03);
+      }
+    }
+
+    /* Float animations for info items */
+    @keyframes float1 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    
+    @keyframes float2 {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-12px) translateX(8px); }
+    }
+    
+    @keyframes float3 {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-8px) translateX(-7px); }
+    }
+
+    /* Text pulse animation for scene 1 */
+    @keyframes textPulse {
+      0% { opacity: 0.9; }
+      100% { opacity: 1; }
+    }
+
+    .magic-lamp.animate {
+      animation: gentle-shake 3s infinite alternate;
+    }
+
+    .einstein.animate {
+      animation: gentle-bob 4s infinite ease-in-out;
+    }
+
+    /* Animation keyframes */
+    @keyframes float {
+      0%, 100% { transform: translateY(-30px) scale(1); }
+      50% { transform: translateY(-60px) scale(1.3); }
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.5; transform: scale(1); }
+      100% { opacity: 0.9; transform: scale(1.15); }
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes gentle-shake {
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+    }
+
+    @keyframes gentle-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* Particle effects */
+    .particles-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    .particle.active {
+      animation: float-particle 15s infinite linear;
+    }
+
+    @keyframes float-particle {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Scene transitions */
+    .scene-transition {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    .scene-transition.active {
+      opacity: 1;
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      width: 0%;
+      transition: width 0.5s linear;
+      z-index: 1000;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .user-thought {
+        font-size: 2.5rem;
+      }
+      .user-thought.longer-text {
+        font-size: 2rem;
+      }
+      .scene-content {
+        padding: 20px;
+      }
+      .voiceover {
+        font-size: 1.1rem;
+        padding: 0 40px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .user-icon {
+        width: 100px;
+        height: 100px;
+        margin-right: 30px;
+      }
+      .user-thought {
+        font-size: 2rem;
+        max-width: 400px;
+      }
+      .user-thought.longer-text {
+        font-size: 1.7rem;
+      }
+      .chat-options {
+        flex-direction: column;
+      }
+      .chat-option {
+        height: auto;
+        padding: 20px;
+      }
+      .magic-lamp-container, .einstein-container {
+        width: 200px;
+        height: 200px;
+      }
+      .voiceover {
+        font-size: 1rem;
+        padding: 0 30px;
+        bottom: 30px;
+      }
+    }
+
+    .voiceover {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 1.1rem;
+      color: rgba(0, 0, 0, 0.8);
+      padding: 0 40px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+    
+    .voiceover.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar"></div>
+  
+  <div class="particles-container" id="particles-container"></div>
+  
+  <div class="animation-container">
+    <!-- Scene 1: User with updated text -->
+    <div class="scene" id="scene1">
+      <div class="scene-content">
+        <div class="user-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="6" />
+            <circle cx="12" cy="10" r="3" />
+            <path d="M12 13c-1.65 0-3.2.81-4.1 2.2C7.34 16.66 9.89 18 12 18c2.11 0 4.66-1.34 4.1-2.8-.9-1.39-2.45-2.2-4.1-2.2z" />
+          </svg>
+        </div>
+        <h2 class="user-thought text-fade-in longer-text">Today, how do you use AI<br>to assist your work?</h2>
+      </div>
+    </div>
+
+    <!-- Scene 2: ChatGPT Window - Redesigned with Apple-style -->
+    <div class="scene" id="scene2">
+      <div class="scene-content">
+        <div class="chat-container">
+          <div class="chat-header">
+            <div class="chat-avatar">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+              </svg>
+            </div>
+            <div class="chat-input"></div>
+          </div>
+          <div class="chat-options">
+            <div class="chat-option chat-option-1">
+              <div class="option-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <line x1="8" y1="8" x2="16" y2="8" />
+                  <line x1="8" y1="12" x2="16" y2="12" />
+                  <line x1="8" y1="16" x2="13" y2="16" />
+                </svg>
+              </div>
+              <div class="chat-option-title">Describe the background of the problem</div>
+              <div class="chat-option-description">Provide context for better understanding</div>
+            </div>
+            <div class="chat-option chat-option-2">
+              <div class="option-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+                  <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                </svg>
+              </div>
+              <div class="chat-option-title">Write a specific instruction</div>
+              <div class="chat-option-description">Be clear about what you need</div>
+            </div>
+            <div class="chat-option chat-option-3">
+              <div class="option-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <path d="M20.4 14.5L16 10 4 20" />
+                </svg>
+              </div>
+              <div class="chat-option-title">Upload various attachments</div>
+              <div class="chat-option-description">Add images, files, or code</div>
+            </div>
+          </div>
+          <div class="chat-response">
+            <div class="response-avatar">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                <line x1="9" y1="9" x2="9.01" y2="9" />
+                <line x1="15" y1="9" x2="15.01" y2="9" />
+              </svg>
+            </div>
+            <div class="response-content">
+              <div class="response-placeholder" style="width: 95%; height: 14px; border-radius: 7px; background: linear-gradient(90deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.06) 100%);"></div>
+              <div class="response-placeholder" style="width: 85%; height: 14px; border-radius: 7px; margin: 12px 0; background: linear-gradient(90deg, rgba(0,0,0,0.07) 0%, rgba(0,0,0,0.09) 30%, rgba(0,0,0,0.07) 100%);"></div>
+              <div class="response-placeholder" style="width: 70%; height: 14px; border-radius: 7px; background: linear-gradient(90deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.07) 70%, rgba(0,0,0,0.05) 100%);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3: Information Overwhelm - Redesigned with Apple-style -->
+    <div class="scene" id="scene3">
+      <div class="scene-content">
+        <div class="info-ocean">
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3-OsAKHyNzJdei5J5zDaxZa2kZy2jdNw.png" alt="User overwhelmed by information" class="user-silhouette">
+          
+          <!-- 增加到16个信息气泡，垂直分布更加分散 -->
+          <div class="info-item" style="top: 5%; left: 10%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <line x1="8" y1="8" x2="16" y2="8" />
+                <line x1="8" y1="12" x2="16" y2="12" />
+                <line x1="8" y1="16" x2="13" y2="16" />
+              </svg>
+            </div>
+            Document
+          </div>
+          <div class="info-item" style="top: 25%; left: 18%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+              </svg>
+            </div>
+            Favorite
+          </div>
+          <div class="info-item" style="top: 8%; left: 75%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M20.4 14.5L16 10 4 20" />
+              </svg>
+            </div>
+            Image
+          </div>
+          <div class="info-item" style="top: 32%; left: 85%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="4" />
+              </svg>
+            </div>
+            Target
+          </div>
+          <div class="info-item" style="top: 70%; left: 20%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                <line x1="9" y1="9" x2="9.01" y2="9" />
+                <line x1="15" y1="9" x2="15.01" y2="9" />
+              </svg>
+            </div>
+            Message
+          </div>
+          <div class="info-item" style="top: 82%; left: 8%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+              </svg>
+            </div>
+            Call
+          </div>
+          <div class="info-item" style="top: 28%; right: 12%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+              </svg>
+            </div>
+            Note
+          </div>
+          <div class="info-item" style="top: 58%; right: 5%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            </div>
+            Bookmark
+          </div>
+          <div class="info-item" style="top: 75%; right: 20%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+            </div>
+            Laptop
+          </div>
+          <div class="info-item" style="top: 90%; right: 28%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            </div>
+            Book
+          </div>
+          <div class="info-item" style="bottom: 12%; left: 35%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8l4 4-4 4M8 12h8" />
+              </svg>
+            </div>
+            Link
+          </div>
+          <div class="info-item" style="bottom: 65%; left: 28%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                <path d="M14 2v6h6" />
+                <path d="M16 13H8" />
+                <path d="M16 17H8" />
+                <path d="M10 9H8" />
+              </svg>
+            </div>
+            File
+          </div>
+          <div class="info-item" style="top: 15%; left: 40%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+                <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+              </svg>
+            </div>
+            Email
+          </div>
+          <div class="info-item" style="top: 40%; left: 6%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15.6 11.6L22 7v10l-6.4-4.5v-1zM4 5h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2z" />
+              </svg>
+            </div>
+            Video
+          </div>
+          <div class="info-item" style="bottom: 30%; right: 38%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+            Chat
+          </div>
+          <div class="info-item" style="top: 17%; right: 32%">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </div>
+            Location
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 4: Aladdin's Lamp - Updated to match the provided image -->
+    <div class="scene" id="scene4">
+      <div class="scene-content">
+        <div class="magic-lamp-container center" id="lamp-container-scene4">
+          <!-- Using the provided image URL -->
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4-VugTHGNrfWHdBLMxS20mpLE6uLK176.png" alt="Aladdin's lamp" class="magic-lamp animate">
+          <div class="lamp-glow"></div>
+          <div class="lamp-smoke"></div>
+          <div class="lamp-smoke-2"></div>
+          <div class="lamp-smoke-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 5: Einstein Collaboration - Updated with new lamp design -->
+    <div class="scene" id="scene5">
+      <div class="scene-content">
+        <!-- Magic lamp container (starts hidden, will be positioned left) -->
+        <div class="magic-lamp-container" id="lamp-container-scene5">
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4-VugTHGNrfWHdBLMxS20mpLE6uLK176.png" alt="Aladdin's lamp" class="magic-lamp animate">
+          <div class="lamp-smoke"></div>
+          <div class="lamp-smoke-2"></div>
+          <div class="lamp-smoke-3"></div>
+        </div>
+        
+        <!-- Einstein container (starts hidden, will be positioned right then center) -->
+        <div class="einstein-container" id="einstein-container">
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/6-u4ehrSlNqsTrqncckgAmbF9GBOQqvw.png" alt="Einstein" class="einstein animate">
+          <div class="lightbulb-glow"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- https://hebbkx1anhila5yf.public.blob.vercel-storage.com/5-AqcXTCuoudNvksLXvB8zDXk4VjkgLB.png -->
+
+  <!-- Scene transition overlay -->
+  <div class="scene-transition" id="scene-transition"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Create background particles
+      const particlesContainer = document.getElementById('particles-container');
+      const particleCount = 20;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const size = Math.random() * 8 + 4;
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random starting position
+        const startX = Math.random() * window.innerWidth;
+        const startY = Math.random() * window.innerHeight;
+        particle.style.left = `${startX}px`;
+        particle.style.top = `${startY}px`;
+        
+        // Random movement direction and distance
+        const tx = (Math.random() - 0.5) * window.innerWidth * 1.5;
+        const ty = (Math.random() - 0.5) * window.innerHeight * 1.5;
+        particle.style.setProperty('--tx', `${tx}px`);
+        particle.style.setProperty('--ty', `${ty}px`);
+        
+        // Random delay
+        const delay = Math.random() * 10;
+        particle.style.animationDelay = `${delay}s`;
+        
+        particlesContainer.appendChild(particle);
+        
+        // Activate after a small delay to ensure smooth animation
+        setTimeout(() => {
+          particle.classList.add('active');
+        }, 100);
+      }
+      
+      // Animation Timeline
+      const timeline = [
+        { // Scene 1
+          duration: 5000,
+          setup: () => {
+            document.getElementById('scene1').classList.add('active');
+            
+            // Start with user icon at scale 0.9 and opacity 0
+            const userIcon = document.querySelector('#scene1 .user-icon');
+            userIcon.style.transform = 'scale(0.9)';
+            userIcon.style.opacity = '0';
+            
+            // First animate the user icon with a slight delay
+            setTimeout(() => {
+              userIcon.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+              userIcon.style.transform = 'scale(1)';
+              userIcon.style.opacity = '1';
+            }, 300);
+            
+            // Then animate the text with a sequential fade in
+            setTimeout(() => {
+              document.querySelector('#scene1 .text-fade-in').classList.add('text-active');
+              
+              // Add subtle text pulsing effect
+              const userThought = document.querySelector('#scene1 .user-thought');
+              userThought.style.animation = 'textPulse 3s ease-in-out infinite alternate';
+            }, 800);
+            
+            // Update progress bar
+            updateProgressBar(0);
+          },
+          cleanup: () => {
+            document.getElementById('scene1').classList.remove('active');
+            document.querySelector('#scene1 .text-fade-in').classList.remove('text-active');
+            
+            // Reset user icon and animations
+            const userIcon = document.querySelector('#scene1 .user-icon');
+            userIcon.style.transform = '';
+            userIcon.style.opacity = '';
+            userIcon.style.transition = '';
+            
+            const userThought = document.querySelector('#scene1 .user-thought');
+            userThought.style.animation = '';
+          }
+        },
+        { // Scene 2
+          duration: 8000,
+          setup: () => {
+            document.getElementById('scene2').classList.add('active');
+            
+            // Animate chat container and voiceover together
+            setTimeout(() => {
+              document.querySelector('#scene2 .chat-container').classList.add('active');
+            }, 500);
+            
+            // Animate chat options sequentially with smoother timing
+            setTimeout(() => {
+              document.querySelector('.chat-option-1').style.opacity = '1';
+              document.querySelector('.chat-option-1').style.transform = 'translateY(0)';
+            }, 1000);
+            
+            setTimeout(() => {
+              document.querySelector('.chat-option-2').style.opacity = '1';
+              document.querySelector('.chat-option-2').style.transform = 'translateY(0)';
+            }, 1500);
+            
+            setTimeout(() => {
+              document.querySelector('.chat-option-3').style.opacity = '1';
+              document.querySelector('.chat-option-3').style.transform = 'translateY(0)';
+            }, 2000);
+            
+            setTimeout(() => {
+              document.querySelector('.chat-response').style.opacity = '1';
+              document.querySelector('.chat-response').style.transform = 'translateY(0)';
+            }, 3000);
+            
+            // Update progress bar
+            updateProgressBar(20);
+          },
+          cleanup: () => {
+            document.getElementById('scene2').classList.remove('active');
+            document.querySelector('#scene2 .chat-container').classList.remove('active');
+            
+            document.querySelector('.chat-option-1').style.opacity = '0';
+            document.querySelector('.chat-option-1').style.transform = 'translateY(20px)';
+            document.querySelector('.chat-option-2').style.opacity = '0';
+            document.querySelector('.chat-option-2').style.transform = 'translateY(20px)';
+            document.querySelector('.chat-option-3').style.opacity = '0';
+            document.querySelector('.chat-option-3').style.transform = 'translateY(20px)';
+            document.querySelector('.chat-response').style.opacity = '0';
+            document.querySelector('.chat-response').style.transform = 'translateY(20px)';
+          }
+        },
+        { // Scene 3
+          duration: 5000, // 与index0.html保持一致
+          setup: () => {
+            document.getElementById('scene3').classList.add('active');
+            
+            setTimeout(() => {
+              document.querySelector('.user-silhouette').style.opacity = '1';
+            }, 500);
+            
+            // 分层显示信息气泡，垂直方向散布更加明显
+            const infoItems = document.querySelectorAll('.info-item');
+            
+            // 将信息项分为顶部、中部和底部三层
+            const topItems = [];
+            const middleItems = [];
+            const bottomItems = [];
+            
+            infoItems.forEach(item => {
+              const style = window.getComputedStyle(item);
+              const top = parseFloat(style.top) || 0;
+              const bottom = parseFloat(style.bottom) || 0;
+              
+              if (bottom > 0 || top > 60) {
+                bottomItems.push(item);
+              } else if (top < 30) {
+                topItems.push(item);
+              } else {
+                middleItems.push(item);
+              }
+            });
+            
+            // 按层次顺序显示，从上到下
+            const animateLayer = (items, startDelay, layerIndex) => {
+              items.forEach((item, index) => {
+                setTimeout(() => {
+                  item.style.opacity = '1';
+                  item.style.transform = 'translateY(0)';
+                  
+                  // 每一层使用不同的浮动动画和时间
+                  const animationIndex = (layerIndex + index) % 3 + 1;
+                  const duration = 3 + Math.random() * 3;
+                  item.style.animation = `float${animationIndex} ${duration}s ease-in-out infinite`;
+                }, startDelay + index * 200);
+              });
+            };
+            
+            // 以从上到下的顺序展示各层
+            animateLayer(topItems, 800, 0);
+            animateLayer(middleItems, 1600, 1);
+            animateLayer(bottomItems, 2400, 2);
+            
+            // Update progress bar
+            updateProgressBar(40);
+          },
+          cleanup: () => {
+            document.getElementById('scene3').classList.remove('active');
+            document.querySelector('.user-silhouette').style.opacity = '0';
+            
+            const infoItems = document.querySelectorAll('.info-item');
+            infoItems.forEach(item => {
+              item.style.opacity = '0';
+              item.style.transform = 'translateY(10px)';
+              item.style.animation = 'none';
+            });
+          }
+        },
+        { // Scene 4
+          duration: 6000,
+          setup: () => {
+            document.getElementById('scene4').classList.add('active');
+            
+            // 使用RAF确保动画流畅
+            requestAnimationFrame(() => {
+            setTimeout(() => {
+              document.querySelector('#lamp-container-scene4').classList.add('center');
+              document.querySelector('#scene4 .lamp-glow').classList.add('active');
+              document.querySelector('#scene4 .lamp-smoke').classList.add('active');
+                document.querySelector('#scene4 .lamp-smoke-2').classList.add('active');
+                document.querySelector('#scene4 .lamp-smoke-3').classList.add('active');
+              }, 500);
+            });
+            
+            // Update progress bar
+            updateProgressBar(60);
+          },
+          cleanup: () => {
+            // 解决神灯移动时的拖影问题
+            
+            // 1. 直接操作DOM，提高性能
+            const scene4 = document.getElementById('scene4');
+            const scene4Lamp = document.querySelector('#lamp-container-scene4');
+            const scene5 = document.getElementById('scene5');
+            
+            // 2. 预处理场景5，但保持隐藏
+            scene5.style.opacity = '0';
+            scene5.classList.add('active');
+            document.querySelector('#lamp-container-scene5').classList.add('left');
+            document.querySelector('#scene5 .lamp-smoke').classList.add('active');
+            document.querySelector('#scene5 .lamp-smoke-2').classList.add('active');
+            document.querySelector('#scene5 .lamp-smoke-3').classList.add('active');
+            document.querySelector('#einstein-container').classList.add('right');
+            
+            // 3. 使用requestAnimationFrame优化动画帧
+            requestAnimationFrame(() => {
+              // 移除场景4的中心位置类，添加左侧类
+              scene4Lamp.classList.remove('center');
+              
+              // 在下一帧添加左侧类，优化渲染
+              requestAnimationFrame(() => {
+                scene4Lamp.classList.add('left');
+                
+                // 等待神灯移动动画完成大部分时
+                setTimeout(() => {
+                  // 使用更短时间展示场景5
+                  scene5.style.transition = 'opacity 300ms ease-in';
+                  scene5.style.opacity = '1';
+                  
+                  // 加快清理场景4的时间，减少重叠时间
+                  setTimeout(() => {
+                    // 移除场景4的所有活动元素
+            document.querySelector('#scene4 .lamp-glow').classList.remove('active');
+            document.querySelector('#scene4 .lamp-smoke').classList.remove('active');
+                    document.querySelector('#scene4 .lamp-smoke-2').classList.remove('active');
+                    document.querySelector('#scene4 .lamp-smoke-3').classList.remove('active');
+                    
+                    // 最后移除场景4的活动状态
+                    scene4.classList.remove('active');
+                  }, 200);
+                }, 700);
+              });
+            });
+          }
+        },
+        { // Scene 5
+          duration: 8000,
+          setup: () => {
+            // 场景5已经在场景4的cleanup中被激活，这里专注于后续动画
+            
+            // 将爱因斯坦移至中央，同时淡出神灯
+            setTimeout(() => {
+              document.querySelector('#lamp-container-scene5').classList.add('fade-out');
+              document.querySelector('#einstein-container').classList.remove('right');
+              document.querySelector('#einstein-container').classList.add('center');
+            
+              // 添加灯泡光晕效果
+            setTimeout(() => {
+                document.querySelector('#scene5 .lightbulb-glow').classList.add('active');
+              }, 800);
+            }, 2200);
+            
+            // Update progress bar
+            updateProgressBar(80);
+            
+            // Complete the progress bar at the end
+            setTimeout(() => {
+              updateProgressBar(100);
+            }, 7000);
+          },
+          cleanup: () => {
+            const scene5 = document.getElementById('scene5');
+            scene5.style.transition = '';
+            scene5.style.opacity = '';
+            scene5.classList.remove('active');
+            
+            document.querySelector('#lamp-container-scene5').classList.remove('left');
+            document.querySelector('#lamp-container-scene5').classList.remove('fade-out');
+            document.querySelector('#einstein-container').classList.remove('right');
+            document.querySelector('#einstein-container').classList.remove('center');
+            document.querySelector('#scene5 .lightbulb-glow').classList.remove('active');
+            document.querySelector('#scene5 .lamp-smoke').classList.remove('active');
+            document.querySelector('#scene5 .lamp-smoke-2').classList.remove('active');
+            document.querySelector('#scene5 .lamp-smoke-3').classList.remove('active');
+          }
+        }
+      ];
+
+      // Animation controller
+      let currentSceneIndex = 0;
+      let animationTimeout;
+
+      // Update progress bar
+      function updateProgressBar(percentage) {
+        document.querySelector('.progress-bar').style.width = `${percentage}%`;
+      }
+
+      // Scene transition effect - Simplified version like in index0.html
+      function playNextScene() {
+        // Clean up previous scene if exists
+        if (currentSceneIndex > 0) {
+          timeline[currentSceneIndex - 1].cleanup();
+        }
+        
+        // Check if reached the end
+        if (currentSceneIndex >= timeline.length) {
+          currentSceneIndex = 0; // Loop back to beginning
+        }
+          
+        // Setup and play current scene
+        const currentScene = timeline[currentSceneIndex];
+        currentScene.setup();
+          
+        // Schedule next scene
+        animationTimeout = setTimeout(() => {
+          currentSceneIndex++;
+          playNextScene();
+        }, currentScene.duration);
+      }
+
+      // Start the animation
+      playNextScene();
+
+      // Allow user to restart animation by clicking anywhere
+      document.addEventListener('click', (e) => {          
+        clearTimeout(animationTimeout);
+        
+        // Clean up current scene
+        if (currentSceneIndex >= 0 && currentSceneIndex < timeline.length) {
+          timeline[currentSceneIndex].cleanup();
+        }
+        
+        // Reset to beginning
+        currentSceneIndex = 0;
+        playNextScene();
+      });
+
+      // Handle window resize
+      window.addEventListener('resize', () => {
+        // Reposition particles on resize
+        document.querySelectorAll('.particle').forEach(particle => {
+          const tx = (Math.random() - 0.5) * window.innerWidth * 1.5;
+          const ty = (Math.random() - 0.5) * window.innerHeight * 1.5;
+          particle.style.setProperty('--tx', `${tx}px`);
+          particle.style.setProperty('--ty', `${ty}px`);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
