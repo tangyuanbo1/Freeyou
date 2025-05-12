@@ -10,7 +10,7 @@
   <img src="logo/FreeYou.png" alt="FreeYou" width="300"/>
 </p>
 
-**End-to-end AI Agent | Seamless Proactive Interaction | Complete Privacy Protection | Local-Cloud Collaboration**
+**Comprehensive Perception | Proactive Service | Multimodal Data Interaction | Edge-Cloud Collaboration | Privacy Protection | End-to-End AI Agent**
 
 [English](README_EN.md) • [中文](README.md)
 

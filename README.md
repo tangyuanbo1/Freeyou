@@ -1,6 +1,6 @@
 <div align="center">
 
-# FreeYou - 无感知的AI主动服务智能体
+# FreeYou - 全域感知AI主动服务智能体
 
 <p align="center">
   <img src="logo/logo.svg" alt="Free Logo" width="200"/>
@@ -10,7 +10,7 @@
   <img src="logo/FreeYou.png" alt="FreeYou" width="300"/>
 </p>
 
-**打通全流程的AI智能体 | 无感知主动交互 | 全面隐私保护 | 本地云端协同**
+**全量感知 | 主动服务 | 多模态数据交互 | 边云协同 | 隐私保护 | 打通全流程的AI智能体**
 
 [English](README_EN.md) • [中文](README.md)
 
