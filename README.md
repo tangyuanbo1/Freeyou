@@ -47,12 +47,7 @@ FreeYou是一个开源的AI主动服务智能体系统，它能够无感知地�
 - **简单决策**：只需一个"Yes"或"No"，FreeYou便能替你完成繁琐的任务
 - **扩展接口**：轻松接入各种执行器和第三方API，实现"AI for everything"
 
-<div align="center">
 
-<!-- 此处可插入功能展示图片 -->
-*核心功能展示*
-
-</div>
 
 ## 🔍 应用场景
 
@@ -95,57 +90,7 @@ FreeYou是一个开源的AI主动服务智能体系统，它能够无感知地�
 - **OCR技术**：用于从图像中提取文本信息
 - **前端**：Flask提供API服务
 
-<div align="center">
 
-<!-- 此处可插入架构图 -->
-*系统架构图*
-
-</div>
-
-## 🚀 快速开始
-
-### 环境要求
-
-- Python 3.8+
-- 足够的GPU内存（推荐用于本地模型）
-
-### 安装步骤
-
-1. 克隆仓库
-
-```bash
-git clone https://github.com/yourusername/FreeYou.git
-cd FreeYou
-```
-
-2. 安装依赖
-
-```bash
-pip install -r requirements.txt
-```
-
-3. 配置模型
-
-编辑`config.config`文件，配置本地或云端模型的API信息：
-
-```json
-{
-  "api_config": {
-    "CLOUD_API_KEY": "your_cloud_api_key",
-    "CLOUD_API_BASE": "https://api.example.com/v1",
-    "DEFAULT_CLOUD_MODEL": "model_name",
-    "LOCAL_API_KEY": "your_local_api_key",
-    "LOCAL_API_BASE": "http://localhost:11434/v1",
-    "LOCAL_MODEL_NAME": "your_local_model_name"
-  }
-}
-```
-
-4. 启动服务
-
-```bash
-python app.py
-```
 
 ## 📊 使用示例
 

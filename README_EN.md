@@ -47,12 +47,7 @@ FreeYou is an open-source proactive AI agent system that can seamlessly observe 
 - **Simple Decision-Making**: Only a "Yes" or "No" is needed for FreeYou to complete tedious tasks for you
 - **Extension Interfaces**: Easily connect to various executors and third-party APIs to achieve "AI for everything"
 
-<div align="center">
 
-<!-- Insert feature showcase image here -->
-*Core Feature Showcase*
-
-</div>
 
 ## 🔍 Use Cases
 
@@ -95,57 +90,7 @@ FreeYou is an open-source proactive AI agent system that can seamlessly observe 
 - **OCR Technology**: For extracting text information from images
 - **Frontend**: Flask providing API services
 
-<div align="center">
 
-<!-- Insert architecture diagram here -->
-*System Architecture Diagram*
-
-</div>
-
-## 🚀 Quick Start
-
-### Requirements
-
-- Python 3.8+
-- Sufficient GPU memory (recommended for local models)
-
-### Installation Steps
-
-1. Clone the repository
-
-```bash
-git clone https://github.com/yourusername/FreeYou.git
-cd FreeYou
-```
-
-2. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-3. Configure models
-
-Edit the `config.config` file to configure local or cloud model API information:
-
-```json
-{
-  "api_config": {
-    "CLOUD_API_KEY": "your_cloud_api_key",
-    "CLOUD_API_BASE": "https://api.example.com/v1",
-    "DEFAULT_CLOUD_MODEL": "model_name",
-    "LOCAL_API_KEY": "your_local_api_key",
-    "LOCAL_API_BASE": "http://localhost:11434/v1",
-    "LOCAL_MODEL_NAME": "your_local_model_name"
-  }
-}
-```
-
-4. Start the service
-
-```bash
-python app.py
-```
 
 ## 📊 Usage Examples
 
