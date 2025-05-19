@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全域感知AI主动服务智能体——FreeYou | Perceptive AI Active Service Agent——FreeYou</title>
+    <title>全域AI主动服务智能体——FreeYou | Omnichannel AI Proactive Service Agent——FreeYou</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap">
     <style>
@@ -566,45 +566,6 @@
             margin: 40px 0;
         }
         
-        .text-input-area {
-            width: 100%;
-            max-width: 600px;
-            margin-bottom: 30px;
-        }
-        
-        .text-input-area h3 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--apple-text);
-            text-align: left;
-        }
-        
-        .text-input-area textarea {
-            width: 100%;
-            height: 120px;
-            padding: 15px;
-            border-radius: 12px;
-            background-color: var(--apple-input-bg);
-            border: 1px solid var(--apple-border);
-            color: var(--apple-text);
-            font-size: 16px;
-            font-family: var(--apple-font);
-            resize: vertical;
-            transition: var(--apple-transition);
-        }
-        
-        .text-input-area textarea:focus {
-            outline: none;
-            border-color: var(--apple-highlight);
-            box-shadow: 0 0 0 2px rgba(41, 151, 255, 0.3);
-        }
-        
-        .text-input-area textarea::placeholder {
-            color: var(--apple-secondary-text);
-            opacity: 0.7;
-        }
-        
         .upload-area {
             width: 100%;
             max-width: 600px;
@@ -737,10 +698,6 @@
                 height: 180px;
             }
             
-            .text-input-area textarea {
-                height: 100px;
-            }
-            
             .theme-toggle, .lang-toggle {
                 top: 10px;
                 width: 40px;
@@ -792,16 +749,6 @@
             
             .upload-area i {
                 font-size: 36px;
-            }
-            
-            .text-input-area h3 {
-                font-size: 18px;
-            }
-            
-            .text-input-area textarea {
-                height: 90px;
-                padding: 12px;
-                font-size: 14px;
             }
         }
         
@@ -855,209 +802,6 @@
             margin-bottom: 15px;
             text-align: center;
         }
-
-        /* Fireworks effect styles */
-        .fireworks-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            overflow: hidden;
-        }
-        
-        .firework {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.6);
-            animation: explode 1s ease-out forwards;
-            opacity: 0;
-            filter: blur(0.5px);
-        }
-        
-        .launch-dot {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            border-radius: 50%;
-            transform: translateX(-50%);
-            filter: blur(0.3px);
-            z-index: 9998;
-        }
-        
-        .trail-piece {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            border-radius: 50%;
-            opacity: 0.7;
-            filter: blur(0.5px);
-            transform: translateX(-50%);
-            z-index: 9997;
-            transition: opacity 0.3s;
-        }
-        
-        .particle {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            transform-origin: center center;
-            opacity: 1;
-            filter: blur(0.3px);
-        }
-        
-        .particle-trail {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: var(--particle-color);
-            opacity: 0.5;
-            transform-origin: center center;
-            animation: fade 0.6s ease-out forwards;
-        }
-        
-        .flash {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: white;
-            opacity: 0;
-            box-shadow: 0 0 30px 15px white;
-            animation: flash 0.5s ease-out forwards;
-        }
-        
-        .glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-            animation: glow 0.8s ease-out forwards;
-            z-index: -1;
-            mix-blend-mode: screen;
-        }
-        
-        @keyframes explode {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes gravity {
-            0% {
-                transform: translateX(0) translateY(0);
-                opacity: 1;
-            }
-            25% {
-                opacity: 0.9;
-            }
-            50% {
-                opacity: 0.7;
-                transform: translateX(var(--dx)) translateY(calc(var(--dy) * 0.5));
-            }
-            75% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateX(var(--dx)) translateY(calc(var(--dy) + 20px));
-                opacity: 0;
-            }
-        }
-        
-        @keyframes shoot {
-            0% {
-                transform: translateX(0) translateY(0) scale(1);
-                opacity: 1;
-            }
-            20% {
-                opacity: 0.9;
-            }
-            50% {
-                transform: translateX(calc(var(--dx) * 0.5)) translateY(calc(var(--dy) * 0.5)) scale(0.9);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateX(var(--dx)) translateY(var(--dy)) scale(0.8);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes glow {
-            0% {
-                width: 0;
-                height: 0;
-                opacity: 0.9;
-            }
-            100% {
-                width: 120px;
-                height: 120px;
-                opacity: 0;
-            }
-        }
-        
-        @keyframes flash {
-            0% {
-                opacity: 1;
-                width: 0;
-                height: 0;
-            }
-            50% {
-                opacity: 0.8;
-                width: 30px;
-                height: 30px;
-            }
-            100% {
-                opacity: 0;
-                width: 50px;
-                height: 50px;
-            }
-        }
-        
-        @keyframes fade {
-            0% {
-                opacity: 0.5;
-                transform: scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-        }
-        
-        /* Success message animation */
-        @keyframes successPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
     </style>
 </head>
 <body>
@@ -1072,13 +816,14 @@
     </button>
 
     <div class="header">
-        <div class="logo-container">
-            <img src="assets/logo/logo4.svg" alt="Logo" class="logo">
+        <h1 class="lang-zh hidden">全域AI主动服务智能体</h1>
+        <h1 class="lang-en">Omnichannel AI Proactive Service Agent</h1>
+        <div class="logo-container" style="display: flex; align-items: center; justify-content: center; gap: 20px;">
+            <img src="logo/logo.png" alt="Logo" class="logo">
+            <span class="product-name" style="font-size: 32px;">FreeYou</span>
         </div>
-        <h1 class="lang-zh hidden">全域感知AI主动服务智能体 <span class="product-name">FreeYou</span></h1>
-        <h1 class="lang-en">Perceptive AI Active Service Agent <span class="product-name">FreeYou</span></h1>
-        <p class="lang-zh hidden">全量感知 | 主动服务 | 多模态数据交互 | 边云协同 | 隐私保护 | 全流程AI智能体</p>
-        <p class="lang-en">Comprehensive Perception | Proactive Service | Multimodal Data Interaction | Edge-Cloud Collaboration | Privacy Protection | End-to-End AI Agent</p>
+        <p class="lang-zh hidden">打通全流程的AI智能体 | 全量感知主动交互 | 全面隐私保护 | 本地云端协同</p>
+        <p class="lang-en">End-to-End AI Agent | Comprehensive Perception & Proactive Interaction | Complete Privacy Protection | Local-Cloud Collaboration</p>
     </div>
 
     <div class="instructions">
@@ -1163,17 +908,16 @@
     </div>
     
     <div class="upload-section">
-        <h2 class="lang-zh hidden">许愿框</h2>
-        <h2 class="lang-en">Wish Box</h2>
-        <p class="lang-zh hidden">上传您需要 AI 主动帮助的场景截图，我们倾听您的期待，用心实现每一个愿望。</p>
-        <p class="lang-en">Upload screenshots of scenarios where you need AI active service, you wish, we make it happen</p>
+        <h2 class="lang-zh hidden">帮助我们改进</h2>
+        <h2 class="lang-en">Help Us Improve</h2>
+        <p class="lang-zh hidden">上传您在使用过程中需要AI主动服务的场景截图，帮助我们优化智能体模型</p>
+        <p class="lang-en">Upload screenshots of scenarios where you need AI active service to help us optimize our agent model</p>
         
         <div class="upload-container">
-            <!-- 图片上传区域 -->
             <div class="upload-area" id="drop-area">
                 <i class="fas fa-cloud-upload-alt"></i>
-                <p class="lang-zh hidden">添加图片（可选）</p>
-                <p class="lang-en">Add Images (Optional)</p>
+                <p class="lang-zh hidden">拖放文件到此处或点击选择文件</p>
+                <p class="lang-en">Drag and drop files here or click to select</p>
                 <span class="lang-zh hidden">支持 PNG、JPG、JPEG 格式，最大 10MB</span>
                 <span class="lang-en">Supports PNG, JPG, JPEG formats, max 10MB</span>
                 <input type="file" id="fileInput" style="display: none;" accept="image/png, image/jpeg" multiple>
@@ -1181,28 +925,22 @@
             
             <div id="file-list" style="width: 100%; max-width: 600px;"></div>
             
-            <!-- 文本输入区域 -->
-            <div class="text-input-area">
-                <textarea id="wish-text" placeholder="描述您的场景..." class="lang-zh hidden"></textarea>
-                <textarea id="wish-text-en" placeholder="Describe your scenario..." class="lang-en"></textarea>
-            </div>
-            
-            <button class="upload-btn lang-zh hidden" id="upload-button" disabled>提交愿望</button>
-            <button class="upload-btn lang-en" id="upload-button-en" disabled>Submit Wish</button>
+            <button class="upload-btn lang-zh hidden" id="upload-button" disabled>上传截图</button>
+            <button class="upload-btn lang-en" id="upload-button-en" disabled>Upload Screenshots</button>
         </div>
         
         <div class="privacy-note">
             <h3 class="lang-zh hidden">隐私说明</h3>
             <h3 class="lang-en">Privacy Statement</h3>
-            <p class="lang-zh hidden">我们非常重视您的隐私和数据安全。上传的内容将仅用于以下目的：</p>
-            <p class="lang-en">We highly value your privacy and data security. Your uploaded content will only be used for the following purposes:</p>
+            <p class="lang-zh hidden">我们非常重视您的隐私和数据安全。上传的截图数据将仅用于以下目的：</p>
+            <p class="lang-en">We highly value your privacy and data security. Uploaded screenshots will only be used for the following purposes:</p>
             <ul>
-                <li class="lang-zh hidden">实现您提出的愿望和需求</li>
-                <li class="lang-en">Fulfilling the wishes and needs you submit</li>
+                <li class="lang-zh hidden">优化AI主动服务智能体的识别能力</li>
+                <li class="lang-en">Optimizing the recognition capabilities of the AI active service agent</li>
                 <li class="lang-zh hidden">改进用户体验和服务质量</li>
                 <li class="lang-en">Improving user experience and service quality</li>
-                <li class="lang-zh hidden">研究和开发更智能的服务场景</li>
-                <li class="lang-en">Researching and developing smarter service scenarios</li>
+                <li class="lang-zh hidden">研究和开发更智能的主动服务场景</li>
+                <li class="lang-en">Researching and developing smarter active service scenarios</li>
             </ul>
             <p class="lang-zh hidden">重要提示：</p>
             <p class="lang-en">Important Notes:</p>
@@ -1216,8 +954,8 @@
                 <li class="lang-zh hidden">我们不会将您的数据用于任何商业目的或与第三方共享</li>
                 <li class="lang-en">We will not use your data for any commercial purposes or share it with third parties</li>
             </ul>
-            <p class="lang-zh hidden">点击"提交愿望"按钮，即表示您同意我们按照上述说明使用您提供的数据。</p>
-            <p class="lang-en">By clicking the "Submit Wish" button, you agree to our use of the data you provide according to the above instructions.</p>
+            <p class="lang-zh hidden">点击"上传截图"按钮，即表示您同意我们按照上述说明使用您提供的数据。</p>
+            <p class="lang-en">By clicking the "Upload Screenshots" button, you agree to our use of the data you provide according to the above instructions.</p>
         </div>
     </div>
     
@@ -1560,24 +1298,8 @@
             const fileList = document.getElementById('file-list');
             const uploadButton = document.getElementById('upload-button');
             const uploadButtonEn = document.getElementById('upload-button-en');
-            const wishText = document.getElementById('wish-text');
-            const wishTextEn = document.getElementById('wish-text-en');
             
             let selectedFiles = [];
-            
-            // 检查是否有内容可以上传
-            function checkUploadable() {
-                const hasText = (wishText.value.trim() !== '' || wishTextEn.value.trim() !== '');
-                const hasFiles = selectedFiles.length > 0;
-                
-                // 只要有文本或文件，就启用上传按钮
-                uploadButton.disabled = !(hasText || hasFiles);
-                uploadButtonEn.disabled = !(hasText || hasFiles);
-            }
-            
-            // 监听文本输入变化
-            wishText.addEventListener('input', checkUploadable);
-            wishTextEn.addEventListener('input', checkUploadable);
             
             // 点击上传区域触发文件选择
             dropArea.addEventListener('click', () => {
@@ -1655,7 +1377,8 @@
                 }
                 
                 // 更新上传按钮状态
-                checkUploadable();
+                uploadButton.disabled = selectedFiles.length === 0;
+                uploadButtonEn.disabled = selectedFiles.length === 0;
             }
             
             // 显示错误信息
@@ -1767,7 +1490,8 @@
                     fileDiv.remove();
                     
                     // 更新上传按钮状态
-                    checkUploadable();
+                    uploadButton.disabled = selectedFiles.length === 0;
+                    uploadButtonEn.disabled = selectedFiles.length === 0;
                 });
                 
                 fileDiv.appendChild(preview);
@@ -1789,35 +1513,22 @@
             
             // 上传按钮点击事件处理函数
             function handleUpload() {
-                // 准备上传数据
-                const currentLang = localStorage.getItem('language') || 'zh';
-                const wishTextValue = currentLang === 'zh' ? wishText.value.trim() : wishTextEn.value.trim();
-                
-                // 创建数据包，包含文本和图片关联
-                const uploadData = {
-                    text: wishTextValue,
-                    fileCount: selectedFiles.length,
-                    timestamp: new Date().toISOString(),
-                    lang: currentLang
-                };
-                
                 // 这里模拟上传过程
                 uploadButton.disabled = true;
                 uploadButtonEn.disabled = true;
                 
+                const currentLang = localStorage.getItem('language') || 'zh';
                 if (currentLang === 'zh') {
-                    uploadButton.textContent = '提交中...';
+                    uploadButton.textContent = '上传中...';
                 } else {
-                    uploadButtonEn.textContent = 'Submitting...';
+                    uploadButtonEn.textContent = 'Uploading...';
                 }
                 
                 // 模拟上传延迟
                 setTimeout(() => {
-                    // 上传成功后清空选择的文件和文本
+                    // 上传成功后清空选择的文件
                     selectedFiles = [];
                     fileList.innerHTML = '';
-                    wishText.value = '';
-                    wishTextEn.value = '';
                     
                     // 显示成功消息
                     const successDiv = document.createElement('div');
@@ -1829,25 +1540,20 @@
                     successDiv.style.backgroundColor = 'var(--apple-success-bg)';
                     successDiv.style.borderRadius = '8px';
                     successDiv.style.border = '1px solid var(--apple-success-border)';
-                    successDiv.style.animation = 'successPulse 1s ease-in-out 2';
-                    successDiv.style.boxShadow = '0 0 15px rgba(52, 199, 89, 0.4)';
                     
                     if (currentLang === 'zh') {
-                        successDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 8px;"></i>愿望提交成功，我们将尽力实现！';
+                        successDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 8px;"></i>截图上传成功，感谢您的贡献！';
                     } else {
-                        successDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 8px;"></i>Wish submitted successfully. We\'ll do our best to make it come true!';
+                        successDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 8px;"></i>Screenshots uploaded successfully. Thank you for your contribution!';
                     }
                     
                     fileList.appendChild(successDiv);
                     
-                    // 触发礼花特效
-                    createFireworks();
-                    
                     // 重置按钮
                     if (currentLang === 'zh') {
-                        uploadButton.textContent = '提交愿望';
+                        uploadButton.textContent = '上传截图';
                     } else {
-                        uploadButtonEn.textContent = 'Submit Wish';
+                        uploadButtonEn.textContent = 'Upload Screenshots';
                     }
                     uploadButton.disabled = true;
                     uploadButtonEn.disabled = true;
@@ -1855,262 +1561,8 @@
                     // 3秒后移除成功消息
                     setTimeout(() => {
                         successDiv.remove();
-                    }, 4000);
+                    }, 3000);
                 }, 2000);
-            }
-            
-            // 创建礼花特效
-            function createFireworks() {
-                // 创建礼花容器
-                let fireworksContainer = document.querySelector('.fireworks-container');
-                if (!fireworksContainer) {
-                    fireworksContainer = document.createElement('div');
-                    fireworksContainer.className = 'fireworks-container';
-                    document.body.appendChild(fireworksContainer);
-                }
-                
-                // 清空之前的礼花
-                fireworksContainer.innerHTML = '';
-                
-                // 高端配色方案
-                const colorSchemes = [
-                    ['#ff9966', '#ff5e62', '#fe9ac9'],  // 暖橙红
-                    ['#00d2ff', '#3a7bd5', '#6fc3df'],  // 蓝色系
-                    ['#ff758c', '#ff7eb3', '#f2a1c2'],  // 粉色系
-                    ['#42e695', '#3bb2b8', '#7eecad'],  // 绿色系
-                    ['#f5d020', '#f53803', '#ffea7e'],  // 黄红系
-                    ['#d387ff', '#8363ff', '#b68eff'],  // 紫色系
-                    ['#ffd700', '#ff9e2c', '#ffe75e'],  // 金色系
-                    ['#21d4fd', '#b721ff', '#93c4fd']   // 霓虹紫蓝
-                ];
-                
-                // 模拟烟花上升效果
-                function launchFirework(x, scheme, delay) {
-                    const startY = window.innerHeight;
-                    const endY = Math.random() * (window.innerHeight * 0.4) + window.innerHeight * 0.1;
-                    
-                    const rocketTrail = document.createElement('div');
-                    rocketTrail.className = 'rocket-trail';
-                    rocketTrail.style.position = 'absolute';
-                    rocketTrail.style.bottom = '0';
-                    rocketTrail.style.left = `${x}px`;
-                    rocketTrail.style.width = '2px';
-                    rocketTrail.style.transform = 'translateX(-50%)';
-                    rocketTrail.style.zIndex = '9998';
-                    fireworksContainer.appendChild(rocketTrail);
-                    
-                    // 烟花上升动画
-                    let startTime = null;
-                    const duration = 700 + Math.random() * 300;
-                    const launchDot = document.createElement('div');
-                    launchDot.className = 'launch-dot';
-                    launchDot.style.backgroundColor = scheme[0];
-                    launchDot.style.boxShadow = `0 0 6px 2px ${scheme[0]}`;
-                    launchDot.style.bottom = '0';
-                    launchDot.style.left = `${x}px`;
-                    fireworksContainer.appendChild(launchDot);
-                    
-                    function animateLaunch(timestamp) {
-                        if (!startTime) startTime = timestamp;
-                        const elapsed = timestamp - startTime;
-                        const progress = Math.min(elapsed / duration, 1);
-                        
-                        // 使用缓动函数使动作更自然
-                        const easedProgress = 1 - Math.pow(1 - progress, 3); // 缓出函数
-                        const currentY = startY - (startY - endY) * easedProgress;
-                        
-                        launchDot.style.bottom = `${window.innerHeight - currentY}px`;
-                        
-                        // 随机添加拖尾效果
-                        if (Math.random() > 0.5) {
-                            const trailPiece = document.createElement('div');
-                            trailPiece.className = 'trail-piece';
-                            trailPiece.style.backgroundColor = scheme[2];
-                            trailPiece.style.bottom = `${window.innerHeight - currentY}px`;
-                            trailPiece.style.left = `${x + (Math.random() * 2 - 1)}px`;
-                            fireworksContainer.appendChild(trailPiece);
-                            
-                            // 淡出拖尾
-                            setTimeout(() => {
-                                trailPiece.style.opacity = '0';
-                                setTimeout(() => {
-                                    if (trailPiece.parentNode) {
-                                        trailPiece.parentNode.removeChild(trailPiece);
-                                    }
-                                }, 300);
-                            }, 100);
-                        }
-                        
-                        if (progress < 1) {
-                            requestAnimationFrame(animateLaunch);
-                        } else {
-                            // 上升完成，爆炸
-                            launchDot.parentNode.removeChild(launchDot);
-                            createFirework(x, endY, fireworksContainer, scheme);
-                            
-                            // 随机添加二次爆炸
-                            if (Math.random() > 0.5) {
-                                setTimeout(() => {
-                                    const offsetX = x + (Math.random() * 100 - 50);
-                                    const offsetY = endY + (Math.random() * 60 - 30);
-                                    createFirework(offsetX, offsetY, fireworksContainer, scheme, 0.8);
-                                }, 100 + Math.random() * 200);
-                            }
-                        }
-                    }
-                    
-                    setTimeout(() => {
-                        requestAnimationFrame(animateLaunch);
-                    }, delay);
-                }
-                
-                // 创建多个烟花
-                const numFireworks = 8;
-                for (let i = 0; i < numFireworks; i++) {
-                    const x = Math.random() * window.innerWidth;
-                    const scheme = colorSchemes[Math.floor(Math.random() * colorSchemes.length)];
-                    const delay = i * 400 + Math.random() * 300;
-                    setTimeout(() => {
-                        launchFirework(x, scheme, 0);
-                    }, delay);
-                }
-                
-                // 6秒后渐隐并移除礼花容器
-                setTimeout(() => {
-                    if (fireworksContainer && fireworksContainer.parentNode) {
-                        fireworksContainer.style.transition = "opacity 1.5s";
-                        fireworksContainer.style.opacity = 0;
-                        setTimeout(() => {
-                            if (fireworksContainer.parentNode) {
-                                fireworksContainer.parentNode.removeChild(fireworksContainer);
-                            }
-                        }, 1500);
-                    }
-                }, 6000);
-            }
-            
-            // 创建单个礼花
-            function createFirework(x, y, container, colorScheme, scale = 1) {
-                const firework = document.createElement('div');
-                firework.className = 'firework';
-                firework.style.left = `${x}px`;
-                firework.style.top = `${y}px`;
-                
-                // 选择主色
-                const mainColor = colorScheme[0];
-                firework.style.backgroundColor = mainColor;
-                firework.style.boxShadow = `0 0 10px 5px ${mainColor}`;
-                
-                container.appendChild(firework);
-                
-                // 闪光效果
-                const flash = document.createElement('div');
-                flash.className = 'flash';
-                flash.style.boxShadow = `0 0 30px 15px ${mainColor}`;
-                firework.appendChild(flash);
-                
-                // 添加发光效果
-                const glow = document.createElement('div');
-                glow.className = 'glow';
-                glow.style.background = `radial-gradient(circle, ${mainColor}66 0%, ${mainColor}00 70%)`;
-                firework.appendChild(glow);
-                
-                // 创建粒子
-                const numParticles = Math.floor((30 + Math.random() * 30) * scale);
-                const baseAngle = Math.random() * 30;
-                const useGravity = Math.random() > 0.3; // 70%的烟花使用重力效果
-                
-                // 多层次爆炸
-                const layers = Math.floor(Math.random() * 2) + 2; // 2-3层
-                const particlesPerLayer = Math.floor(numParticles / layers);
-                
-                for (let layer = 0; layer < layers; layer++) {
-                    const layerDelay = layer * 50; // 每层延迟爆炸
-                    const layerDistance = 40 + (layer * 25) + Math.random() * 20;
-                    
-                    for (let i = 0; i < particlesPerLayer; i++) {
-                        const particle = document.createElement('div');
-                        particle.className = 'particle';
-                        
-                        // 创建花样分布的粒子
-                        let angle;
-                        if (Math.random() > 0.2) {
-                            // 均匀分布，形成漂亮的圆形
-                            angle = (i / particlesPerLayer) * 360 + baseAngle + (Math.random() * 10 - 5);
-                        } else {
-                            // 部分随机分布，制造不规则感
-                            angle = Math.random() * 360;
-                        }
-                        
-                        // 随机距离
-                        const distance = layerDistance * scale + Math.random() * 25 * scale;
-                        const radians = angle * Math.PI / 180;
-                        
-                        // 计算位移
-                        const dx = Math.cos(radians) * distance;
-                        const dy = Math.sin(radians) * distance;
-                        
-                        // 设置CSS变量
-                        particle.style.setProperty('--dx', `${dx}px`);
-                        particle.style.setProperty('--dy', `${dy}px`);
-                        
-                        // 从配色方案中随机选择颜色，偏好主色
-                        let particleColor;
-                        const colorRoll = Math.random();
-                        if (colorRoll < 0.7) {
-                            particleColor = colorScheme[0]; // 70%使用主色
-                        } else if (colorRoll < 0.9) {
-                            particleColor = colorScheme[1]; // 20%使用次色
-                        } else {
-                            particleColor = colorScheme[2]; // 10%使用第三色
-                        }
-                        
-                        particle.style.backgroundColor = particleColor;
-                        particle.style.boxShadow = `0 0 6px 2px ${particleColor}`;
-                        particle.style.setProperty('--particle-color', particleColor);
-                        
-                        // 随机尺寸，但保持在合理范围内
-                        const size = (2 + Math.random() * 2) * scale;
-                        particle.style.width = `${size}px`;
-                        particle.style.height = `${size}px`;
-                        
-                        // 随机延迟和持续时间
-                        const delay = layerDelay + Math.random() * 0.2;
-                        const duration = 0.8 + Math.random() * 0.4;
-                        particle.style.animationDelay = `${delay}s`;
-                        particle.style.animationDuration = `${duration}s`;
-                        
-                        // 应用动画
-                        if (useGravity) {
-                            particle.style.animation = `gravity ${duration}s ease-out forwards`;
-                        } else {
-                            particle.style.animation = `shoot ${duration}s ease-out forwards`;
-                        }
-                        
-                        firework.appendChild(particle);
-                        
-                        // 添加粒子拖尾
-                        if (Math.random() > 0.3) { // 70%的粒子有拖尾
-                            const trail = document.createElement('div');
-                            trail.className = 'particle-trail';
-                            trail.style.backgroundColor = particleColor;
-                            particle.appendChild(trail);
-                        }
-                    }
-                }
-                
-                // 随机添加爆炸音效 (仅视觉效果，无声音)
-                if (Math.random() > 0.7) {
-                    setTimeout(() => {
-                        const miniFlash = document.createElement('div');
-                        miniFlash.className = 'flash';
-                        miniFlash.style.width = '10px';
-                        miniFlash.style.height = '10px';
-                        miniFlash.style.backgroundColor = colorScheme[1];
-                        miniFlash.style.boxShadow = `0 0 15px 8px ${colorScheme[1]}`;
-                        firework.appendChild(miniFlash);
-                    }, 100 + Math.random() * 200);
-                }
             }
             
             // 上传按钮点击事件
