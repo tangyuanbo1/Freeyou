@@ -3,12 +3,12 @@
 # FreeYou - Proactive AI Agent with Seamless Perception
 
 <p align="center">
-  <img src="logo/logo.svg" alt="FreeYou Logo" width="200"/>
+  <img src="logo/logo15.png" alt="FreeYou Logo" width="200"/>
 </p>
 
-<p align="center">
+<!-- <p align="center">
   <img src="logo/FreeYou.png" alt="FreeYou" width="300"/>
-</p>
+</p> -->
 
 **Comprehensive Perception | Proactive Service | Multimodal Data Interaction | Edge-Cloud Collaboration | Privacy Protection | End-to-End AI Agent**
 
