@@ -157,58 +157,6 @@ python app.py
 4. The privacy filter processes sensitive information for desensitization (if using cloud models)
 5. The executor generates multiple service suggestions, waiting for user selection or automatic execution
 
-### API Call Example
 
-```python
-import requests
-
-# Get current service status
-response = requests.get('http://localhost:5000/items/')
-print(response.json())
-```
-
-## 🤝 Contribution Guidelines
-
-We welcome various forms of contributions, including but not limited to:
-
-- Submitting issues and feature requests
-- Submitting code improvements
-- Improving documentation
-- Sharing use cases
-
-Please follow these steps:
-
-1. Fork this repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
-## 🤝 Open Source Community
-
-<div align="center">
-
-### Join our Feishu Community
-
-Scan the QR code below to join the FreeYou open source community and exchange experiences with other developers!
-
-<p align="center">
-  <img src="pic/feishu.jpg" alt="Feishu Community QR Code" width="200"/>
-</p>
-
-*Scan the QR code to join the discussion group*
-
-</div>
-
-## 📞 Contact Information
-
-- Project Maintainer: [Your Name](mailto:your.email@example.com)
-- Project Homepage: [GitHub](https://github.com/yourusername/FreeYou)
-
----
 
 <p align="center">FreeYou - AI for Everything, Unlocking Infinite Possibilities</p>

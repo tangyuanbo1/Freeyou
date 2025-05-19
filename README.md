@@ -3,12 +3,12 @@
 # FreeYou - 全域感知AI主动服务智能体
 
 <p align="center">
-  <img src="logo/logo.svg" alt="Free Logo" width="200"/>
+  <img src="logo/logo15.png" alt="Free Logo" width="200"/>
 </p>
 
-<p align="center">
+<!-- <p align="center">
   <img src="logo/FreeYou.png" alt="FreeYou" width="300"/>
-</p>
+</p> -->
 
 **全量感知 | 主动服务 | 多模态数据交互 | 边云协同 | 隐私保护 | 打通全流程的AI智能体**
 
@@ -157,58 +157,5 @@ python app.py
 4. 隐私过滤器对敏感信息进行脱敏处理（如使用云端模型）
 5. 执行器生成多个服务建议，等待用户选择或自动执行
 
-### API调用示例
-
-```python
-import requests
-
-# 获取当前服务状态
-response = requests.get('http://localhost:5000/items/')
-print(response.json())
-```
-
-## 🤝 贡献指南
-
-我们欢迎各种形式的贡献，包括但不限于：
-
-- 提交问题和功能请求
-- 提交代码改进
-- 改进文档
-- 分享使用案例
-
-请遵循以下步骤：
-
-1. Fork本仓库
-2. 创建您的特性分支 (`git checkout -b feature/amazing-feature`)
-3. 提交您的更改 (`git commit -m 'Add some amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 打开Pull Request
-
-## 📄 许可证
-
-本项目采用MIT许可证 - 详情请参见[LICENSE](LICENSE)文件
-
-## 🤝 开源社区
-
-<div align="center">
-
-### 加入我们的飞书社区
-
-扫描下方二维码，立即加入FreeYou开源社区，与其他开发者交流经验！
-
-<p align="center">
-  <img src="pic/feishu.jpg" alt="飞书社区二维码" width="200"/>
-</p>
-
-*扫描二维码，立即加入讨论群组*
-
-</div>
-
-## 📞 联系方式
-
-- 项目维护者：[Your Name](mailto:your.email@example.com)
-- 项目主页：[GitHub](https://github.com/yourusername/FreeYou)
-
----
 
 <p align="center">FreeYou -  AI 感知万物，智启无限可能</p>
